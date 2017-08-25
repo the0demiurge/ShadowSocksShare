@@ -39,11 +39,11 @@ def request_url(url):
     try:
         response = requests.get(url, verify=False).text
         data += re.findall('ssr?://\w+', response)
-    soup = BeautifulSoup(response, 'html.parser')
-    title = soup.find('title').text
+        soup = BeautifulSoup(response, 'html.parser')
+        title = soup.find('title').text
 
-    info = {'message': '', 'url': url, 'name': str(title)}
-    servers = [parse(server) for server in data]
+        info = {'message': '', 'url': url, 'name': str(title)}
+        servers = [parse(server) for server in data]
     except Exception:
         return [], {'message': '没找到', 'url': '', 'name': ''}
     return servers, info
@@ -98,21 +98,21 @@ def request_xiaoshuang(url='https://xsjs.yhyhd.org/free-ss'):
     try:
         data = requests.get(url, verify=False)
         soup = BeautifulSoup(data.text, 'html.parser')
-    data = soup.find('div', attrs={'id': 'ss-body'})
-    data = data.text.strip().split('\n\n\n')
-    info = {'message': data[0].split('\n')[0], 'name': '小双加速', 'url': url}
-    data[0] = data[0].split('\n', maxsplit=1)[-1]
-    servers = list()
-    for server in data:
-        server_data = server.strip().split('\n')
-        servers.append(dict())
-        servers[-1]['remarks'] = '小双{}'.format(server_data[0]).strip()
-        servers[-1]['server_data'] = server_data[1].split()[1].strip()
-        servers[-1]['server_port'] = server_data[1].split()[3].strip()
-        servers[-1]['password'] = server_data[2].split()[3].strip()
-        servers[-1]['method'] = server_data[2].split()[1].strip()
-        servers[-1]['ssr_protocol'] = server_data[3].split()[1].split(':')[1].strip()
-        servers[-1]['obfs'] = server_data[3].split()[2].split(':')[1].strip()
+        data = soup.find('div', attrs={'id': 'ss-body'})
+        data = data.text.strip().split('\n\n\n')
+        info = {'message': data[0].split('\n')[0], 'name': '小双加速', 'url': url}
+        data[0] = data[0].split('\n', maxsplit=1)[-1]
+        servers = list()
+        for server in data:
+            server_data = server.strip().split('\n')
+            servers.append(dict())
+            servers[-1]['remarks'] = '小双{}'.format(server_data[0]).strip()
+            servers[-1]['server_data'] = server_data[1].split()[1].strip()
+            servers[-1]['server_port'] = server_data[1].split()[3].strip()
+            servers[-1]['password'] = server_data[2].split()[3].strip()
+            servers[-1]['method'] = server_data[2].split()[1].strip()
+            servers[-1]['ssr_protocol'] = server_data[3].split()[1].split(':')[1].strip()
+            servers[-1]['obfs'] = server_data[3].split()[2].split(':')[1].strip()
     except Exception as e:
         return [], {'message': str(e), 'url': '', 'name': ''}
     return servers, info
