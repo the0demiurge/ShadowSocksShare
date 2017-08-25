@@ -6,12 +6,12 @@ import time
 import threading
 import os
 from app import app
-from app import shadowsocks_free_qrcode
+from app import ss_free
 from app import ss
 from flask import render_template, send_from_directory, abort
 
 
-servers = shadowsocks_free_qrcode.main()
+servers = ss_free.main()
 curtime = time.ctime()
 
 decoded = list()
@@ -25,7 +25,7 @@ encoded = base64.urlsafe_b64encode(bytes(decoded, 'utf-8'))
 
 def update_servers():
     global servers
-    servers = shadowsocks_free_qrcode.main()
+    servers = ss_free.main()
     global encoded
     decoded = list()
     for i in servers:

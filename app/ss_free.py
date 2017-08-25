@@ -107,7 +107,7 @@ def request_xiaoshuang(url='https://xsjs.yhyhd.org/free-ss'):
             server_data = server.strip().split('\n')
             servers.append(dict())
             servers[-1]['remarks'] = '小双{}'.format(server_data[0]).strip()
-            servers[-1]['server_data'] = server_data[1].split()[1].strip()
+            servers[-1]['server'] = server_data[1].split()[1].strip()
             servers[-1]['server_port'] = server_data[1].split()[3].strip()
             servers[-1]['password'] = server_data[2].split()[3].strip()
             servers[-1]['method'] = server_data[2].split()[1].strip()
@@ -172,7 +172,7 @@ def request_newpac(url='https://github.com/Alvin9999/new-pac/wiki/ss%E5%85%8D%E8
     return servers, info
 
 
-def get_qr_uri(servers):
+def gen_uri(servers):
     '''{
                 "server": server['server'],
                 "server_ipv6": "::",
@@ -267,18 +267,18 @@ def get_qr_uri(servers):
 
 def main():
     # servers = request_newpac()
-    # servers = get_qr_uri(servers)
+    # servers = gen_uri(servers)
     # return servers
     servers_iss, info_iss = request_iss()
     servers_xiaoshuang, info_xiaoshuang = request_xiaoshuang()
 
     result = [
-        {'data': get_qr_uri(servers_iss), 'info': info_iss},
-        {'data': get_qr_uri(servers_xiaoshuang), 'info': info_xiaoshuang},
+        {'data': gen_uri(servers_iss), 'info': info_iss},
+        {'data': gen_uri(servers_xiaoshuang), 'info': info_xiaoshuang},
     ]
     for i in url:
         data, info = request_url(i)
-        result.append({'data': get_qr_uri(data), 'info': info})
+        result.append({'data': gen_uri(data), 'info': info})
     return result
 
 
