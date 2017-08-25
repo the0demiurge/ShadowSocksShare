@@ -51,7 +51,7 @@ def request_url(url):
 
 def request_iss(url='http://ss.ishadowx.com/'):
     try:
-        data = requests.get(url)
+        data = requests.get(url, verify=False)
         soup = BeautifulSoup(data.text, 'html.parser')
     except Exception:
         return [], {'message': '没找到', 'url': '', 'name': ''}
@@ -91,7 +91,7 @@ def request_iss(url='http://ss.ishadowx.com/'):
 
 def request_xiaoshuang(url='https://xsjs.yhyhd.org/free-ss'):
     try:
-        data = requests.get(url)
+        data = requests.get(url, verify=False)
         soup = BeautifulSoup(data.text, 'html.parser')
     except Exception:
         return [], {'message': '没找到', 'url': '', 'name': ''}
