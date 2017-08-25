@@ -40,7 +40,7 @@ def request_url(url):
         response = requests.get(url, verify=False).text
         data += re.findall('ssr?://\w+', response)
     except Exception:
-        return [], {'message': '', 'url': '', 'name': ''}
+        return [], {'message': '没找到', 'url': '', 'name': ''}
     soup = BeautifulSoup(response, 'html.parser')
     title = soup.find('title').text
 
@@ -50,9 +50,11 @@ def request_url(url):
 
 
 def request_iss(url='http://ss.ishadowx.com/'):
-    data = requests.get(url)
-    soup = BeautifulSoup(data.text, 'html.parser')
-
+    try:
+        data = requests.get(url)
+        soup = BeautifulSoup(data.text, 'html.parser')
+    except Exception:
+        return [], {'message': '没找到', 'url': '', 'name': ''}
     info = {
         'message': soup.find('div', attrs={'id': 'portfolio'}).find('div', attrs={'class': 'section-title text-center center'}).text,
         'name': 'ishadowx',
@@ -88,8 +90,11 @@ def request_iss(url='http://ss.ishadowx.com/'):
 
 
 def request_xiaoshuang(url='https://xsjs.yhyhd.org/free-ss'):
-    data = requests.get(url)
-    soup = BeautifulSoup(data.text, 'html.parser')
+    try:
+        data = requests.get(url)
+        soup = BeautifulSoup(data.text, 'html.parser')
+    except Exception:
+        return [], {'message': '没找到', 'url': '', 'name': ''}
 
     data = soup.find('div', attrs={'id': 'ss-body'})
     data = data.text.strip().split('\n\n\n')
