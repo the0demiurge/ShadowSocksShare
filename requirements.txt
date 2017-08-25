@@ -1,0 +1,6 @@
+Flask
+flask-mongoengine
+Flask-Script
+regex
+beautifulsoup4
+requests
