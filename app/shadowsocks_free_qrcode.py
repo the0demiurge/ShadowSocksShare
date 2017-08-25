@@ -39,13 +39,13 @@ def request_url(url):
     try:
         response = requests.get(url, verify=False).text
         data += re.findall('ssr?://\w+', response)
-    except Exception:
-        return [], {'message': '没找到', 'url': '', 'name': ''}
     soup = BeautifulSoup(response, 'html.parser')
     title = soup.find('title').text
 
     info = {'message': '', 'url': url, 'name': str(title)}
     servers = [parse(server) for server in data]
+    except Exception:
+        return [], {'message': '没找到', 'url': '', 'name': ''}
     return servers, info
 
 
@@ -55,22 +55,27 @@ def request_iss(url='http://ss.ishadowx.com/'):
         soup = BeautifulSoup(data.text, 'html.parser')
     except Exception:
         return [], {'message': '没找到', 'url': '', 'name': ''}
-    info = {
-        'message': soup.find('div', attrs={'id': 'portfolio'}).find('div', attrs={'class': 'section-title text-center center'}).text,
-        'name': 'ishadowx',
-        'url': url}
 
-    '''servers[-1]['name'] = tmp[0]
-    servers[-1]['server'] = tmp[0]
-    servers[-1]['server_port'] = tmp[0]
-    servers[-1]['password'] = tmp[0]
-    servers[-1]['method'] = tmp[0]
-    servers[-1]['ssr_protocol'] = tmp[0]
-    servers[-1]['obfs'] = tmp[0]'''
+    try:
 
-    soup = BeautifulSoup(data.text, 'html.parser')
-    server_data = soup.find_all('div', attrs={'class': 'hover-text'})
-    servers = list()
+        info = {
+            'message': soup.find('div', attrs={'id': 'portfolio'}).find('div', attrs={'class': 'section-title text-center center'}).text,
+            'name': 'ishadowx',
+            'url': url}
+
+        '''servers[-1]['name'] = tmp[0]
+        servers[-1]['server'] = tmp[0]
+        servers[-1]['server_port'] = tmp[0]
+        servers[-1]['password'] = tmp[0]
+        servers[-1]['method'] = tmp[0]
+        servers[-1]['ssr_protocol'] = tmp[0]
+        servers[-1]['obfs'] = tmp[0]'''
+
+        soup = BeautifulSoup(data.text, 'html.parser')
+        server_data = soup.find_all('div', attrs={'class': 'hover-text'})
+        servers = list()
+    except Exception as e:
+        return [], {'message': str(e), 'url': '', 'name': ''}
 
     for i, server in enumerate(server_data):
         try:
@@ -93,25 +98,26 @@ def request_xiaoshuang(url='https://xsjs.yhyhd.org/free-ss'):
     try:
         data = requests.get(url, verify=False)
         soup = BeautifulSoup(data.text, 'html.parser')
-    except Exception:
-        return [], {'message': '没找到', 'url': '', 'name': ''}
-
     data = soup.find('div', attrs={'id': 'ss-body'})
     data = data.text.strip().split('\n\n\n')
     info = {'message': data[0].split('\n')[0], 'name': '小双加速', 'url': url}
     data[0] = data[0].split('\n', maxsplit=1)[-1]
     servers = list()
     for server in data:
-        server = server.split('\n')
+        server_data = server.strip().split('\n')
         servers.append(dict())
-        servers[-1]['remarks'] = '小双{}'.format(server[0]).strip()
-        servers[-1]['server'] = server[1].split()[1].strip()
-        servers[-1]['server_port'] = server[1].split()[3].strip()
-        servers[-1]['password'] = server[2].split()[3].strip()
-        servers[-1]['method'] = server[2].split()[1].strip()
-        servers[-1]['ssr_protocol'] = server[3].split()[1].split(':')[1].strip()
-        servers[-1]['obfs'] = server[3].split()[2].split(':')[1].strip()
+        servers[-1]['remarks'] = '小双{}'.format(server_data[0]).strip()
+        servers[-1]['server_data'] = server_data[1].split()[1].strip()
+        servers[-1]['server_port'] = server_data[1].split()[3].strip()
+        servers[-1]['password'] = server_data[2].split()[3].strip()
+        servers[-1]['method'] = server_data[2].split()[1].strip()
+        servers[-1]['ssr_protocol'] = server_data[3].split()[1].split(':')[1].strip()
+        servers[-1]['obfs'] = server_data[3].split()[2].split(':')[1].strip()
+    except Exception as e:
+        return [], {'message': str(e), 'url': '', 'name': ''}
     return servers, info
+
+# this cannot use for now
 
 
 def request_newpac(url='https://github.com/Alvin9999/new-pac/wiki/ss%E5%85%8D%E8%B4%B9%E8%B4%A6%E5%8F%B7'):
