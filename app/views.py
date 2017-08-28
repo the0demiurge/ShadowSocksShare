@@ -36,7 +36,7 @@ def update_servers():
     encoded = base64.urlsafe_b64encode(bytes(decoded, 'utf-8'))
 
 
-counter_path = os.path.expanduser('~/python/counter')
+counter_path = os.path.expanduser('counter')
 
 
 def counter(counter_path=counter_path):
