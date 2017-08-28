@@ -47,9 +47,10 @@
 
 1. 注册 Heroku 并安装 heroku 的命令行工具，登陆上，不用多说了吧，免费。具体操作请阅读[Heroku 指南（官方英文版）](https://devcenter.heroku.com/articles/getting-started-with-python#set-up)
 2. 下载本项目：`git clone https://github.com/the0demiurge/ShadowSocksShare-OpenShift.git`
-3. 创建一个 heroku 应用：`heroku create`
-4. 部署到云端：`git push heroku master`
-5. 打开部署好的网站：`heroku open`
+3. 进入项目目录：`cd ShadowSocksShare-OpenShift`
+4. 创建一个 heroku 应用：`heroku create`
+5. 部署到云端：`git push heroku master`
+6. 打开部署好的网站：`heroku open`
 
 ### 编写的软件版本：
 
