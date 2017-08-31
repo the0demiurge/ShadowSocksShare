@@ -43,6 +43,10 @@
 
 `python manage.py runserver`
 
+## OpenShift v3 部署方法：
+
+注册 OpenShift v3 之后，在创建项目中选择 Python，Python 版本选择 3.5, 之后部署的时候链接输入本项目的 https 类型的 git 链接即可。
+
 ## Heroku 部署方法：
 
 1. 注册 Heroku 并安装 heroku 的命令行工具，登陆上，不用多说了吧，免费。具体操作请阅读[Heroku 指南（官方英文版）](https://devcenter.heroku.com/articles/getting-started-with-python#set-up)
