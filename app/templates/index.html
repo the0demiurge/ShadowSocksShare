@@ -35,13 +35,7 @@
 <div id="announcement" style="text-align: center;background-color: silver" target="_blank">
     <h2>最新通知</h2>
     
-    <p>
-    <strong>感谢hsu_bicheng朋友的捐助：）<br>
-    由于 heroku 服务器由于未知原因挂掉了，还是迁移回红帽<br>
-    本项目代码从Python-Scripts 迁移出来，挪到了新 <a href="https://github.com/the0demiurge/ShadowSocksShare-OpenShift">GitHub 仓库</a>，将长期维护，欢迎朋友们关注～<br>
-    如果朋友们想把它部署到自己的 heroku 免费服务器里面，可以参照 <a href="https://github.com/the0demiurge/ShadowSocksShare-OpenShift/blob/master/README.md">README</a> ，很简单！</strong>
-    </p>
-    
+    从网上爬到的 ss 帐号稳定性欠佳。我又找到了一些不错的 Hosts 源，分享给大家：<br>Windows 7/8/10 或 Linux 请使用我写的<a target="_blank" href="https://github.com/the0demiurge/CharlesScripts/tree/master/tools/auto_hosts_updater">自动更新 Hosts 脚本</a>；Android 请使用 <a href="https://play.google.com/store/apps/details?id=com.lerist.go_hosts">一键 Go Hosts - NEW</a>
     <p>
         <h3 style="color: #8F5A0A">请使用 ShadowSocksR 客户端，否则连不上别怪服务器不行 =_=</h3>
         
@@ -80,12 +74,19 @@
     <p>通知发布时间：{{ctime}}</p>
 </div>
 
+<div style="text-align: center;">
+  <h4>捐助信息</h4>
+    <p>
+    hsu_bicheng 朋友捐助了50元：）<br>
+    </p>
+</div>
+
 <fieldset style="text-align: center;">
 
   <legend style="text-align: center;"><strong>ShadowSocks服务器信息</strong></legend>
   {% for server in servers %}
     <p>
-      请支持免费ss帐号的提供者：<a href="{{server['info']['url']}}">{{server['info']['name']}}</a><br>
+      请支持免费ss帐号的提供者：<a target="_blank" href="{{server['info']['url']}}">{{server['info']['name']}}</a><br>
       <font style="color:#E13C19">服务器通知：<br>{{server['info']['message']}}</font>
       <br>
       {%set outer_loop = loop%}
@@ -95,13 +96,13 @@
       {% endfor %}
     </p>
   {% endfor %}
-SSR订阅地址：<a href="/subscribe">https://ss.pythonic.life/subscribe</a><br>
-  JSON格式的订阅地址（每次随机从库中抽取一条json返回）：<a href="/json">https://ss.pythonic.life/json</a>
+SSR订阅地址：<a target="_blank" href="/subscribe">https://ss.pythonic.life/subscribe</a><br>
+  JSON格式的订阅地址（每次随机从库中抽取一条json返回）：<a target="_blank" href="/json">https://ss.pythonic.life/json</a>
 </fieldset>
 
 
 <div id="info" style="text-align: center;">
-    <p>如果遇到了什么问题或有任何建议，请到我的 <a href="https://github.com/the0demiurge/ShadowSocksShare-OpenShift/issues">GitHub Issue 页面</a>提供反馈：）</p>
+    <p>如果遇到了什么问题或有任何建议，请到我的 <a target="_blank" href="https://github.com/the0demiurge/ShadowSocksShare-OpenShift/issues">GitHub Issue 页面</a>提供反馈：）</p>
     <p>如果用着感觉挺好，不妨在朋友之间宣传宣传，然后到<a target="_blank" href="https://github.com/the0demiurge/ShadowSocksShare-OpenShift">GitHub 链接</a>加个星：）</p>
 </div>
 
@@ -158,7 +159,7 @@ SSR订阅地址：<a href="/subscribe">https://ss.pythonic.life/subscribe</a><br
 <script type="text/javascript" color="{{color}}" opacity="{{opacity}}" count="{{count}}" src="js/canvas-nest.min.js"></script>
 
 <!-- github ribbon -->
-<a href="https://github.com/the0demiurge/ShadowSocksShare-OpenShift"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/365986a132ccd6a44c23a9169022c0b5c890c387/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png"></a>
+<a target="_blank" href="https://github.com/the0demiurge/ShadowSocksShare-OpenShift"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/365986a132ccd6a44c23a9169022c0b5c890c387/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png"></a>
 
 </body>
 
