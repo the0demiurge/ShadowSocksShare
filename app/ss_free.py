@@ -44,7 +44,6 @@ def request_url(url):
         data = list(set(data))
 
         info = {'message': '', 'url': url, 'name': str(title)}
-        servers = [parse(server) for server in data]
         servers = list()
         for server in data:
             try:
