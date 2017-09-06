@@ -45,6 +45,13 @@ def request_url(url):
 
         info = {'message': '', 'url': url, 'name': str(title)}
         servers = [parse(server) for server in data]
+        servers = list()
+        for server in data:
+            try:
+                servers.append(parse(server))
+            except Exception as e:
+                print(e)
+
     except Exception:
         return [], {'message': '没找到', 'url': '', 'name': ''}
     return servers, info
