@@ -41,6 +41,7 @@ def request_url(url):
         data += re.findall('ssr?://\w+', response)
         soup = BeautifulSoup(response, 'html.parser')
         title = soup.find('title').text
+        data = list(set(data))
 
         info = {'message': '', 'url': url, 'name': str(title)}
         servers = [parse(server) for server in data]
