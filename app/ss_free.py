@@ -270,11 +270,11 @@ def main():
     # servers = gen_uri(servers)
     # return servers
     servers_iss, info_iss = request_iss()
-    servers_xiaoshuang, info_xiaoshuang = request_xiaoshuang()
+    # servers_xiaoshuang, info_xiaoshuang = request_xiaoshuang()
 
     result = [
         {'data': gen_uri(servers_iss), 'info': info_iss},
-        {'data': gen_uri(servers_xiaoshuang), 'info': info_xiaoshuang},
+        # {'data': gen_uri(servers_xiaoshuang), 'info': info_xiaoshuang},
     ]
     for i in url:
         data, info = request_url(i)
