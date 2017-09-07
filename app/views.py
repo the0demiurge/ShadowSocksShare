@@ -6,6 +6,7 @@ import time
 import threading
 import os
 from app import app
+from app.ascii import birthday_2017
 from app import ss_free
 from app import ss
 from flask import render_template, send_from_directory, abort
@@ -150,6 +151,11 @@ def page_not_found(e):
         opacity=opacity,
         count=count,
     ), 404
+
+
+@app.route('/gift')
+def gift():
+    return birthday_2017
 
 
 print('部署完成')
