@@ -28,6 +28,9 @@ __email__ = 'charl3s.xu@gmail.com'
 __my_girlfriend__ = '小胖儿～'
 
 
+fake_ua = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.2; Win64; x64; rv:16.0.1) Gecko/20121011 Firefox/16.0.1'}
+
+
 def get_href(string, pattern='.*'):
     found = re.findall('(?<=<a\s+href=")[^"]+(?=">%s</a>)' % pattern, string)
     if found:
@@ -37,7 +40,7 @@ def get_href(string, pattern='.*'):
 def request_url(url):
     data = list()
     try:
-        response = requests.get(url, verify=False).text
+        response = requests.get(url, headers=fake_ua).text
         data += re.findall('ssr?://\w+', response)
         soup = BeautifulSoup(response, 'html.parser')
         title = soup.find('title').text
@@ -50,18 +53,29 @@ def request_url(url):
                 servers.append(parse(server))
             except Exception as e:
                 print(e)
-
-    except Exception:
-        return [], {'message': '没找到', 'url': '', 'name': ''}
+    except Exception as e:
+        return [], {'message': str(e), 'url': '', 'name': ''}
     return servers, info
+
+
+def request_doub_url(url='https://doub.io/sszhfx/'):
+
+    try:
+        html = requests.get(url, headers=fake_ua)
+        soup = BeautifulSoup(html.text, 'html.parser')
+        urls = list(map(lambda x: x.get('href'), filter(lambda x: x.text.strip() != '1', soup.find_all('a', attrs={'class': 'page-numbers'}))))
+        urls.append(url)
+    except Exception as e:
+        urls = [url]
+    return urls
 
 
 def request_iss(url='http://ss.ishadowx.com/'):
     try:
-        data = requests.get(url, verify=False)
+        data = requests.get(url)
         soup = BeautifulSoup(data.text, 'html.parser')
-    except Exception:
-        return [], {'message': '没找到', 'url': '', 'name': ''}
+    except Exception as e:
+        return [], {'message': str(e), 'url': '', 'name': ''}
 
     try:
 
@@ -103,7 +117,7 @@ def request_iss(url='http://ss.ishadowx.com/'):
 
 def request_xiaoshuang(url='https://xsjs.yhyhd.org/free-ss'):
     try:
-        data = requests.get(url, verify=False)
+        data = requests.get(url)
         soup = BeautifulSoup(data.text, 'html.parser')
         data = soup.find('div', attrs={'id': 'ss-body'})
         data = data.text.strip().split('\n\n\n')
@@ -283,10 +297,14 @@ def main():
         {'data': gen_uri(servers_iss), 'info': info_iss},
         # {'data': gen_uri(servers_xiaoshuang), 'info': info_xiaoshuang},
     ]
-    for i in url:
+
+    doub_urls = request_doub_url()
+    for i in url + doub_urls:
         data, info = request_url(i)
         result.append({'data': gen_uri(data), 'info': info})
-    return result
+
+    servers = list(filter(lambda x: len(x['data']) > 0, result))
+    return servers
 
 
 if __name__ == '__main__':
