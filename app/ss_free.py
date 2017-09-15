@@ -37,10 +37,10 @@ def get_href(string, pattern='.*'):
         return found[0]
 
 
-def request_url(url):
+def request_url(url, headers=None):
     data = list()
     try:
-        response = requests.get(url, headers=fake_ua).text
+        response = requests.get(url, headers=headers).text
         data += re.findall('ssr?://\w+', response)
         soup = BeautifulSoup(response, 'html.parser')
         title = soup.find('title').text
@@ -298,9 +298,13 @@ def main():
         # {'data': gen_uri(servers_xiaoshuang), 'info': info_xiaoshuang},
     ]
 
-    doub_urls = request_doub_url()
-    for i in url + doub_urls:
+    for i in url:
         data, info = request_url(i)
+        result.append({'data': gen_uri(data), 'info': info})
+
+    doub_urls = request_doub_url()
+    for i in doub_urls:
+        data, info = request_url(i, headers=fake_ua)
         result.append({'data': gen_uri(data), 'info': info})
 
     servers = list(filter(lambda x: len(x['data']) > 0, result))
