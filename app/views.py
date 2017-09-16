@@ -122,6 +122,16 @@ def pages(path):
     )
 
 
+@app.route('/html/<path:path>')
+def static_html(path):
+    color, opacity, count = gen_canvas_nest()
+    return render_template(
+        path,
+        color=color,
+        opacity=opacity,
+        count=count,)
+
+
 @app.route('/subscribe')
 def subscribe():
     return encoded
@@ -135,6 +145,11 @@ def subscribe_json():
 @app.route('/js/<path:path>')
 def send_jsadfsadfs(path):
     return send_from_directory('js', path)
+
+
+@app.route('/static/<path:path>')
+def send_static(path):
+    return send_from_directory('static', path)
 
 
 @app.route('/favicon.ico')

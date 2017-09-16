@@ -1,29 +1,7 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>免费ShadowSocks帐号分享</title>
-    <link rel="stylesheet" href="">
-    <meta http-equiv="Cache-Control" content="no-transform" />
-    <meta http-equiv="Cache-Control" content="no-siteapp" />
-    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=yes" />
-    <link rel = "Shortcut Icon" href=/favicon.ico> 
-    <style type="text/css">
-        table{
-            border-collapse: collapse;
-            margin:0px auto;
-        }
-        table, td{
-            border:1px solid black;
-        }
-    </style>
-</head>
+{% extends "base.html" %}
+{% block title %}免费ShadowSocks帐号分享{% endblock %}
 
-
-
-<body>
-
+{% block content %}
 
 <h3>
     <pre style="text-align: center;">
@@ -32,52 +10,26 @@
 </h3>
 
 
-<div id="announcement" style="text-align: center;background-color: silver" target="_blank">
-    <h2>最新通知</h2>
-    
-    从网上爬到的 ss 帐号稳定性欠佳。我又找到了一些不错的 Hosts 源，分享给大家：<br>Windows 7/8/10 或 Linux 请使用我写的<a target="_blank" href="https://github.com/the0demiurge/CharlesScripts/tree/master/tools/auto_hosts_updater">自动更新 Hosts 脚本</a>；Android 请使用 <a href="https://play.google.com/store/apps/details?id=com.lerist.go_hosts">一键 Go Hosts - NEW</a>
-    <p>
-        <h3 style="color: #8F5A0A">请使用 ShadowSocksR 客户端，否则连不上别怪服务器不行 =_=</h3>
-        
-        下面是各操作系统的 SSR 客户端地址：<br>
-        <table>
-          <tr>
-            <td>平台</td><td>链接</td><td>备注</td>
-          </tr>
-          
-          <tr>
-            <td>Linux</td><td><a href="https://github.com/the0demiurge/CharlesScripts/blob/master/charles/bin/ssr" target="_blank">Linux 客户端一键安装配置使用脚本</a></td><td>命令行界面， Mac 也能用，使用方法见注释</td>
-          </tr>
-          
-          <tr>
-            <td>Terminal</td><td><a href="https://the0demiurge.blogspot.jp/2017/07/aptshadowsocks-tsocks.html">tsocks</a></td><td>安装使用教程</td>
-          </tr>
-          
-          <tr>
-            <td>Windows</td><td><a href="https://github.com/shadowsocksr-backup/shadowsocksr-csharp/releases" target="_blank">SSR C# 版</a></td><td>Windows 推荐使用</td>
-          </tr>
-          
-          <tr>
-            <td>Android</td><td><a href="https://github.com/shadowsocksr-backup/shadowsocksr-android/releases" target="_blank"> Android 客户端</a></td><td>无</td>
-          </tr>
-          
-          <tr>
-            <td>macOS</td><td><a href="https://github.com/shadowsocksr-backup/ShadowsocksX-NG/releases" target="_blank">ShadowsocksX-NG</a></td><td>Mac 也能用 Linux 版的</td>
-          </tr>
-          
-          <tr>
-            <td>iOS</td><td><a href="https://github.com/Alvin9999/new-pac/wiki/%E8%8B%B9%E6%9E%9C%E6%89%8B%E6%9C%BA%E7%BF%BB%E5%A2%99%E8%BD%AF%E4%BB%B6" target="_blank">只有中国 App Store 帐号</a>, <a href="https://github.com/shadowsocks/shadowsocks-iOS/wiki/Help" target="_blank">美区 App Store</a> </td><td>只有中国区 App Store的话会麻烦一些</td>
-          </tr>
-        </table>
+<div id="announcement" style="text-align: center;background-color: #f5f5f6" target="_blank">
+<h2>最新通知</h2>
+代码进行了较大改造，减少代码量，增加了历史通知功能。
+<p>通知发布时间：{{ctime}}</p>
 
-    </p>
-    <p>通知发布时间：{{ctime}}</p>
+<h2>必读信息</h2>
+<p>
+  请使用 ShadowSocksR 客户端，不然无法使用。<a href="/html/clients.html" target="_blank">客户端链接在此</a><br>
+  <a href="/html/notes.html" target="_blank">以前的通知信息在此</a>
+</p>
 </div>
+
 
 <div style="text-align: center;">
   <h4>捐助信息</h4>
     <p>
     hsu_bicheng 朋友捐助了50元：）<br>
+    </p>
+    <p>
+      <a href="https://www.wishosting.com/">https://www.wishosting.com/</a>提供免费被墙服务器
     </p>
 </div>
 
@@ -150,20 +102,4 @@ SSR订阅地址：<a target="_blank" href="/subscribe">https://ss.pythonic.life/
 </code></pre>
 </div>
 
-
-<div id="donate" style="text-align: center;">如果连上 ssr 之后成功翻了出去，刷新此页面你就能看到下面的微信二维码，并可以资助我^_^
-<br>
-<img src="https://2.bp.blogspot.com/-k-wEhqPNegI/WQwuxp6sacI/AAAAAAAAWlE/b2JZeYsWWswP5oMuul90kEQi7-riKYMYgCLcB/s320/wechat.png" alt="">
-</div>
-
-<!-- beautiful background -->
-<script type="text/javascript" color="{{color}}" opacity="{{opacity}}" count="{{count}}" src="js/canvas-nest.min.js"></script>
-
-<!-- github ribbon -->
-<a target="_blank" href="https://github.com/the0demiurge/ShadowSocksShare-OpenShift"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/365986a132ccd6a44c23a9169022c0b5c890c387/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png"></a>
-
-</body>
-
-</html>
-
-
+{% endblock %}

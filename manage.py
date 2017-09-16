@@ -12,6 +12,9 @@ manager = Manager(app)
 manager.add_command(
     "runserver", Server(host="0.0.0.0", port=port, use_debugger=False)
 )
+manager.add_command(
+    "debug", Server(host="0.0.0.0", port=8080, use_debugger=True)
+)
 
 if __name__ == '__main__':
     manager.run()
