@@ -48,9 +48,9 @@ def request_url(url, headers=None):
 
         info = {'message': '', 'url': url, 'name': str(title)}
         servers = list()
-        for server in data:
+        for i, server in enumerate(data):
             try:
-                servers.append(parse(server))
+                servers.append(parse(server, ' '.join([title, str(i)])))
             except Exception as e:
                 print(e)
     except Exception as e:
