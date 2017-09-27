@@ -86,18 +86,22 @@ def pages(path):
     except Exception:
         abort(404)
 
-    uri = servers[a]['data'][b]['decoded_url'] if 'decoded_url' in servers[a]['data'][b] else ''
-    remarks = servers[a]['data'][b]['remarks'] if 'remarks' in servers[a]['data'][b] else 'None'
-    server = servers[a]['data'][b]['server'] if 'server' in servers[a]['data'][b] else 'None'
-    server_port = servers[a]['data'][b]['server_port'] if 'server_port' in servers[a]['data'][b] else 'None'
-    password = servers[a]['data'][b]['password'] if 'password' in servers[a]['data'][b] else 'None'
-    method = servers[a]['data'][b]['method'] if 'method' in servers[a]['data'][b] else 'None'
-    ssr_protocol = servers[a]['data'][b]['ssr_protocol'] if 'ssr_protocol' in servers[a]['data'][b] else 'None'
-    obfs = servers[a]['data'][b]['obfs'] if 'obfs' in servers[a]['data'][b] else 'None'
-    href = servers[a]['data'][b]['href'] if 'href' in servers[a]['data'][b] else 'None'
-    json = servers[a]['data'][b]['json'] if 'json' in servers[a]['data'][b] else 'None'
-    obfsparam = servers[a]['data'][b]['obfsparam'] if 'obfsparam' in servers[a]['data'][b] else 'None'
-    protoparam = servers[a]['data'][b]['protoparam'] if 'protoparam' in servers[a]['data'][b] else 'None'
+    try:
+        uri = servers[a]['data'][b]['decoded_url'] if 'decoded_url' in servers[a]['data'][b] else ''
+        remarks = servers[a]['data'][b]['remarks'] if 'remarks' in servers[a]['data'][b] else 'None'
+        server = servers[a]['data'][b]['server'] if 'server' in servers[a]['data'][b] else 'None'
+        server_port = servers[a]['data'][b]['server_port'] if 'server_port' in servers[a]['data'][b] else 'None'
+        password = servers[a]['data'][b]['password'] if 'password' in servers[a]['data'][b] else 'None'
+        method = servers[a]['data'][b]['method'] if 'method' in servers[a]['data'][b] else 'None'
+        ssr_protocol = servers[a]['data'][b]['ssr_protocol'] if 'ssr_protocol' in servers[a]['data'][b] else 'None'
+        obfs = servers[a]['data'][b]['obfs'] if 'obfs' in servers[a]['data'][b] else 'None'
+        href = servers[a]['data'][b]['href'] if 'href' in servers[a]['data'][b] else 'None'
+        json = servers[a]['data'][b]['json'] if 'json' in servers[a]['data'][b] else 'None'
+        obfsparam = servers[a]['data'][b]['obfsparam'] if 'obfsparam' in servers[a]['data'][b] else 'None'
+        protoparam = servers[a]['data'][b]['protoparam'] if 'protoparam' in servers[a]['data'][b] else 'None'
+    except Exception as e:
+        return(str(e))
+
     color, opacity, count = gen_canvas_nest()
 
     return render_template(
