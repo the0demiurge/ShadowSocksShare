@@ -86,6 +86,11 @@ def pages(path):
     except Exception:
         abort(404)
 
+    if a > len(servers):
+        abort(404)
+    elif b > len(servers[a]['data']):
+        abort(404)
+
     try:
         uri = servers[a]['data'][b]['decoded_url'] if 'decoded_url' in servers[a]['data'][b] else ''
         remarks = servers[a]['data'][b]['remarks'] if 'remarks' in servers[a]['data'][b] else 'None'
