@@ -2,6 +2,7 @@
 # -*- utf-8 -*-
 import base64
 import random
+import logging
 import time
 import threading
 import os
@@ -25,16 +26,19 @@ encoded = base64.urlsafe_b64encode(bytes(decoded, 'utf-8'))
 
 
 def update_servers():
-    global servers
-    servers = ss_free.main()
-    global encoded
-    decoded = list()
-    for i in servers:
-        for j in i['data']:
-            if j['uri'][2] is 'r':
-                decoded.append(j['uri'])
-    decoded = '\n'.join(decoded)
-    encoded = base64.urlsafe_b64encode(bytes(decoded, 'utf-8'))
+    try:
+        global servers
+        servers = ss_free.main()
+        global encoded
+        decoded = list()
+        for i in servers:
+            for j in i['data']:
+                if j['uri'][2] is 'r':
+                    decoded.append(j['uri'])
+        decoded = '\n'.join(decoded)
+        encoded = base64.urlsafe_b64encode(bytes(decoded, 'utf-8'))
+    except Exception as e:
+        logging.exception(e, stack_info=True)
 
 
 counter_path = os.path.expanduser('/tmp/counter')
@@ -64,17 +68,20 @@ def gen_canvas_nest():
 
 @app.route('/')
 def index():
-    color, opacity, count = gen_canvas_nest()
-    return render_template(
-        'index.html',
-        servers=servers,
-        ss=ss[random.randint(0, len(ss) - 1)],
-        counter=counter(),
-        color=color,
-        opacity=opacity,
-        count=count,
-        ctime=curtime,
-    )
+    try:
+        color, opacity, count = gen_canvas_nest()
+        return render_template(
+            'index.html',
+            servers=servers,
+            ss=ss[random.randint(0, len(ss) - 1)],
+            counter=counter(),
+            color=color,
+            opacity=opacity,
+            count=count,
+            ctime=curtime,
+        )
+    except Exception as e:
+        logging.exception(e, stack_info=True)
 
 
 @app.route('/<string:path>')
@@ -105,7 +112,7 @@ def pages(path):
         obfsparam = servers[a]['data'][b]['obfsparam'] if 'obfsparam' in servers[a]['data'][b] else 'None'
         protoparam = servers[a]['data'][b]['protoparam'] if 'protoparam' in servers[a]['data'][b] else 'None'
     except Exception as e:
-        return(str(e))
+        logging.exception(e, stack_info=True)
 
     color, opacity, count = gen_canvas_nest()
 

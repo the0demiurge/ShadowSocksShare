@@ -4,7 +4,7 @@
 
 本项目是我的 [Python 实验室](https://github.com/the0demiurge/Python-Scripts)子模块，欢迎大家 STAR/FORK/ISSUE/提交 PR ～
 
-本网站的功能是从网上爬下来各种免费 ss(r) 帐号，重新解析和分发，可以在 ssr 客户端。这个网站是我已知**唯一**一个提供** ssr 订阅服务**的了。
+本网站的功能是从网上爬下来各种免费 ss(r) 帐号，重新解析和分发，可以在 ssr 客户端。这个网站是我已知**唯一一个提供 ssr 订阅服务**的了。
 
 *我不生产 ss(r) 帐号，我只是帐号的搬运工。不保证可用，不保证速度，不保证安全，不保证隐私。*
 
@@ -48,7 +48,7 @@
 注册 OpenShift v3 之后，在创建项目中选择 Python，Python 版本选择 3.5, 之后部署的时候链接输入本项目的 https 类型的 git 链接即可。
 
 ## Heroku 部署方法：
-
+**不再维护Heroku版本，如果出现任何问题或有解决方案，请提交PR**
 1. 注册 Heroku 并安装 heroku 的命令行工具，登陆上，不用多说了吧，免费。具体操作请阅读[Heroku 指南（官方英文版）](https://devcenter.heroku.com/articles/getting-started-with-python#set-up)
 2. 下载本项目：`git clone https://github.com/the0demiurge/ShadowSocksShare-OpenShift.git`
 3. 进入项目目录：`cd ShadowSocksShare-OpenShift`
