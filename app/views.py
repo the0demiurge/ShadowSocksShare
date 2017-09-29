@@ -93,9 +93,9 @@ def pages(path):
     except Exception:
         abort(404)
 
-    if a > len(servers):
+    if a >= len(servers):
         abort(404)
-    elif b > len(servers[a]['data']):
+    elif b >= len(servers[a]['data']):
         abort(404)
 
     try:
@@ -111,8 +111,6 @@ def pages(path):
         json = servers[a]['data'][b]['json'] if 'json' in servers[a]['data'][b] else 'None'
         obfsparam = servers[a]['data'][b]['obfsparam'] if 'obfsparam' in servers[a]['data'][b] else 'None'
         protoparam = servers[a]['data'][b]['protoparam'] if 'protoparam' in servers[a]['data'][b] else 'None'
-    except Exception as e:
-        logging.exception(e, stack_info=True)
 
     color, opacity, count = gen_canvas_nest()
 
@@ -136,6 +134,8 @@ def pages(path):
         obfsparam=obfsparam,
         protoparam=protoparam,
     )
+    except Exception as e:
+        logging.exception(e, stack_info=True)
 
 
 @app.route('/html/<path:path>')
