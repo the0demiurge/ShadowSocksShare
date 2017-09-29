@@ -112,28 +112,28 @@ def pages(path):
         obfsparam = servers[a]['data'][b]['obfsparam'] if 'obfsparam' in servers[a]['data'][b] else 'None'
         protoparam = servers[a]['data'][b]['protoparam'] if 'protoparam' in servers[a]['data'][b] else 'None'
 
-    color, opacity, count = gen_canvas_nest()
+        color, opacity, count = gen_canvas_nest()
 
-    return render_template(
-        'pages.html',
-        uri=uri,
-        server=server,
-        server_port=server_port,
-        password=password,
-        method=method,
-        ssr_protocol=ssr_protocol,
-        obfs=obfs,
-        href=href,
-        remarks=remarks,
-        counter=counter(),
-        server_data=servers[a]['data'][b],
-        color=color,
-        opacity=opacity,
-        count=count,
-        json=json,
-        obfsparam=obfsparam,
-        protoparam=protoparam,
-    )
+        return render_template(
+            'pages.html',
+            uri=uri,
+            server=server,
+            server_port=server_port,
+            password=password,
+            method=method,
+            ssr_protocol=ssr_protocol,
+            obfs=obfs,
+            href=href,
+            remarks=remarks,
+            counter=counter(),
+            server_data=servers[a]['data'][b],
+            color=color,
+            opacity=opacity,
+            count=count,
+            json=json,
+            obfsparam=obfsparam,
+            protoparam=protoparam,
+        )
     except Exception as e:
         logging.exception(e, stack_info=True)
 
