@@ -41,22 +41,21 @@ def get_href(string, pattern='.*'):
 def request_url(url, headers=None):
     print('req', url)
 
-    data = list()
+    data = set()
     servers = list()
     try:
         response = requests.get(url, headers=headers).text
-        data += re.findall('ssr?://\w+', response)
+        data.update(map(lambda x: re.sub('\s', '', x), re.findall('ssr?://[a-zA-Z0-9=\s]+', response)))
         soup = BeautifulSoup(response, 'html.parser')
         title = soup.find('title').text
-        data = list(set(data))
 
         info = {'message': '', 'url': url, 'name': str(title)}
         for i, server in enumerate(data):
             try:
                 servers.append(parse(server, ' '.join([title, str(i)])))
-            except Exception as e:
-                logging.exception(e, stack_info=True)
-                print('URL:', url)
+            except (IndexError, ValueError) as e:
+                logging.exception(e, stack_info=False)
+                print('URL:', url, 'SERVER', server)
     except Exception as e:
         logging.exception(e, stack_info=True)
         return [], {'message': str(e), 'url': '', 'name': ''}
@@ -94,7 +93,7 @@ def request_doub_url(url='https://doub.io/sszhfx/'):
     try:
         html = requests.get(url, headers=fake_ua)
         soup = BeautifulSoup(html.text, 'html.parser')
-        urls = list(map(lambda x: [x.get('href'), print(x)][0], filter(
+        urls = list(map(lambda x: x.get('href'), filter(
             lambda x: x.text.strip() != '1', soup.find_all('a', attrs={'class': 'page-numbers'}))))
         urls.append(url)
     except Exception as e:
@@ -258,6 +257,8 @@ def gen_uri(servers):
     def decode(string):
         return str(base64.urlsafe_b64decode(bytes(string + (4 - len(string) % 4) * '=', 'utf-8')), 'utf-8')
     for server in servers:
+        if 'password' not in server:
+            server['password'] = ''
         try:
             try:
                 # SSR信息是否完整
@@ -333,24 +334,28 @@ def main():
     servers_iss, info_iss = request_iss()
     # servers_xiaoshuang, info_xiaoshuang = request_xiaoshuang()
 
+    # iss
     result = [
         {'data': gen_uri(servers_iss), 'info': info_iss},
         # {'data': gen_uri(servers_xiaoshuang), 'info': info_xiaoshuang},
     ]
 
+    # fscx
     servers_fscx, info_fscx = request_freess_cx()
-
     result.append({'data': gen_uri(servers_fscx), 'info': info_fscx})
 
+    # urls in list
     for i in url:
         data, info = request_url(i)
         result.append({'data': gen_uri(data), 'info': info})
 
+    # doub
     doub_urls = request_doub_url()
     for i in doub_urls:
         data, info = request_url(i, headers=fake_ua)
         result.append({'data': gen_uri(data), 'info': info})
 
+    # remove useless data
     servers = list(filter(lambda x: len(x['data']) > 0, result))
     return servers
 

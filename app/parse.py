@@ -13,7 +13,7 @@ scanner = zbar.Scanner()
 
 
 def decode(string):
-    return str(base64.urlsafe_b64decode(bytes(string + (4 - len(string) % 4) * '=', 'utf-8')), 'utf-8')
+    return str(base64.urlsafe_b64decode(bytes(string.strip('/') + (4 - len(string.strip('/')) % 4) * '=', 'utf-8')), 'utf-8')
 
 
 def encode(decoded):
@@ -30,10 +30,7 @@ def parse(uri, default_title='untitled'):
             server['remarks'] = default_title
         decoded = decode(stripped)
         data = decoded.split('@')
-        try:
-            server['method'], server['password'] = data[0].split(':')
-        except IndexError:
-            server['method'], server['password'] = data[0], ''
+        server['method'], server['password'] = data[0].split(':')
         server['server'], server['server_port'] = data[1].split(':')
     elif uri[2] is 'r':
         decoded = decode(stripped)
