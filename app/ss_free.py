@@ -15,6 +15,7 @@ except ImportError:
     exit(0)
 
 import urllib
+import logging
 # import sys
 import requests
 import base64
@@ -52,8 +53,9 @@ def request_url(url, headers=None):
             try:
                 servers.append(parse(server, ' '.join([title, str(i)])))
             except Exception as e:
-                print(e)
+                logging.exception(e, stack_info=True)
     except Exception as e:
+        logging.exception(e, stack_info=True)
         return [], {'message': str(e), 'url': '', 'name': ''}
     return servers, info
 
@@ -66,6 +68,7 @@ def request_doub_url(url='https://doub.io/sszhfx/'):
         urls = list(map(lambda x: x.get('href'), filter(lambda x: x.text.strip() != '1', soup.find_all('a', attrs={'class': 'page-numbers'}))))
         urls.append(url)
     except Exception as e:
+        logging.exception(e, stack_info=True)
         urls = [url]
     return urls
 
@@ -75,6 +78,7 @@ def request_iss(url='http://ss.ishadowx.com/'):
         data = requests.get(url)
         soup = BeautifulSoup(data.text, 'html.parser')
     except Exception as e:
+        logging.exception(e, stack_info=True)
         return [], {'message': str(e), 'url': '', 'name': ''}
 
     try:
@@ -96,6 +100,7 @@ def request_iss(url='http://ss.ishadowx.com/'):
         server_data = soup.find_all('div', attrs={'class': 'hover-text'})
         servers = list()
     except Exception as e:
+        logging.exception(e, stack_info=True)
         return [], {'message': str(e), 'url': '', 'name': ''}
 
     for i, server in enumerate(server_data):
@@ -110,8 +115,8 @@ def request_iss(url='http://ss.ishadowx.com/'):
             if 'QR' not in server_data[4]:
                 servers[-1]['ssr_protocol'], servers[-1]['obfs'] = server_data[4].strip().split(maxsplit=1)
                 servers[-1]['remarks'] = ' '.join([servers[-1]['remarks'], 'SSR'])
-        except Exception:
-            pass
+        except Exception as e:
+            logging.exception(e, stack_info=True)
     return servers, info
 
 
@@ -135,6 +140,7 @@ def request_xiaoshuang(url='https://xsjs.yhyhd.org/free-ss'):
             servers[-1]['ssr_protocol'] = server_data[3].split()[1].split(':')[1].strip()
             servers[-1]['obfs'] = server_data[3].split()[2].split(':')[1].strip()
     except Exception as e:
+        logging.exception(e, stack_info=True)
         return [], {'message': str(e), 'url': '', 'name': ''}
     return servers, info
 
@@ -281,8 +287,8 @@ def gen_uri(servers):
             try:
                 href = get_href(server['string'], '.*查看连接信息.*')
                 server['href'] = href
-            except Exception:
-                pass
+            except Exception as e:
+                logging.exception(e, stack_info=True)
     return servers
 
 
