@@ -1,5 +1,8 @@
 Flask
 flask-mongoengine
+zbar-py
+numpy
+matplotlib
 Flask-Script
 regex
 beautifulsoup4

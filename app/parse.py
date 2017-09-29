@@ -1,7 +1,15 @@
 #!/usr/bin/env python
 # -*- utf-8 -*-
 import re
+import zbar
+import requests
+from io import BytesIO
+from matplotlib.pyplot import imread
+from numpy import uint8
 import base64
+
+
+scanner = zbar.Scanner()
 
 
 def decode(string):
@@ -22,7 +30,10 @@ def parse(uri, default_title='untitled'):
             server['remarks'] = default_title
         decoded = decode(stripped)
         data = decoded.split('@')
-        server['method'], server['password'] = data[0].split(':')
+        try:
+            server['method'], server['password'] = data[0].split(':')
+        except IndexError:
+            server['method'], server['password'] = data[0], ''
         server['server'], server['server_port'] = data[1].split(':')
     elif uri[2] is 'r':
         decoded = decode(stripped)
@@ -45,3 +56,8 @@ def parse(uri, default_title='untitled'):
                 server[key] = content[key]
         server['remarks'] += ' SSR'
     return server
+
+
+def scanNetQR(img_url):
+    img = imread(BytesIO(requests.get(img_url).content))
+    return scanner.scan(img.astype(uint8) * 255)[0].data.decode('utf-8')

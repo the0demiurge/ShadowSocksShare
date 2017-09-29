@@ -20,7 +20,7 @@ import logging
 import requests
 import base64
 import json
-from app.parse import parse
+from app.parse import parse, scanNetQR
 from app.config import url
 
 
@@ -39,7 +39,10 @@ def get_href(string, pattern='.*'):
 
 
 def request_url(url, headers=None):
+    print('req', url)
+
     data = list()
+    servers = list()
     try:
         response = requests.get(url, headers=headers).text
         data += re.findall('ssr?://\w+', response)
@@ -48,12 +51,37 @@ def request_url(url, headers=None):
         data = list(set(data))
 
         info = {'message': '', 'url': url, 'name': str(title)}
-        servers = list()
         for i, server in enumerate(data):
             try:
                 servers.append(parse(server, ' '.join([title, str(i)])))
             except Exception as e:
                 logging.exception(e, stack_info=True)
+                print('URL:', url)
+    except Exception as e:
+        logging.exception(e, stack_info=True)
+        return [], {'message': str(e), 'url': '', 'name': ''}
+    return servers, info
+
+
+def request_freess_cx(url='https://freess.cx/', headers=None):
+    print('req fscx...')
+    qr = list()
+    servers = list()
+    try:
+        response = requests.get(url, headers=headers).text
+        soup = BeautifulSoup(response, 'html.parser')
+        title = soup.find('title').text
+        msg = soup.find('section', attrs={'id': 'banner'}).text.strip()
+
+        info = {'message': msg, 'url': url, 'name': str(title)}
+        qr = list(map(lambda x: url.strip('/') + '/' + x.find('a').get('href'), soup.find_all('div', attrs={'class': '4u 12u(mobile)'})))
+        for i, img_url in enumerate(qr):
+            print('req img', img_url)
+            try:
+                servers.append(parse(scanNetQR(img_url), ' '.join([title, str(i)])))
+            except Exception as e:
+                logging.exception(e, stack_info=True)
+                print('IMG_URL FOR freess.cx:', img_url)
     except Exception as e:
         logging.exception(e, stack_info=True)
         return [], {'message': str(e), 'url': '', 'name': ''}
@@ -61,19 +89,24 @@ def request_url(url, headers=None):
 
 
 def request_doub_url(url='https://doub.io/sszhfx/'):
+    print('req doub...')
 
     try:
         html = requests.get(url, headers=fake_ua)
         soup = BeautifulSoup(html.text, 'html.parser')
-        urls = list(map(lambda x: x.get('href'), filter(lambda x: x.text.strip() != '1', soup.find_all('a', attrs={'class': 'page-numbers'}))))
+        urls = list(map(lambda x: [x.get('href'), print(x)][0], filter(
+            lambda x: x.text.strip() != '1', soup.find_all('a', attrs={'class': 'page-numbers'}))))
         urls.append(url)
     except Exception as e:
         logging.exception(e, stack_info=True)
+        print('DOUB_URL:', url)
         urls = [url]
     return urls
 
 
 def request_iss(url='http://ss.ishadowx.com/'):
+    print('req iss...')
+
     try:
         data = requests.get(url)
         soup = BeautifulSoup(data.text, 'html.parser')
@@ -121,6 +154,7 @@ def request_iss(url='http://ss.ishadowx.com/'):
 
 
 def request_xiaoshuang(url='https://xsjs.yhyhd.org/free-ss'):
+    print('req xcud...')
     try:
         data = requests.get(url)
         soup = BeautifulSoup(data.text, 'html.parser')
@@ -303,6 +337,10 @@ def main():
         {'data': gen_uri(servers_iss), 'info': info_iss},
         # {'data': gen_uri(servers_xiaoshuang), 'info': info_xiaoshuang},
     ]
+
+    servers_fscx, info_fscx = request_freess_cx()
+
+    result.append({'data': gen_uri(servers_fscx), 'info': info_fscx})
 
     for i in url:
         data, info = request_url(i)
