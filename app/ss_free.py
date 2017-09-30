@@ -93,14 +93,14 @@ def request_doub_url(url='https://doub.io/sszhfx/'):
     try:
         html = requests.get(url, headers=fake_ua)
         soup = BeautifulSoup(html.text, 'html.parser')
-        urls = list(map(lambda x: x.get('href'), filter(
-            lambda x: x.text.strip() != '1', soup.find_all('a', attrs={'class': 'page-numbers'}))))
+        urls = list(set(map(lambda x: x.get('href'), filter(
+            lambda x: x.text.strip() != '1', soup.find_all('a', attrs={'class': 'page-numbers'})))))
         urls.append(url)
     except Exception as e:
         logging.exception(e, stack_info=True)
         print('DOUB_URL:', url)
         urls = [url]
-    return urls
+    return set(urls)
 
 
 def request_iss(url='http://ss.ishadowx.com/'):
