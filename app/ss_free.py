@@ -183,6 +183,48 @@ def request_5752me(url='https://wget.5752.me/Computer/soft/socks5%E4%BB%A3%E7%90
     return servers, info
 
 
+def request_nobey(url='https://raw.githubusercontent.com/NoBey/Shadowsocks-free/master/README.md'):
+    def strip_dot(x):
+        return
+    print('req nobey...')
+    servers = list()
+    try:
+        data = re.split('##+|---+', requests.get(url).text)[2:5:2]
+        info = {'message': '', 'name': 'NoBey', 'url': 'https://github.com/NoBey/Shadowsocks-free'}
+
+        for i, server in enumerate(data):
+            server = server.split('\n')
+
+            name = server[0].strip()
+            (
+                ips,
+                ports,
+                _,
+                method,
+                password) = list(map(
+                    lambda server: map(
+                        lambda x: x.strip().strip('`').strip(),
+                        server.strip('-').strip().split()[1:]),
+                    server[1:6]))
+            method = next(method)
+            password = next(password)
+
+            for j, ip in enumerate(ips):
+                for k, port in enumerate(ports):
+                    servers.append(dict())
+                    servers[-1]['remarks'] = 'NoBey {}-{}-{}'.format(name, j, k)
+                    (
+                        servers[-1]['server'],
+                        servers[-1]['password'],
+                        servers[-1]['server_port'],
+                        servers[-1]['method']) = (ip, password, port, method)
+
+    except Exception as e:
+        logging.exception(e, stack_info=True)
+        return [], {'message': str(e), 'url': '', 'name': ''}
+    return servers, info
+
+
 def request_xiaoshuang(url='https://xsjs.yhyhd.org/free-ss'):
     print('req xcud...')
     try:
@@ -365,6 +407,7 @@ def main():
     websites = [
         request_iss,
         request_freess_cx,
+        request_nobey,
         request_5752me,
     ]
     from app.config import url
