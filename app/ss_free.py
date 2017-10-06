@@ -16,12 +16,10 @@ except ImportError:
 
 import urllib
 import logging
-# import sys
 import requests
 import base64
 import json
 from app.parse import parse, scanNetQR
-from app.config import url
 
 
 __author__ = 'Charles Xu'
@@ -45,7 +43,7 @@ def request_url(url, headers=None):
     servers = list()
     try:
         response = requests.get(url, headers=headers).text
-        data.update(map(lambda x: re.sub('\s', '', x), re.findall('ssr?://[a-zA-Z0-9=\s]+', response)))
+        data.update(map(lambda x: re.sub('\s', '', x), re.findall('ssr?://[a-zA-Z0-9=]+', response)))
         soup = BeautifulSoup(response, 'html.parser')
         title = soup.find('title').text
 
@@ -87,7 +85,7 @@ def request_freess_cx(url='https://freess.cx/', headers=None):
     return servers, info
 
 
-def request_doub_url(url='https://doub.io/sszhfx/'):
+def request_doub_url(url='https://doub.bid/sszhfx/'):
     print('req doub...')
 
     try:
@@ -149,6 +147,39 @@ def request_iss(url='http://ss.ishadowx.com/'):
                 servers[-1]['remarks'] = ' '.join([servers[-1]['remarks'], 'SSR'])
         except Exception as e:
             logging.exception(e, stack_info=True)
+    return servers, info
+
+
+def request_5752me(url='https://wget.5752.me/Computer/soft/socks5%E4%BB%A3%E7%90%86/%E5%85%8D%E8%B4%B9ss%E8%B4%A6%E5%8F%B7.html'):
+    print('req 5752...')
+    servers = list()
+    try:
+        data = requests.get(url)
+        if 'IP地址' in data.content.decode('gb2312'):
+            data = data.content.decode('gb2312')
+        elif 'IP地址' in data.text:
+            data = data.text
+        else:
+            raise Exception('没找到5752信息：' + url)
+        info = {'message': '', 'name': '自得其乐', 'url': 'https://www.5752.me/'}
+        data = data.split('<br/>')
+
+        avail_data = list(filter(lambda x: 'IP地址' in x, data))
+        if len(avail_data) == 0:
+            raise Exception('5752里面资料大概改变形式了' + '\n'.join(data))
+
+        for i, server in enumerate(avail_data):
+            servers.append(dict())
+            servers[-1]['remarks'] = '自得其乐 {}'.format(i)
+            (
+                servers[-1]['server'],
+                servers[-1]['password'],
+                servers[-1]['server_port'],
+                servers[-1]['method']) = server.split()[1::2]
+
+    except Exception as e:
+        logging.exception(e, stack_info=True)
+        return [], {'message': str(e), 'url': '', 'name': ''}
     return servers, info
 
 
@@ -328,32 +359,29 @@ def gen_uri(servers):
 
 
 def main():
-    # servers = request_newpac()
-    # servers = gen_uri(servers)
-    # return servers
-    servers_iss, info_iss = request_iss()
-    # servers_xiaoshuang, info_xiaoshuang = request_xiaoshuang()
+    result = list()
 
-    # iss
-    result = [
-        {'data': gen_uri(servers_iss), 'info': info_iss},
-        # {'data': gen_uri(servers_xiaoshuang), 'info': info_xiaoshuang},
+    # Specified functions for requesting servers
+    websites = [
+        request_iss,
+        request_freess_cx,
+        request_5752me,
     ]
+    from app.config import url
 
-    # fscx
-    servers_fscx, info_fscx = request_freess_cx()
-    result.append({'data': gen_uri(servers_fscx), 'info': info_fscx})
+    websites.extend([(i, None) for i in url])
+    websites.extend([(i, fake_ua) for i in request_doub_url()])
 
-    # urls in list
-    for i in url:
-        data, info = request_url(i)
-        result.append({'data': gen_uri(data), 'info': info})
-
-    # doub
-    doub_urls = request_doub_url()
-    for i in doub_urls:
-        data, info = request_url(i, headers=fake_ua)
-        result.append({'data': gen_uri(data), 'info': info})
+    for website in websites:
+        try:
+            if type(website) is tuple:
+                data, info = request_url(website[0], headers=website[1])
+            else:
+                data, info = website()
+            result.append({'data': gen_uri(data), 'info': info})
+        except Exception as e:
+            logging.exception(e, stack_info=False)
+            print('Error in', website, type(website))
 
     # remove useless data
     servers = list(filter(lambda x: len(x['data']) > 0, result))
