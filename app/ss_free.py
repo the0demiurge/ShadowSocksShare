@@ -202,12 +202,12 @@ def request_nobey(url='https://raw.githubusercontent.com/NoBey/Shadowsocks-free/
                 _,
                 method,
                 password) = list(map(
-                    lambda server: map(
+                    lambda server: list(map(
                         lambda x: x.strip().strip('`').strip(),
-                        server.strip('-').strip().split()[1:]),
+                        server.strip('-').strip().split()[1:])),
                     server[1:6]))
-            method = next(method)
-            password = next(password)
+            method = method[0]
+            password = password[0]
 
             for j, ip in enumerate(ips):
                 for k, port in enumerate(ports):
