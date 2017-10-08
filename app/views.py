@@ -13,7 +13,7 @@ from app import ss
 from flask import render_template, send_from_directory, abort
 
 
-servers = ss_free.main()
+servers = list()
 curtime = time.ctime()
 
 decoded = list()
@@ -51,7 +51,7 @@ def counter(counter_path=counter_path):
         open(counter_path, 'w').write('0')
     count = int(open(counter_path).readline())
     open(counter_path, 'w').write(str(count + 1))
-    if count % 150 == 0:
+    if count % 150 == 5:
         update_thread = threading.Thread(target=update_servers)
         update_thread.start()
     return count
