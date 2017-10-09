@@ -19,7 +19,7 @@ import logging
 import requests
 import base64
 import json
-from app.parse import parse, scanNetQR
+from app.ss.parse import parse, scanNetQR
 
 
 __author__ = 'Charles Xu'
