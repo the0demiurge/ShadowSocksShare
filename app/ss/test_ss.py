@@ -1,19 +1,18 @@
 #!/usr/bin/env python3
-import socks
-import socket
 import requests
 
 
-s = socket.socket
+proxies = {'http': 'socks5://localhost:1080', 'https': 'socks5://localhost:1080'}
 
-def test_socks(url='https://google.com', headers=None):
-    socks.setdefaultproxy(socks.PROXY_TYPE_SOCKS5, "127.0.0.1", 1080)
-    socket.socket = socks.socksocket
+
+def test_socks(url='https://google.com', headers=None, proxies=proxies):
     ok = False
     try:
-        ok = requests.get(url, headers=headers).ok
+        ok = requests.get(url, headers=headers, proxies=proxies).ok
     except Exception as e:
         print(e)
-    socket.socket = s
     return ok
 
+
+if __name__ == '__main__':
+    print(test_socks())
