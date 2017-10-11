@@ -50,7 +50,7 @@ def counter(counter_path=counter_path):
         open(counter_path, 'w').write('0')
     count = int(open(counter_path).readline())
     open(counter_path, 'w').write(str(count + 1))
-    if count % 2 == 1:
+    if count % 2 == 150:
         update_thread = threading.Thread(target=update_servers)
         update_thread.start()
     return count
