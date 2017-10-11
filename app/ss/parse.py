@@ -12,11 +12,24 @@ scanner = zbar.Scanner()
 
 
 def decode(string):
-    return str(base64.urlsafe_b64decode(bytes(string.strip('/') + (4 - len(string.strip('/')) % 4) * '=', 'utf-8')), 'utf-8')
+    try:
+        return str(
+            base64.urlsafe_b64decode(
+                bytes(
+                    string.strip('/') + (4 - len(string.strip('/')) % 4) * '=',
+                    'utf-8')), 'utf-8')
+    except Exception as e:
+        print(e, string)
+        raise Exception(e, string)
 
 
 def encode(decoded):
-    return base64.urlsafe_b64encode(bytes(decoded, 'utf-8')).decode('utf-8').replace('=', '')
+    return base64.urlsafe_b64encode(
+        bytes(decoded, 'utf-8')).decode('utf-8').replace('=', '')
+
+
+def reverse_str(string):
+    return ''.join(list(reversed(string)))
 
 
 def parse(uri, default_title='untitled'):
@@ -30,7 +43,9 @@ def parse(uri, default_title='untitled'):
         decoded = decode(stripped)
         data = decoded.split('@')
         server['method'], server['password'] = data[0].split(':')
-        server['server'], server['server_port'] = data[1].split(':')
+        server['server_port'], server['server'] = map(
+            reverse_str,
+            reverse_str(data[1]).split(':', maxsplit=1))
     elif uri[2] is 'r':
         decoded = decode(stripped)
         if '/?' in decoded:
@@ -38,12 +53,15 @@ def parse(uri, default_title='untitled'):
         else:
             data = [decoded]
         [
-            server['server'],
-            server['server_port'],
-            server['ssr_protocol'],
+            server['obfs'],
             server['method'],
-            server['obfs']] = data[0].split(':')[:5]
-        server['password'] = decode(data[0].split(':')[5])
+            server['ssr_protocol'],
+            server['server_port'],
+            server['server'],
+        ] = map(
+            reverse_str,
+            reverse_str(data[0]).split(':', maxsplit=5)[1:])
+        server['password'] = decode(data[0].split(':')[-1])
         server['remarks'] = default_title
         if len(data) > 1:
             data = data[1].split('&')
