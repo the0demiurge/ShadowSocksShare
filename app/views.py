@@ -7,9 +7,8 @@ import time
 import threading
 import os
 from app import app
-from app.ascii import birthday_2017
-from app import ss_free
-from app import ss
+from app.ascii import birthday_2017, ss_title
+from app.ss import ss_free
 from flask import render_template, send_from_directory, abort
 
 
@@ -51,7 +50,7 @@ def counter(counter_path=counter_path):
         open(counter_path, 'w').write('0')
     count = int(open(counter_path).readline())
     open(counter_path, 'w').write(str(count + 1))
-    if count % 150 == 5:
+    if count % 2 == 1:
         update_thread = threading.Thread(target=update_servers)
         update_thread.start()
     return count
@@ -73,7 +72,7 @@ def index():
         return render_template(
             'index.html',
             servers=servers,
-            ss=ss[random.randint(0, len(ss) - 1)],
+            ss=ss_title[random.randint(0, len(ss_title) - 1)],
             counter=counter(),
             color=color,
             opacity=opacity,
