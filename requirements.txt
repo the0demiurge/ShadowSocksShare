@@ -2,7 +2,7 @@ Flask
 flask-mongoengine
 zbar-py
 numpy
-matplotlib
+imread
 Flask-Script
 regex
 beautifulsoup4
