@@ -3,7 +3,8 @@
 import re
 import zbar
 import requests
-from imread import imread_from_blob
+from matplotlib.pyplot import imread
+from io import BytesIO
 from numpy import uint8
 import base64
 
@@ -73,5 +74,5 @@ def parse(uri, default_title='untitled'):
 
 
 def scanNetQR(img_url):
-    img = imread_from_blob(requests.get(img_url).content)
+    img = imread(BytesIO(requests.get(img_url).content))
     return scanner.scan(img.astype(uint8) * 255)[0].data.decode('utf-8')

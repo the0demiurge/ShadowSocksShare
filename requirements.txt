@@ -7,3 +7,4 @@ Flask-Script
 regex
 beautifulsoup4
 requests
+matplotlib
