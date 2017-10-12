@@ -36,7 +36,7 @@ def get_href(string, pattern='.*'):
         return found[0]
 
 
-def request_url(url, headers=None):
+def request_url(url, headers=None, name=''):
     print('req', url)
 
     data = set()
@@ -50,8 +50,8 @@ def request_url(url, headers=None):
         info = {'message': '', 'url': url, 'name': str(title)}
         for i, server in enumerate(data):
             try:
-                servers.append(parse(server, ' '.join([title, str(i)])))
-            except (IndexError, ValueError) as e:
+                servers.append(parse(server, ' '.join([title, name, str(i)])))
+            except Exception as e:
                 logging.exception(e, stack_info=False)
                 print('URL:', url, 'SERVER', server)
     except Exception as e:
@@ -413,12 +413,12 @@ def main():
     from app.config import url
 
     websites.extend([(i, None) for i in url])
-    websites.extend([(i, fake_ua) for i in request_doub_url()])
+    websites.extend([(i, fake_ua, i[-1]) for i in request_doub_url()])
 
     for website in websites:
         try:
             if type(website) is tuple:
-                data, info = request_url(website[0], headers=website[1])
+                data, info = request_url(*website)
             else:
                 data, info = website()
             result.append({'data': gen_uri(data), 'info': info})
