@@ -7,4 +7,3 @@ Flask-Script
 regex
 beautifulsoup4
 requests
-imread

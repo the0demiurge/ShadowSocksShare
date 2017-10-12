@@ -6,6 +6,10 @@ requirements = list()
 with open('requirements.txt') as f:
     requirements = f.read().splitlines()
 
+dependencies = list()
+with open('dependencies.txt') as f:
+    requirements = f.read().splitlines()
+
 readme = 'ShadowSocksShare'
 
 setup(name='ShadowSocks-share',
@@ -25,5 +29,6 @@ setup(name='ShadowSocks-share',
       url='https://github.com/the0demiurge/Python-Scripts/tree/master/src/Web/Flask/ShadowSocksShare',
 
       # Project dependencies
+      dependency_links=dependencies,
       install_requires=requirements,
       )
