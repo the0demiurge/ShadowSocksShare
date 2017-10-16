@@ -85,7 +85,7 @@ def request_freess_cx(url='https://freess.cx/', headers=None):
     return servers, info
 
 
-def request_doub_url(url='https://doub.bid/sszhfx/'):
+def request_doub_url(url='https://doub.io/sszhfx/'):
     print('req doub...')
 
     try:
