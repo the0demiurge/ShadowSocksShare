@@ -2,13 +2,19 @@
 # -*- utf-8 -*-
 from app import app as application
 import logging
+import os
+
+if 'PORT' in os.environ:
+    port = os.environ['PORT']
+else:
+    port = 8080
 
 
 if __name__ == '__main__':
     try:
-        application.run(host='0.0.0.0', port=8080)
+        # application.run(host='0.0.0.0', port=port)
+        from wsgiref.simple_server import make_server
+        httpd = make_server('0.0.0.0', port, application)
+        httpd.serve_forever()
     except Exception as e:
         logging.exception(e, stack_info=True)
-    # from wsgiref.simple_server import make_server
-    # httpd = make_server('localhost', 8051, application)
-    # httpd.serve_forever()
