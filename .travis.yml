@@ -9,4 +9,4 @@ install:
     - "pip install -r requirements.txt"
 
 script:
-    - "python manage.py runserver"
+    - ".travis-test.py"
