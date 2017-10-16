@@ -1,10 +1,7 @@
-pip
 Flask
-flask-mongoengine
 zbar-py
 numpy
 Flask-Script
 regex
 beautifulsoup4
 requests
-matplotlib
