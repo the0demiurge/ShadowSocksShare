@@ -40,16 +40,22 @@ def update_servers():
         logging.exception(e, stack_info=True)
 
 
-counter_path = os.path.expanduser('/tmp/counter')
+# counter_path = os.path.expanduser('/tmp/counter')
+counter_path = 'memory'
+count = 0
 
 
 def counter(counter_path=counter_path):
-    if not os.path.exists(os.path.split(counter_path)[0]):
-        os.makedirs(os.path.split(counter_path)[0])
-    if not os.path.exists(counter_path):
-        open(counter_path, 'w').write('0')
-    count = int(open(counter_path).readline())
-    open(counter_path, 'w').write(str(count + 1))
+    if counter_path == 'memory':
+        global count
+        count += 1
+    else:
+        if not os.path.exists(os.path.split(counter_path)[0]):
+            os.makedirs(os.path.split(counter_path)[0])
+        if not os.path.exists(counter_path):
+            open(counter_path, 'w').write('0')
+        count = int(open(counter_path).readline())
+        open(counter_path, 'w').write(str(count + 1))
     if count % 150 == 2:
         update_thread = threading.Thread(target=update_servers)
         update_thread.start()

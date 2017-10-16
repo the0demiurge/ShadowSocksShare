@@ -3,9 +3,9 @@
 import re
 import zbar
 import requests
-from matplotlib.pyplot import imread
+from PIL import Image
 from io import BytesIO
-from numpy import uint8
+from numpy import array, uint8
 import base64
 
 
@@ -73,6 +73,9 @@ def parse(uri, default_title='untitled'):
     return server
 
 
+uri = 'https://freess.cx/images/servers/jp01.png'
+
+
 def scanNetQR(img_url):
-    img = imread(BytesIO(requests.get(img_url).content))
+    img = array(Image.open(BytesIO(requests.get(img_url).content)))
     return scanner.scan(img.astype(uint8) * 255)[0].data.decode('utf-8')
