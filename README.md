@@ -1,11 +1,8 @@
 # ShadowSocks免费帐号共享
 
-------------------
 | **master** | **dev** |
 |--------|--------|
 | [![Build Status](https://travis-ci.org/the0demiurge/ShadowSocksShare-OpenShift.svg?branch=master)](https://travis-ci.org/the0demiurge/ShadowSocksShare-OpenShift) | [![Build Status](https://travis-ci.org/the0demiurge/ShadowSocksShare-OpenShift.svg?branch=dev)](https://travis-ci.org/the0demiurge/ShadowSocksShare-OpenShift) |
-------------------
-
 
 ## 简介：
 
