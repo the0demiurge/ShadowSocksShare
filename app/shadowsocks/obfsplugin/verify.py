@@ -31,10 +31,10 @@ import zlib
 import hmac
 import hashlib
 
-import shadowsocks
-from shadowsocks import common
-from shadowsocks.obfsplugin import plain
-from shadowsocks.common import to_bytes, to_str, ord, chr
+import app.shadowsocks
+from app.shadowsocks import common
+from app.shadowsocks.obfsplugin import plain
+from app.shadowsocks.common import to_bytes, to_str, ord, chr
 
 def create_verify_deflate(method):
     return verify_deflate(method)
@@ -151,4 +151,3 @@ class verify_deflate(verify_base):
         if out_buf:
             self.decrypt_packet_num += 1
         return (out_buf, False)
-

@@ -22,8 +22,8 @@
   逗比根据地写了一款小bash脚本，可以用来验证ssr帐号可用性，推荐大家使用：）
   <a href="https://doub.io/ss-jc56/" target="_blank">链接在此</a><br>
   我近期比较忙，没有时间维护网站，如果有朋友可以一起维护，实现自动验证ssr可用性的话，欢迎帮忙：）
-  
-  
+
+
 <div>
     <h3>当前已知问题</h3>
   <p>
@@ -45,7 +45,7 @@
   </p>
 
 </div>
-  
+
 <p>通知发布时间：{{ctime}}</p>
 
 <h2>必读信息</h2>
@@ -60,6 +60,18 @@
   <h4>说明：想留名的话请给我发邮件，微信现在看不到付款人信息了-_-</h4>
   <h4>谢谢大家支持，大家的捐款现在主要用于交域名费，等到攒到一定数额会考虑用捐款搭梯子分享给大家：）</h4>
   <h4>由于我也没有搭梯子的经验，会考虑买很多不同家的VPS给大家测试（等我有空再说吧...）</h4>
+    <p>
+      某位没有留下名字的朋友捐献了8.88元：）
+    </p>
+    <p>
+      某位没有留下名字的朋友捐献了5元：）
+    </p>
+    <p>
+      某位没有留下名字的朋友捐献了5元：）
+    </p>
+    <p>
+      某位没有留下名字的朋友捐献了10.01元，并留言："伟大，感谢与支持！"：）
+    </p>
     <p>
       某位没有留下名字的朋友捐献了1元，并留言："用不了了(emoji哭)不过还是"：）<br>to 这位朋友：具体是哪方面用不了了？欢迎到我的 <a target="_blank" href="https://github.com/the0demiurge/ShadowSocksShare-OpenShift/issues">GitHub Issue 页面</a>提供反馈；<br>此外近期有计划抽空对网站升级，把不能用的帐号过滤掉：）
     </p>
@@ -93,7 +105,7 @@
     <p>
       hsu_bicheng 朋友捐助了50元：）
     </p>
-<!-- 
+<!--
 计算捐款数额的一行python脚本：
 import re,functools;print(functools.reduce(lambda x,y:x+y,map(float,re.findall('[\.\d]+',info))))
 -->
@@ -110,7 +122,7 @@ import re,functools;print(functools.reduce(lambda x,y:x+y,map(float,re.findall('
       请支持免费ss帐号的提供者：<a target="_blank" href="{{server['info']['url']}}">{{server['info']['name']}}</a><br>
       <font style="color:#E13C19">服务器通知：<br>{{server['info']['message']}}</font>
       <br>
-      <ol> 
+      <ol>
       {%set outer_loop = loop%}
       {% for s in server['data'] %}
         <li> <a target="_blank" href="/{{outer_loop.index0}}-{{loop.index0}}"> {{s['remarks']}}</a> </li>
@@ -134,39 +146,39 @@ SSR订阅地址：<a target="_blank" href="/subscribe">http://ss.pythonic.life/s
   <tr>
       <td>作者</td><td><a href="http://charles.love-y.eu" target="_blank">老徐</a></td>
   </tr>
-  
+
   <tr>
       <td>作者的博客</td><td><a target="_blank" href="https://the0demiurge.blogspot.jp/">Blogger （需爬墙）</a></td>
   </tr>
-  
+
   <tr>
       <td>给作者发 Email 反馈</td><td><a target="_blank" href="mailto:charl3s.xu@gmail.com?subject=feedback" "email me">charl3s.xu@gmail.com</a></td>
   </tr>
-  
+
   <tr>
       <td>源码地址</td><td><a target="_blank" href="https://github.com/the0demiurge/ShadowSocksShare-OpenShift">GitHub 链接</a></td>
   </tr>
-  
+
   <tr>
       <td><strong>网页源码更新时间</td><td>{{ctime}}</strong></td>
   </tr>
-  
+
   <tr>
       <td><strong>更新源码后访问次数</td><td>{{counter}}</strong></td>
   </tr>
-  
+
 </table>
 <h2>
 生日快乐！小宝儿～<br>
 <a href="/gift">点击查看生日礼物</a>
 </h2>
 <pre><code>
- __________________      
-( 作者的对象：小胖儿～ )     
- ------------------      
-     \                   
-      \                  
-       \ >()_            
+ __________________
+( 作者的对象：小胖儿～ )
+ ------------------
+     \
+      \
+       \ >()_
           (__)__ _ ___ __
 
 </code></pre>

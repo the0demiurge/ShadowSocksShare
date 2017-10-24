@@ -33,10 +33,10 @@ import hmac
 import hashlib
 import bisect
 
-import shadowsocks
-from shadowsocks import common, lru_cache, encrypt
-from shadowsocks.obfsplugin import plain
-from shadowsocks.common import to_bytes, to_str, ord, chr
+import app.shadowsocks
+from app.shadowsocks import common, lru_cache, encrypt
+from app.shadowsocks.obfsplugin import plain
+from app.shadowsocks.common import to_bytes, to_str, ord, chr
 
 def create_auth_chain_a(method):
     return auth_chain_a(method)
@@ -689,4 +689,3 @@ class auth_chain_b(auth_chain_a):
         if buf_size > 400:
             return random.next() % 521
         return random.next() % 1021
-

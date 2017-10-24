@@ -24,7 +24,7 @@ import logging
 import binascii
 import re
 
-from shadowsocks import lru_cache
+from app.shadowsocks import lru_cache
 
 def compat_ord(s):
     if type(s) == int:

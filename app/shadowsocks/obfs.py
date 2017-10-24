@@ -22,8 +22,8 @@ import sys
 import hashlib
 import logging
 
-from shadowsocks import common
-from shadowsocks.obfsplugin import plain, http_simple, obfs_tls, verify, auth, auth_chain
+from app.shadowsocks import common
+from app.shadowsocks.obfsplugin import plain, http_simple, obfs_tls, verify, auth, auth_chain
 
 
 method_supported = {}
@@ -111,4 +111,3 @@ class obfs(object):
     def dispose(self):
         self.obfs.dispose()
         del self.obfs
-

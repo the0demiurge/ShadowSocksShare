@@ -72,8 +72,8 @@ import binascii
 import traceback
 import threading
 
-from shadowsocks import encrypt, obfs, eventloop, lru_cache, common, shell
-from shadowsocks.common import pre_parse_header, parse_header, pack_addr
+from app.shadowsocks import encrypt, obfs, eventloop, lru_cache, common, shell
+from app.shadowsocks.common import pre_parse_header, parse_header, pack_addr
 
 # for each handler, we have 2 stream directions:
 #    upstream:    from client to server direction

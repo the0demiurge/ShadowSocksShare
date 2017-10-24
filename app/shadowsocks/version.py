@@ -17,4 +17,3 @@
 
 def version():
     return '3.4.0 2017-07-27'
-

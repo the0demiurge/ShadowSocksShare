@@ -30,7 +30,7 @@ if __name__ == '__main__':
 try:
     from collections import OrderedDict
 except:
-    from shadowsocks.ordereddict import OrderedDict
+    from app.shadowsocks.ordereddict import OrderedDict
 
 # this LRUCache is optimized for concurrency, not QPS
 # n: concurrency, keys stored in the cache

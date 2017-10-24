@@ -31,7 +31,7 @@ if __name__ == '__main__':
 from app.shadowsocks import shell, daemon, eventloop, tcprelay, udprelay, asyncdns
 
 
-def main():
+def main(config_data, port=None):
     shell.check_python()
 
     # fix py2exe
@@ -40,7 +40,11 @@ def main():
         p = os.path.dirname(os.path.abspath(sys.executable))
         os.chdir(p)
 
-    config = shell.get_config(True)
+    config = shell.check_and_parse_config(
+    shell.parse_json_in_str(shell.remove_comment(config_data)))
+
+    if port:
+        config['local_port'] = int(port)
 
     if not config.get('dns_ipv6', False):
         asyncdns.IPV6_CONNECTION_SUPPORT = False
@@ -61,21 +65,14 @@ def main():
         tcp_server.add_to_loop(loop)
         udp_server.add_to_loop(loop)
 
-        def handler(signum, _):
-            logging.warn('received SIGQUIT, doing graceful shutting down..')
-            tcp_server.close(next_tick=True)
-            udp_server.close(next_tick=True)
-        signal.signal(getattr(signal, 'SIGQUIT', signal.SIGTERM), handler)
-
-        def int_handler(signum, _):
-            sys.exit(1)
-        signal.signal(signal.SIGINT, int_handler)
-
-        daemon.set_user(config.get('user', None))
+        # daemon.set_user(config.get('user', None))
+        return [loop, tcp_server, udp_server]
         loop.run()
     except Exception as e:
+        tcp_server.close(next_tick=True)
+        udp_server.close(next_tick=True)
+        loop.stop()
         shell.print_exception(e)
-        sys.exit(1)
 
 if __name__ == '__main__':
     pass
