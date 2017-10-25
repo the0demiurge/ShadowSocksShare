@@ -1,4 +1,5 @@
 Flask
+pysocks
 zbar-py
 numpy
 Flask-Script
