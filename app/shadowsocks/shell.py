@@ -36,13 +36,13 @@ def check_python():
     info = sys.version_info
     if info[0] == 2 and not info[1] >= 6:
         print('Python 2.6+ required')
-        sys.exit(1)
+        return 1
     elif info[0] == 3 and not info[1] >= 3:
         print('Python 3.3+ required')
-        sys.exit(1)
+        return 1
     elif info[0] not in [2, 3]:
         print('Python version not supported')
-        sys.exit(1)
+        return 1
 
 
 def print_exception(e):
@@ -92,13 +92,13 @@ def check_config(config, is_local):
     if is_local and not config.get('password', None):
         logging.error('password not specified')
         print_help(is_local)
-        sys.exit(2)
+        return 2
 
     if not is_local and not config.get('password', None) \
             and not config.get('port_password', None):
         logging.error('password or port_password not specified')
         print_help(is_local)
-        sys.exit(2)
+        return 2
 
     if 'local_port' in config:
         config['local_port'] = int(config['local_port'])
@@ -120,11 +120,11 @@ def check_config(config, is_local):
     if config.get('password') in [b'mypassword']:
         logging.error('DON\'T USE DEFAULT PASSWORD! Please change it in your '
                       'config.json!')
-        sys.exit(1)
+        return 1
     if config.get('user', None) is not None:
         if os.name != 'posix':
             logging.error('user can be used only on Unix')
-            sys.exit(1)
+            return 1
 
     encrypt.try_cipher(config['password'], config['method'])
 
@@ -440,8 +440,8 @@ def check_and_parse_config(config):
     is_local=True
     if not config:
         logging.error('config not specified')
-        print_help(is_local)
-        sys.exit(2)
+        return 9
+
 
     config['password'] = to_bytes(config.get('password', b''))
     config['method'] = to_str(config.get('method', 'aes-256-cfb'))
@@ -466,8 +466,7 @@ def check_and_parse_config(config):
     if is_local:
         if config.get('server', None) is None:
             logging.error('server addr not specified')
-            print_local_help()
-            sys.exit(2)
+            return 1
         else:
             config['server'] = to_str(config['server'])
     else:
@@ -477,18 +476,18 @@ def check_and_parse_config(config):
                 IPNetwork(config.get('forbidden_ip', '127.0.0.0/8,::1/128'))
         except Exception as e:
             logging.error(e)
-            sys.exit(2)
+            return 2
         try:
             config['forbidden_port'] = PortRange(config.get('forbidden_port', ''))
         except Exception as e:
             logging.error(e)
-            sys.exit(2)
+            return 2
         try:
             config['ignore_bind'] = \
                 IPNetwork(config.get('ignore_bind', '127.0.0.0/8,::1/128,10.0.0.0/8,192.168.0.0/16'))
         except Exception as e:
             logging.error(e)
-            sys.exit(2)
+            return 2
     config['server_port'] = config.get('server_port', 8388)
 
     logging.getLogger('').handlers = []

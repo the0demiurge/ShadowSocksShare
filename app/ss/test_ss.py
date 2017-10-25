@@ -1,11 +1,14 @@
 #!/usr/bin/env python3
 import requests
+import time
+import threading
+from app.ss import ss_local
 
 
-def test_socks(url='https://google.com', headers=None, proxies=None, port=1080):
+def test_connection(url='https://google.com', headers=None, proxies=None, port=1080):
     if not proxies:
         proxies = {'http': 'socks5://localhost:{}'.format(port),
-         'https': 'socks5://localhost:{}'.format(port)}
+                   'https': 'socks5://localhost:{}'.format(port)}
     ok = False
     try:
         ok = requests.get(url, headers=headers, proxies=proxies).ok
@@ -14,58 +17,28 @@ def test_socks(url='https://google.com', headers=None, proxies=None, port=1080):
     return ok
 
 
-
-###################################3
-
-from app.ss import test_ss
-import time
-from app.ss import ss_local
-import threading
-
-data = '''
-{
-  "password": "f42c35a7d06f",
-  "fast_open": false,
-  "local_address": "127.0.0.1",
-  "workers": 1,
-  "local_port": 1080,
-  "timeout": 300,
-  "udp_timeout": 60,
-  "server_port": 443,
-  "group": "Charles Xu",
-  "server_ipv6": "::",
-  "method": "AES-256-CFB",
-  "server": "169.46.31.82"
-}
-'''
-
-def test(data):
-    loop, tcps, udps = ss_local.main(data, 2000)
-    t = threading.Thread(target=loop.run)
-
-    t.start()
-    time.sleep(3)
-    print('测试联通状况：')
-    print('连接情况', test_ss.test_socks(url='http://ip.cn',port=2000))
-    loop.stop()
-    tcps.close(next_tick=True)
-    udps.close(next_tick=True)
-    print('stopped')
-    time.sleep(2)
-
-
-
-
-
-########################################
-
+def test_socks_server(dictionary=None, str_json=None, port=2001):
+    try:
+        try:
+            loop, tcps, udps = ss_local.main(dictionary=dictionary, str_json=str_json, port=port)
+        except Exception as e:
+            return -1
+        try:
+            t = threading.Thread(target=loop.run)
+            t.start()
+            time.sleep(3)
+            conn = test_connection(port=2001)
+            loop.stop()
+            t.join()
+            tcps.close(next_tick=True)
+            udps.close(next_tick=True)
+            time.sleep(2)
+            return conn
+        except Exception as e:
+            return -2
+    except SystemExit as e:
+        return e.code - 10
 
 
 if __name__ == '__main__':
-    print(test_socks())
-    test(data)
-    test(data)
-
-    for i in range(10):
-        time.sleep(60)
-        print('sleeped:', i)
+    print(test_connection())

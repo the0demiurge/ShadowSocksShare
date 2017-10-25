@@ -31,17 +31,17 @@ if __name__ == '__main__':
 from app.shadowsocks import shell, daemon, eventloop, tcprelay, udprelay, asyncdns
 
 
-def main(config_data, port=None):
+def main(dictionary=None, str_json=None, port=None):
     shell.check_python()
 
     # fix py2exe
-    if hasattr(sys, "frozen") and sys.frozen in \
-            ("windows_exe", "console_exe"):
-        p = os.path.dirname(os.path.abspath(sys.executable))
-        os.chdir(p)
-
-    config = shell.check_and_parse_config(
-    shell.parse_json_in_str(shell.remove_comment(config_data)))
+    if str_json:
+        config = shell.check_and_parse_config(
+            shell.parse_json_in_str(shell.remove_comment(str_json)))
+    elif dictionary:
+        config = shell.check_and_parse_config(dictionary)
+    else:
+        raise Exception('No config specified')
 
     if port:
         config['local_port'] = int(port)
@@ -79,6 +79,7 @@ def main(config_data, port=None):
         if 'loop' in locals():
             loop.stop()
         shell.print_exception(e)
+        raise Exception(e)
 
 if __name__ == '__main__':
     pass
