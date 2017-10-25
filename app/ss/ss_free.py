@@ -384,7 +384,6 @@ def gen_uri(servers):
             print(ssr_uri, decode(ssr_uri[6:]))
             server['decoded_url'] = urllib.parse.unquote(ss_uri)
 
-            server["status"] = test_socks_server(str_json=server["json"])
             server_data_to_json = {
                 "server": server['server'],
                 "server_ipv6": "::",
@@ -406,6 +405,7 @@ def gen_uri(servers):
             server['json'] = json.dumps(server_data_to_json,
                 ensure_ascii=False,
                 indent=2)
+            server["status"] = test_socks_server(str_json=server["json"])
         except (KeyError, EOFError):
             try:
                 href = get_href(server['string'], '.*查看连接信息.*')
