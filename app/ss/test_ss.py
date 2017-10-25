@@ -26,13 +26,13 @@ def test_socks_server(dictionary=None, str_json=None, port=2001):
         try:
             t = threading.Thread(target=loop.run)
             t.start()
-            time.sleep(3)
+            time.sleep(2)
             conn = test_connection(port=2001)
             loop.stop()
             t.join()
             tcps.close(next_tick=True)
             udps.close(next_tick=True)
-            time.sleep(2)
+            time.sleep(1)
             return conn
         except Exception as e:
             return -2
