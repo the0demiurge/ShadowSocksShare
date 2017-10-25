@@ -91,13 +91,11 @@ def check_config(config, is_local):
 
     if is_local and not config.get('password', None):
         logging.error('password not specified')
-        print_help(is_local)
         return 2
 
     if not is_local and not config.get('password', None) \
             and not config.get('port_password', None):
         logging.error('password or port_password not specified')
-        print_help(is_local)
         return 2
 
     if 'local_port' in config:
@@ -223,12 +221,10 @@ def get_config(is_local):
                 continue
     except getopt.GetoptError as e:
         print(e, file=sys.stderr)
-        print_help(is_local)
         sys.exit(2)
 
     if not config:
         logging.error('config not specified')
-        print_help(is_local)
         sys.exit(2)
 
     config['password'] = to_bytes(config.get('password', b''))
@@ -254,7 +250,6 @@ def get_config(is_local):
     if is_local:
         if config.get('server', None) is None:
             logging.error('server addr not specified')
-            print_local_help()
             sys.exit(2)
         else:
             config['server'] = to_str(config['server'])

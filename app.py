@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 # -*- utf-8 -*-
-import test
 from app import app as application
 import logging
 import os

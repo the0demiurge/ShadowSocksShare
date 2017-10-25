@@ -20,6 +20,7 @@ import requests
 import base64
 import json
 from app.ss.parse import parse, scanNetQR
+from app.ss.test_ss import test_socks_server
 
 
 __author__ = 'Charles Xu'
@@ -42,7 +43,7 @@ def request_url(url, headers=None, name=''):
     data = set()
     servers = list()
     try:
-        response = requests.get(url, headers=headers).text
+        response = requests.get(url, headers=headers, verify=True).text
         data.update(map(lambda x: re.sub('\s', '', x), re.findall('ssr?://[a-zA-Z0-9=]+', response)))
         soup = BeautifulSoup(response, 'html.parser')
         title = soup.find('title').text
@@ -330,8 +331,9 @@ def gen_uri(servers):
     def decode(string):
         return str(base64.urlsafe_b64decode(bytes(string + (4 - len(string) % 4) * '=', 'utf-8')), 'utf-8')
     for server in servers:
-        if 'password' not in server:
-            server['password'] = ''
+        if 'password' not in server: server['password'] = ''
+        if ":" in server["server"] and "[" not in server["server"]: server["server"] = "[{}]".format(server["server"])
+
         try:
             try:
                 # SSR信息是否完整
@@ -349,6 +351,7 @@ def gen_uri(servers):
 
                 ss_uri = 'ssr://{endoced}'.format(
                     endoced=encode(decoded))
+                ssr_uri = ss_uri
 
             except (KeyError, EOFError):
                 # 不完整则是SS
@@ -362,33 +365,45 @@ def gen_uri(servers):
                     str(base64.urlsafe_b64encode(bytes(decoded, encoding='utf8')), encoding='utf-8'),
                     urllib.parse.quote(server['remarks']))
 
+                # ssr格式的ss帐号信息
+                ssr_decoded = ':'.join([
+                                   server['server'],
+                                   server['server_port'],
+                                   server['method'],
+                                   encode(server['password'])
+                                   ])
+                ssr_decoded += '/?remarks={remarks}&group={group}'.format(
+                    remarks=encode(server['remarks']),
+                    group=encode("Charles Xu"))
+
+                ssr_uri = 'ssr://{endoced}'.format(
+                    endoced=encode(ssr_decoded))
+
             server['uri'] = ss_uri
+            server['ssr_uri'] = ssr_uri
+            print(ssr_uri, decode(ssr_uri[6:]))
             server['decoded_url'] = urllib.parse.unquote(ss_uri)
 
-            obfs = server['obfs'] if 'obfs' in server else ''
-            method = server['method'] if 'method' in server else ''
-            ssr_protocol = server['ssr_protocol'] if 'ssr_protocol' in server else ''
-            obfsparam = server['obfsparam'] if 'obfsparam' in server else ''
-            protoparam = server['protoparam'] if 'protoparam' in server else ''
-
-            server['json'] = json.dumps({
+            server["status"] = test_socks_server(str_json=server["json"])
+            server_data_to_json = {
                 "server": server['server'],
                 "server_ipv6": "::",
                 "server_port": int(server['server_port']),
                 "local_address": "127.0.0.1",
                 "local_port": 1080,
                 "password": server['password'],
-                "timeout": 300,
-                "udp_timeout": 60,
-                "method": method,
-                "protocol": ssr_protocol,
-                "protocol_param": protoparam,
-                "obfs": obfs,
-                "obfs_param": obfsparam,
-                "fast_open": False,
-                "workers": 1,
+                "status": server["status"]
+                # "timeout": 300,
+                # "udp_timeout": 60,
+                # "fast_open": False,
+                # "workers": 1,
                 "group": "Charles Xu"
-            },
+            }
+            for key in ['obfs', 'method', 'ssr_protocol', 'obfsparam', 'protoparam']:
+                if key in server:
+                    server_data_to_json[key] = server.get(key)
+
+            server['json'] = json.dumps(server_data_to_json,
                 ensure_ascii=False,
                 indent=2)
         except (KeyError, EOFError):

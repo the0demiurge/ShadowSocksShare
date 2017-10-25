@@ -49,10 +49,11 @@
 
 ## OpenShift v3 部署方法：
 
+**不再维护OpenShift版本，如果出现任何问题或有解决方案，请提交PR**
+
 注册 OpenShift v3 之后，在创建项目中选择 Python，Python 版本选择 3.5, 之后部署的时候链接输入本项目的 https 类型的 git 链接即可。
 
 ## Heroku 部署方法：
-**不再维护Heroku版本，如果出现任何问题或有解决方案，请提交PR**
 1. 注册 Heroku 并安装 heroku 的命令行工具，登陆上，不用多说了吧，免费。具体操作请阅读[Heroku 指南（官方英文版）](https://devcenter.heroku.com/articles/getting-started-with-python#set-up)
 2. 下载本项目：`git clone https://github.com/the0demiurge/ShadowSocksShare-OpenShift.git`
 3. 进入项目目录：`cd ShadowSocksShare-OpenShift`
@@ -66,3 +67,18 @@
 * Flask 0.12.2
 * 其他，反正都安装最新版就行了
 
+### TO DO
+当前已知问题：
+1. - [ ]  没有做ss账号失效检测
+2. - [ ] 非ssr的账号也可以放到订阅里面，只不过需要转变格式
+3. - [ ] 输出的JSON格式的文件有问题，如果是非ssr账号，Python客户端会不认
+4. - [ ] 性能不太强
+5. - [ ] 最近为了弄ssl证书把DNS弄得很乱，所以另起炉灶换了域名，新域名为SSR.pythonic.life，现在原域名会重定向到新域名。
+
+如果域名都不好使，请使用备用网址：
+http://ssshare-ssshare.7e14.starter-us-west-2.openshiftapps.com/
+
+除了修复问题，下一步准备做：
+1. - [ ] 使用MySQL存储数据
+2. - [ ] 添加留言版功能
+3. - [ ] 搞定ssl证书，弄https加密

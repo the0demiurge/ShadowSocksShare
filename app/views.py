@@ -18,8 +18,7 @@ curtime = time.ctime()
 decoded = list()
 for i in servers:
     for j in i['data']:
-        if j['uri'][2] is 'r':
-            decoded.append(j['uri'])
+        decoded.append(j['ssr_uri'])
 decoded = '\n'.join(decoded)
 encoded = base64.urlsafe_b64encode(bytes(decoded, 'utf-8'))
 
@@ -32,8 +31,7 @@ def update_servers():
         decoded = list()
         for i in servers:
             for j in i['data']:
-                if j['uri'][2] is 'r':
-                    decoded.append(j['uri'])
+                decoded.append(j['ssr_uri'])
         decoded = '\n'.join(decoded)
         encoded = base64.urlsafe_b64encode(bytes(decoded, 'utf-8'))
     except Exception as e:
@@ -88,6 +86,22 @@ def index():
     except Exception as e:
         logging.exception(e, stack_info=True)
 
+@app.route('/full')
+def index():
+    try:
+        color, opacity, count = gen_canvas_nest()
+        return render_template(
+            'full.html',
+            servers=servers,
+            ss=ss_title[random.randint(0, len(ss_title) - 1)],
+            counter=counter(),
+            color=color,
+            opacity=opacity,
+            count=count,
+            ctime=curtime,
+        )
+    except Exception as e:
+        logging.exception(e, stack_info=True)
 
 @app.route('/<string:path>')
 def pages(path):
