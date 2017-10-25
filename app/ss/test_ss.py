@@ -22,11 +22,12 @@ def test_socks_server(dictionary=None, str_json=None, port=2001):
         try:
             loop, tcps, udps = ss_local.main(dictionary=dictionary, str_json=str_json, port=port)
         except Exception as e:
+            print(e)
             return -1
         try:
             t = threading.Thread(target=loop.run)
             t.start()
-            time.sleep(10)
+            time.sleep(3)
             conn = test_connection(port=port)
             loop.stop()
             t.join()
@@ -35,6 +36,7 @@ def test_socks_server(dictionary=None, str_json=None, port=2001):
             time.sleep(1)
             return conn
         except Exception as e:
+            print(e)
             return -2
     except SystemExit as e:
         return e.code - 10
