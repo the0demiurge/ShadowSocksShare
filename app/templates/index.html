@@ -125,7 +125,7 @@ import re,functools;print(functools.reduce(lambda x,y:x+y,map(float,re.findall('
       <ol>
       {%set outer_loop = loop%}
       {% for s in server['data'] %}
-      {% if server['data']['status'] is True %}
+      {% if server['data']['status'] == true %}
         <li> <a target="_blank" href="/{{outer_loop.index0}}-{{loop.index0}}"> {{s['remarks']}}</a> </li>
       {% endif %}
       {% endfor %}

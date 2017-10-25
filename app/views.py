@@ -87,7 +87,7 @@ def index():
         logging.exception(e, stack_info=True)
 
 @app.route('/full')
-def index():
+def full():
     try:
         color, opacity, count = gen_canvas_nest()
         return render_template(
