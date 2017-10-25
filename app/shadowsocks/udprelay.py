@@ -129,6 +129,7 @@ def client_key(source_addr, server_af):
 
 class UDPRelay(object):
     def __init__(self, config, dns_resolver, is_local, stat_callback=None, stat_counter=None):
+        self._sock_close = list()
         self._config = config
         if config.get('connect_verbose_info', 0) > 0:
             common.connect_log = logging.info
@@ -212,6 +213,7 @@ class UDPRelay(object):
         af, socktype, proto, canonname, sa = addrs[0]
         server_socket = socket.socket(af, socktype, proto)
         server_socket.bind((self._listen_addr, self._listen_port))
+        self._sock_close.append(server_socket)
         server_socket.setblocking(False)
         self._server_socket = server_socket
         self._stat_callback = stat_callback
@@ -331,6 +333,7 @@ class UDPRelay(object):
                 logging.debug("bind %s" % (bind_addr,))
                 try:
                     sock.bind((bind_addr, 0))
+                    self._sock_close.append(sock)
                 except Exception as e:
                     logging.warn("bind %s fail" % (bind_addr,))
 
@@ -654,3 +657,8 @@ class UDPRelay(object):
             self._server_socket.close()
             self._cache.clear(0)
             self._cache_dns_client.clear(0)
+        for i in self._sock_close:
+            try:
+                i.close()
+            except Exception as e:
+                print(e)

@@ -53,12 +53,6 @@ def test(data):
     print('stopped')
     time.sleep(2)
 
-test(data)
-test(data)
-
-for i in range(10):
-    time.sleep(60)
-    print('sleeped:', i)
 
 
 
@@ -69,3 +63,9 @@ for i in range(10):
 
 if __name__ == '__main__':
     print(test_socks())
+    test(data)
+    test(data)
+
+    for i in range(10):
+        time.sleep(60)
+        print('sleeped:', i)

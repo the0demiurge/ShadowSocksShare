@@ -191,7 +191,8 @@ class Manager(object):
 
 
 def run(config):
-    Manager(config).run()
+    manager = Manager(config).run()
+    return manager._control_socket
 
 
 def test():

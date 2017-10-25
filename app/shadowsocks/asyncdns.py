@@ -321,7 +321,7 @@ class DNSResolver(object):
                 pass
         if not self._servers:
             self._servers = [('8.8.4.4', 53), ('8.8.8.8', 53)]
-        logging.info('dns server: %s' % (self._servers,))
+        # logging.info('dns server: %s' % (self._servers,))
 
     def _parse_hosts(self):
         etc_path = '/etc/hosts'

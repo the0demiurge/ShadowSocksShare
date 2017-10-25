@@ -50,12 +50,12 @@ def main(config_data, port=None):
         asyncdns.IPV6_CONNECTION_SUPPORT = False
 
     daemon.daemon_exec(config)
-    logging.info("local start with protocol[%s] password [%s] method [%s] obfs [%s] obfs_param [%s]" %
-            (config['protocol'], config['password'], config['method'], config['obfs'], config['obfs_param']))
+    # logging.info("local start with protocol[%s] password [%s] method [%s] obfs [%s] obfs_param [%s]" %
+    #         (config['protocol'], config['password'], config['method'], config['obfs'], config['obfs_param']))
 
     try:
-        logging.info("starting local at %s:%d" %
-                     (config['local_address'], config['local_port']))
+        # logging.info("starting local at %s:%d" %
+        #              (config['local_address'], config['local_port']))
 
         dns_resolver = asyncdns.DNSResolver()
         tcp_server = tcprelay.TCPRelay(config, dns_resolver, True)
@@ -68,10 +68,16 @@ def main(config_data, port=None):
         # daemon.set_user(config.get('user', None))
         return [loop, tcp_server, udp_server]
         loop.run()
+    except OSError as e:
+        print(e)
+        raise OSError(e)
     except Exception as e:
-        tcp_server.close(next_tick=True)
-        udp_server.close(next_tick=True)
-        loop.stop()
+        if 'tcp_server' in locals():
+            tcp_server.close(next_tick=True)
+        if 'udp_server' in locals():
+            udp_server.close(next_tick=True)
+        if 'loop' in locals():
+            loop.stop()
         shell.print_exception(e)
 
 if __name__ == '__main__':

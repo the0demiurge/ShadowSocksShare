@@ -1171,6 +1171,7 @@ class TCPRelayHandler(object):
 
 class TCPRelay(object):
     def __init__(self, config, dns_resolver, is_local, stat_callback=None, stat_counter=None):
+        self._sock_close = list()
         self._config = config
         self._is_local = is_local
         self._dns_resolver = dns_resolver
@@ -1217,6 +1218,7 @@ class TCPRelay(object):
         server_socket = socket.socket(af, socktype, proto)
         server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         server_socket.bind(sa)
+        self._sock_close.append(server_socket)
         server_socket.setblocking(False)
         if config['fast_open']:
             try:
@@ -1466,6 +1468,12 @@ class TCPRelay(object):
 
     def close(self, next_tick=False):
         logging.debug('TCP close')
+        for i in self._sock_close:
+            try:
+                i.close()
+            except Exception as e:
+                print(e)
+
         self._closed = True
         if not next_tick:
             if self._eventloop:
