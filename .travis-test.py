@@ -16,6 +16,5 @@ data = '''{
   "server": "169.46.31.82"
 }
 '''
-W = test_ss.test_socks_server(str_json=data)
+w = test_ss.test_socks_server(str_json=data)
 assert w is True, 'ssr test failed!{}'.format(w)
-ss_free.main()
