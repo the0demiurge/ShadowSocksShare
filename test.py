@@ -18,4 +18,3 @@ data = '''{
 
 assert test_ss.test_socks_server(str_json=data) is True, 'ssr test failed!'
 ss_free.main()
-
