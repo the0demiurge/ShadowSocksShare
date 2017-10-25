@@ -391,7 +391,6 @@ def gen_uri(servers):
                 "local_address": "127.0.0.1",
                 "local_port": 1080,
                 "password": server['password'],
-                "status": server["status"],
                 # "timeout": 300,
                 # "udp_timeout": 60,
                 # "fast_open": False,
