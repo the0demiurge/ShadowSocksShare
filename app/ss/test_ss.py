@@ -5,13 +5,13 @@ import threading
 from app.ss import ss_local
 
 
-def test_connection(url='https://google.com', headers=None, proxies=None, port=1080):
+def test_connection(url='https://google.com', headers=None, proxies=None, port=1080, timeout=10):
     if not proxies:
         proxies = {'http': 'socks5://localhost:{}'.format(port),
                    'https': 'socks5://localhost:{}'.format(port)}
     ok = False
     try:
-        ok = requests.get(url, headers=headers, proxies=proxies).ok
+        ok = requests.get(url, headers=headers, proxies=proxies, timeout=timeout).ok
     except Exception as e:
         print(e)
     return ok

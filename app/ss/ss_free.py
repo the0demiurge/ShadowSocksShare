@@ -43,7 +43,7 @@ def request_url(url, headers=None, name=''):
     data = set()
     servers = list()
     try:
-        response = requests.get(url, headers=headers, verify=True).text
+        response = requests.get(url, headers=headers, verify=False).text
         data.update(map(lambda x: re.sub('\s', '', x), re.findall('ssr?://[a-zA-Z0-9=]+', response)))
         soup = BeautifulSoup(response, 'html.parser')
         title = soup.find('title').text
