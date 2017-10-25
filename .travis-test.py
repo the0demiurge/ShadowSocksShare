@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 from app import *
 from app.ss import ss_free, test_ss
-ss_free.main()
 
 data = '''{
   "password": "f42c35a7d06f",
@@ -19,3 +18,4 @@ data = '''{
 '''
 W = test_ss.test_socks_server(str_json=data)
 assert w is True, 'ssr test failed!{}'.format(w)
+ss_free.main()
