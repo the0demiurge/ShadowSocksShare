@@ -406,7 +406,6 @@ def gen_uri(servers):
             server['json'] = json.dumps(server_data_to_json,
                                         ensure_ascii=False,
                                         indent=2)
-            # server["status"] = test_socks_server(str_json=server["json"])
         except (KeyError, EOFError):
             try:
                 href = get_href(server['string'], '.*查看连接信息.*')
@@ -421,15 +420,15 @@ def main(debug=list()):
 
     # Specified functions for requesting servers
     websites = [
-        # request_iss,
-        # request_freess_cx,
-        # request_nobey,
+        request_iss,
+        request_freess_cx,
+        request_nobey,
         request_5752me,
     ]
     from app.config import url
 
-    # websites.extend([(i, None) for i in url])
-    # websites.extend([(i, fake_ua, i[-1]) for i in request_doub_url()])
+    websites.extend([(i, None) for i in url])
+    websites.extend([(i, fake_ua, i[-1]) for i in request_doub_url()])
 
     for website in websites:
         try:
@@ -449,7 +448,7 @@ def main(debug=list()):
         validated_servers = validate(result)
     # remove useless data
     servers = list(filter(lambda x: len(x['data']) > 0, validated_servers))
-    print('-'*10, '数据获取完毕', '-'*10)
+    print('-' * 10, '数据获取完毕', '-' * 10)
     return servers
 
 
