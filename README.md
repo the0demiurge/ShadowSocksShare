@@ -20,6 +20,7 @@
 3. json 配置
 4. **ssr 订阅和 json 配置订阅**
 5. **自动更新爬虫数据**
+6. 自动检测 ssr 帐号可用性
 
 
 示例网站：[ss.pythonic.life](http://ss.pythonic.life)
@@ -68,17 +69,7 @@
 * 其他，反正都安装最新版就行了
 
 ### TO DO
-当前已知问题：
-1. - [ ]  没有做ss账号失效检测
-2. - [ ] 非ssr的账号也可以放到订阅里面，只不过需要转变格式
-3. - [ ] 输出的JSON格式的文件有问题，如果是非ssr账号，Python客户端会不认
-4. - [ ] 性能不太强
-5. - [ ] 最近为了弄ssl证书把DNS弄得很乱，所以另起炉灶换了域名，新域名为SSR.pythonic.life，现在原域名会重定向到新域名。
 
-如果域名都不好使，请使用备用网址：
-http://ssshare-ssshare.7e14.starter-us-west-2.openshiftapps.com/
-
-除了修复问题，下一步准备做：
 1. - [ ] 使用MySQL存储数据
 2. - [ ] 添加留言版功能
 3. - [ ] 搞定ssl证书，弄https加密
