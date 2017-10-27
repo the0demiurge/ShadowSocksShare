@@ -79,7 +79,7 @@ ciphers = {
 
 
 def test_table_result():
-    from shadowsocks.common import ord
+    from app.shadowsocks.common import ord
     target1 = [
         [60, 53, 84, 138, 217, 94, 88, 23, 39, 242, 219, 35, 12, 157, 165, 181,
          255, 143, 83, 247, 162, 16, 31, 209, 190, 171, 115, 65, 38, 41, 21,
@@ -168,7 +168,7 @@ def test_table_result():
 
 
 def test_encryption():
-    from shadowsocks.crypto import util
+    from app.shadowsocks.crypto import util
 
     cipher = TableCipher('table', b'test', b'', 1)
     decipher = TableCipher('table', b'test', b'', 0)

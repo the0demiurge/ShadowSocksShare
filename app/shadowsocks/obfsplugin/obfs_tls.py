@@ -30,10 +30,10 @@ import hmac
 import hashlib
 import string
 
-from shadowsocks import common
-from shadowsocks.obfsplugin import plain
-from shadowsocks.common import to_bytes, to_str, ord
-from shadowsocks import lru_cache
+from app.shadowsocks import common
+from app.shadowsocks.obfsplugin import plain
+from app.shadowsocks.common import to_bytes, to_str, ord
+from app.shadowsocks import lru_cache
 
 def create_tls_ticket_auth_obfs(method):
     return tls_ticket_auth(method)
@@ -302,4 +302,3 @@ class tls_ticket_auth(plain.plain):
             return (ret[0], True, True)
         # (buffer_to_recv, is_need_decrypt, is_need_to_encode_and_send_back)
         return (b'', False, True)
-

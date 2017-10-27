@@ -7,10 +7,10 @@ import os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '../'))
 
 
-from shadowsocks.crypto import rc4_md5
-from shadowsocks.crypto import openssl
-from shadowsocks.crypto import sodium
-from shadowsocks.crypto import table
+from app.shadowsocks.crypto import rc4_md5
+from app.shadowsocks.crypto import openssl
+from app.shadowsocks.crypto import sodium
+from app.shadowsocks.crypto import table
 
 def run(func):
 	try:
@@ -48,4 +48,3 @@ def main():
 
 if __name__ == '__main__':
 	main()
-

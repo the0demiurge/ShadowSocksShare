@@ -32,10 +32,10 @@ import zlib
 import hmac
 import hashlib
 
-import shadowsocks
-from shadowsocks import common, lru_cache, encrypt
-from shadowsocks.obfsplugin import plain
-from shadowsocks.common import to_bytes, to_str, ord, chr
+import app.shadowsocks
+from app.shadowsocks import common, lru_cache, encrypt
+from app.shadowsocks.obfsplugin import plain
+from app.shadowsocks.common import to_bytes, to_str, ord, chr
 
 def create_auth_sha1_v4(method):
     return auth_sha1_v4(method)
@@ -784,4 +784,3 @@ class auth_aes128_sha1(auth_base):
         if hmac.new(user_key, buf[:-4], self.hashfunc).digest()[:4] != buf[-4:]:
             return (b'', None)
         return (buf[:-8], uid)
-

@@ -30,7 +30,7 @@ if __name__ == '__main__':
     file_path = os.path.dirname(os.path.realpath(inspect.getfile(inspect.currentframe())))
     sys.path.insert(0, os.path.join(file_path, '../'))
 
-from shadowsocks import common, lru_cache, eventloop, shell
+from app.shadowsocks import common, lru_cache, eventloop, shell
 
 
 CACHE_SWEEP_INTERVAL = 30
@@ -321,7 +321,7 @@ class DNSResolver(object):
                 pass
         if not self._servers:
             self._servers = [('8.8.4.4', 53), ('8.8.8.8', 53)]
-        logging.info('dns server: %s' % (self._servers,))
+        # logging.info('dns server: %s' % (self._servers,))
 
     def _parse_hosts(self):
         etc_path = '/etc/hosts'
@@ -552,4 +552,3 @@ def test():
 
 if __name__ == '__main__':
     test()
-

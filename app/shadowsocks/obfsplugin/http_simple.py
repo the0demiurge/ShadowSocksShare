@@ -27,9 +27,9 @@ import base64
 import datetime
 import random
 
-from shadowsocks import common
-from shadowsocks.obfsplugin import plain
-from shadowsocks.common import to_bytes, to_str, ord, chr
+from app.shadowsocks import common
+from app.shadowsocks.obfsplugin import plain
+from app.shadowsocks.common import to_bytes, to_str, ord, chr
 
 def create_http_simple_obfs(method):
     return http_simple(method)
@@ -311,4 +311,3 @@ class random_head(plain.plain):
             return (buf, True, False)
         # (buffer_to_recv, is_need_decrypt, is_need_to_encode_and_send_back)
         return (b'', False, True)
-

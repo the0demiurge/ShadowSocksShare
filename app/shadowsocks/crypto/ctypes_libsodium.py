@@ -113,7 +113,7 @@ ciphers = {
 
 
 def test_salsa20():
-    from shadowsocks.crypto import util
+    from app.shadowsocks.crypto import util
 
     cipher = Salsa20Crypto(b'salsa20', b'k' * 32, b'i' * 16, 1)
     decipher = Salsa20Crypto(b'salsa20', b'k' * 32, b'i' * 16, 0)
@@ -122,7 +122,7 @@ def test_salsa20():
 
 
 def test_chacha20():
-    from shadowsocks.crypto import util
+    from app.shadowsocks.crypto import util
 
     cipher = Salsa20Crypto(b'chacha20', b'k' * 32, b'i' * 16, 1)
     decipher = Salsa20Crypto(b'chacha20', b'k' * 32, b'i' * 16, 0)

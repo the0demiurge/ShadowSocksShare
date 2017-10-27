@@ -25,7 +25,7 @@ import logging
 import json
 import collections
 
-from shadowsocks import common, eventloop, tcprelay, udprelay, asyncdns, shell
+from app.shadowsocks import common, eventloop, tcprelay, udprelay, asyncdns, shell
 
 
 BUF_SIZE = 1506
@@ -191,14 +191,15 @@ class Manager(object):
 
 
 def run(config):
-    Manager(config).run()
+    manager = Manager(config).run()
+    return manager._control_socket
 
 
 def test():
     import time
     import threading
     import struct
-    from shadowsocks import encrypt
+    from app.shadowsocks import encrypt
 
     logging.basicConfig(level=5,
                         format='%(asctime)s %(levelname)-8s %(message)s',

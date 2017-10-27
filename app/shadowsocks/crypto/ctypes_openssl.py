@@ -148,7 +148,7 @@ ciphers = {
 
 
 def run_method(method):
-    from shadowsocks.crypto import util
+    from app.shadowsocks.crypto import util
 
     cipher = CtypesCrypto(method, b'k' * 32, b'i' * 16, 1)
     decipher = CtypesCrypto(method, b'k' * 32, b'i' * 16, 0)

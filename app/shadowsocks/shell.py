@@ -23,8 +23,8 @@ import json
 import sys
 import getopt
 import logging
-from shadowsocks.common import to_bytes, to_str, IPNetwork, PortRange
-from shadowsocks import encrypt
+from app.shadowsocks.common import to_bytes, to_str, IPNetwork, PortRange
+from app.shadowsocks import encrypt
 
 
 VERBOSE_LEVEL = 5
@@ -36,13 +36,13 @@ def check_python():
     info = sys.version_info
     if info[0] == 2 and not info[1] >= 6:
         print('Python 2.6+ required')
-        sys.exit(1)
+        return 1
     elif info[0] == 3 and not info[1] >= 3:
         print('Python 3.3+ required')
-        sys.exit(1)
+        return 1
     elif info[0] not in [2, 3]:
         print('Python version not supported')
-        sys.exit(1)
+        return 1
 
 
 def print_exception(e):
@@ -59,7 +59,7 @@ def __version():
         version_str = pkg_resources.get_distribution('shadowsocks').version
     except Exception:
         try:
-            from shadowsocks import version
+            from app.shadowsocks import version
             version_str = version.version()
         except Exception:
             pass
@@ -91,14 +91,12 @@ def check_config(config, is_local):
 
     if is_local and not config.get('password', None):
         logging.error('password not specified')
-        print_help(is_local)
-        sys.exit(2)
+        return 2
 
     if not is_local and not config.get('password', None) \
             and not config.get('port_password', None):
         logging.error('password or port_password not specified')
-        print_help(is_local)
-        sys.exit(2)
+        return 2
 
     if 'local_port' in config:
         config['local_port'] = int(config['local_port'])
@@ -120,11 +118,11 @@ def check_config(config, is_local):
     if config.get('password') in [b'mypassword']:
         logging.error('DON\'T USE DEFAULT PASSWORD! Please change it in your '
                       'config.json!')
-        sys.exit(1)
+        return 1
     if config.get('user', None) is not None:
         if os.name != 'posix':
             logging.error('user can be used only on Unix')
-            sys.exit(1)
+            return 1
 
     encrypt.try_cipher(config['password'], config['method'])
 
@@ -223,12 +221,10 @@ def get_config(is_local):
                 continue
     except getopt.GetoptError as e:
         print(e, file=sys.stderr)
-        print_help(is_local)
         sys.exit(2)
 
     if not config:
         logging.error('config not specified')
-        print_help(is_local)
         sys.exit(2)
 
     config['password'] = to_bytes(config.get('password', b''))
@@ -254,7 +250,6 @@ def get_config(is_local):
     if is_local:
         if config.get('server', None) is None:
             logging.error('server addr not specified')
-            print_local_help()
             sys.exit(2)
         else:
             config['server'] = to_str(config['server'])
@@ -434,6 +429,83 @@ class JSFormat:
                 self.state = 0
                 return "\n"
         return ""
+
+
+def check_and_parse_config(config):
+    is_local=True
+    if not config:
+        logging.error('config not specified')
+        return 9
+
+
+    config['password'] = to_bytes(config.get('password', b''))
+    config['method'] = to_str(config.get('method', 'aes-256-cfb'))
+    config['protocol'] = to_str(config.get('protocol', 'origin'))
+    config['protocol_param'] = to_str(config.get('protocol_param', ''))
+    config['obfs'] = to_str(config.get('obfs', 'plain'))
+    config['obfs_param'] = to_str(config.get('obfs_param', ''))
+    config['port_password'] = config.get('port_password', None)
+    config['additional_ports'] = config.get('additional_ports', {})
+    config['additional_ports_only'] = config.get('additional_ports_only', False)
+    config['timeout'] = int(config.get('timeout', 300))
+    config['udp_timeout'] = int(config.get('udp_timeout', 120))
+    config['udp_cache'] = int(config.get('udp_cache', 64))
+    config['fast_open'] = config.get('fast_open', False)
+    config['workers'] = config.get('workers', 1)
+    config['pid-file'] = config.get('pid-file', '/var/run/shadowsocksr.pid')
+    config['log-file'] = config.get('log-file', '/var/log/shadowsocksr.log')
+    config['verbose'] = config.get('verbose', False)
+    config['connect_verbose_info'] = config.get('connect_verbose_info', 0)
+    config['local_address'] = to_str(config.get('local_address', '127.0.0.1'))
+    config['local_port'] = config.get('local_port', 1080)
+    if is_local:
+        if config.get('server', None) is None:
+            logging.error('server addr not specified')
+            return 1
+        else:
+            config['server'] = to_str(config['server'])
+    else:
+        config['server'] = to_str(config.get('server', '0.0.0.0'))
+        try:
+            config['forbidden_ip'] = \
+                IPNetwork(config.get('forbidden_ip', '127.0.0.0/8,::1/128'))
+        except Exception as e:
+            logging.error(e)
+            return 2
+        try:
+            config['forbidden_port'] = PortRange(config.get('forbidden_port', ''))
+        except Exception as e:
+            logging.error(e)
+            return 2
+        try:
+            config['ignore_bind'] = \
+                IPNetwork(config.get('ignore_bind', '127.0.0.0/8,::1/128,10.0.0.0/8,192.168.0.0/16'))
+        except Exception as e:
+            logging.error(e)
+            return 2
+    config['server_port'] = config.get('server_port', 8388)
+
+    logging.getLogger('').handlers = []
+    logging.addLevelName(VERBOSE_LEVEL, 'VERBOSE')
+    if config['verbose'] >= 2:
+        level = VERBOSE_LEVEL
+    elif config['verbose'] == 1:
+        level = logging.DEBUG
+    elif config['verbose'] == -1:
+        level = logging.WARN
+    elif config['verbose'] <= -2:
+        level = logging.ERROR
+    else:
+        level = logging.INFO
+    verbose = config['verbose']
+    logging.basicConfig(level=level,
+                        format='%(asctime)s %(levelname)-8s %(filename)s:%(lineno)s %(message)s',
+                        datefmt='%Y-%m-%d %H:%M:%S')
+
+    check_config(config, is_local)
+
+    return config
+
 
 def remove_comment(json):
     fmt = JSFormat()
