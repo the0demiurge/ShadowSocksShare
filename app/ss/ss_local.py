@@ -15,19 +15,6 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-from __future__ import absolute_import, division, print_function, \
-    with_statement
-
-import sys
-import os
-import logging
-import signal
-
-if __name__ == '__main__':
-    import inspect
-    file_path = os.path.dirname(os.path.realpath(inspect.getfile(inspect.currentframe())))
-    sys.path.insert(0, os.path.join(file_path, '../'))
-
 from app.shadowsocks import shell, daemon, eventloop, tcprelay, udprelay, asyncdns
 
 
@@ -80,6 +67,7 @@ def main(dictionary=None, str_json=None, port=None):
             loop.stop()
         shell.print_exception(e)
         raise Exception(e)
+
 
 if __name__ == '__main__':
     pass

@@ -42,5 +42,19 @@ def test_socks_server(dictionary=None, str_json=None, port=2001):
         return e.code - 10
 
 
+def validate(websites):
+    for servers in websites:
+        print(servers['info'])
+        for server in servers['data']:
+            result = test_socks_server(str_json=server['json'])
+            print('>' * 10, '结果:', result)
+            if result is True:
+                print('>' * 10, '测试通过！')
+            elif result == -1:
+                print(server['json'])
+            server['status'] = result
+    return websites
+
+
 if __name__ == '__main__':
     print(test_connection())

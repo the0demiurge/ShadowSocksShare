@@ -16,7 +16,7 @@
         请点击这个链接查看详细信息：<br>
         <a href={{href}}>{{href}}</a>
     </div>
-    
+
 {% else %}
 
     <div id="uri">
@@ -28,8 +28,8 @@
 
     <h4>SSR二维码</h4>
     <div id="qrcode"></div>
-    
-    
+
+
     <div id="table">
     <table style="text-align: center;">
         <h4>服务器详细配置信息</h4>
@@ -37,24 +37,33 @@
         <tr><td>端口</td><td>{{server_port}}</td></tr>
         <tr><td>密码</td><td>{{password}}</td></tr>
         <tr><td>加密方法</td><td>{{method}}</td></tr>
+        {%- if ssr_protocol != 'None' -%}
         <tr><td>SSR协议</td><td>{{ssr_protocol}}</td></tr>
+        {% endif %}
+        {%- if obfs != 'None' -%}
         <tr><td>混淆方式</td><td>{{obfs}}</td></tr>
+        {% endif %}
+        {%- if protoparam != 'None' -%}
         <tr><td>协议参数</td><td>{{protoparam}}</td></tr>
+        {% endif %}
+        {%- if obfsparam != 'None' -%}
         <tr><td>混淆参数</td><td>{{obfsparam}}</td></tr>
+        {% endif %}
+        <tr><td>连接状态</td><td>{{status}}</td></tr>
     </table>
     </div>
-    
-    
+
+
     {%- if json != 'None' -%}
     <div id="json">
         <h4>JSON格式的配置文件</h4>
-        <textarea rows="19" cols="40" onclick="this.select()" readonly>
+        <textarea rows="14" cols="40" onclick="this.select()" readonly>
             {{json}}
         </textarea><br>
         <button id="btn_json" class="js-copy" data-clipboard-text="{{json}}"><span>一键复制JSON配置</span></button><br />
     </div>
     {% endif %}
-    
+
 {% endif %}
 </div>
 

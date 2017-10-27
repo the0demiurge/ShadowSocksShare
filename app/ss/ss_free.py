@@ -20,7 +20,7 @@ import requests
 import base64
 import json
 from app.ss.parse import parse, scanNetQR
-from app.ss.test_ss import test_socks_server
+from app.ss.ssr_check import validate
 
 
 __author__ = 'Charles Xu'
@@ -331,8 +331,10 @@ def gen_uri(servers):
     def decode(string):
         return str(base64.urlsafe_b64decode(bytes(string + (4 - len(string) % 4) * '=', 'utf-8')), 'utf-8')
     for server in servers:
-        if 'password' not in server: server['password'] = ''
-        if ":" in server["server"] and "[" not in server["server"]: server["server"] = "[{}]".format(server["server"])
+        if 'password' not in server:
+            server['password'] = ''
+        if ":" in server["server"] and "[" not in server["server"]:
+            server["server"] = "[{}]".format(server["server"])
 
         try:
             try:
@@ -367,11 +369,11 @@ def gen_uri(servers):
 
                 # ssr格式的ss帐号信息
                 ssr_decoded = ':'.join([
-                                   server['server'],
-                                   server['server_port'],
-                                   server['method'],
-                                   encode(server['password'])
-                                   ])
+                    server['server'],
+                    server['server_port'],
+                    server['method'],
+                    encode(server['password'])
+                ])
                 ssr_decoded += '/?remarks={remarks}&group={group}'.format(
                     remarks=encode(server['remarks']),
                     group=encode("Charles Xu"))
@@ -381,7 +383,7 @@ def gen_uri(servers):
 
             server['uri'] = ss_uri
             server['ssr_uri'] = ssr_uri
-            print(ssr_uri, decode(ssr_uri[6:]))
+            # print(ssr_uri, decode(ssr_uri[6:]))
             server['decoded_url'] = urllib.parse.unquote(ss_uri)
 
             server_data_to_json = {
@@ -402,9 +404,9 @@ def gen_uri(servers):
                     server_data_to_json[key] = server.get(key)
 
             server['json'] = json.dumps(server_data_to_json,
-                ensure_ascii=False,
-                indent=2)
-            server["status"] = test_socks_server(str_json=server["json"])
+                                        ensure_ascii=False,
+                                        indent=2)
+            # server["status"] = test_socks_server(str_json=server["json"])
         except (KeyError, EOFError):
             try:
                 href = get_href(server['string'], '.*查看连接信息.*')
@@ -414,20 +416,20 @@ def gen_uri(servers):
     return servers
 
 
-def main():
+def main(debug=list()):
     result = list()
 
     # Specified functions for requesting servers
     websites = [
-        request_iss,
-        request_freess_cx,
-        request_nobey,
+        # request_iss,
+        # request_freess_cx,
+        # request_nobey,
         request_5752me,
     ]
     from app.config import url
 
-    websites.extend([(i, None) for i in url])
-    websites.extend([(i, fake_ua, i[-1]) for i in request_doub_url()])
+    # websites.extend([(i, None) for i in url])
+    # websites.extend([(i, fake_ua, i[-1]) for i in request_doub_url()])
 
     for website in websites:
         try:
@@ -440,8 +442,14 @@ def main():
             logging.exception(e, stack_info=False)
             print('Error in', website, type(website))
 
+    # check ssr configs
+    if 'no_validate' in debug:
+        validated_servers = result
+    else:
+        validated_servers = validate(result)
     # remove useless data
-    servers = list(filter(lambda x: len(x['data']) > 0, result))
+    servers = list(filter(lambda x: len(x['data']) > 0, validated_servers))
+    print('-'*10, '数据获取完毕', '-'*10)
     return servers
 
 

@@ -15,23 +15,32 @@ from flask import render_template, send_from_directory, abort
 servers = list()
 curtime = time.ctime()
 
-decoded = list()
-for i in servers:
-    for j in i['data']:
-        decoded.append(j['ssr_uri'])
-decoded = '\n'.join(decoded)
-encoded = base64.urlsafe_b64encode(bytes(decoded, 'utf-8'))
+# decoded = list()
+# for i in servers:
+#     for j in i['data']:
+#         decoded.append(j['ssr_uri'])
+# decoded = '\n'.join(decoded)
+# encoded = base64.urlsafe_b64encode(bytes(decoded, 'utf-8'))
+encoded = ''
+jsons = list()
 
 
 def update_servers():
     try:
+        # servers
         global servers
         servers = ss_free.main()
+        # subscription
         global encoded
+        global jsons
+        jsons = list()
         decoded = list()
-        for i in servers:
-            for j in i['data']:
-                decoded.append(j['ssr_uri'])
+        for website in servers:
+            for server in website['data']:
+                if server['status'] is True:
+                    decoded.append(server['ssr_uri'])
+                    jsons.append(server['json'])
+
         decoded = '\n'.join(decoded)
         encoded = base64.urlsafe_b64encode(bytes(decoded, 'utf-8'))
     except Exception as e:
@@ -86,6 +95,7 @@ def index():
     except Exception as e:
         logging.exception(e, stack_info=True)
 
+
 @app.route('/full')
 def full():
     try:
@@ -102,6 +112,7 @@ def full():
         )
     except Exception as e:
         logging.exception(e, stack_info=True)
+
 
 @app.route('/<string:path>')
 def pages(path):
@@ -161,12 +172,16 @@ def pages(path):
 
 @app.route('/html/<path:path>')
 def static_html(path):
-    color, opacity, count = gen_canvas_nest()
-    return render_template(
-        path,
-        color=color,
-        opacity=opacity,
-        count=count,)
+    try:
+        color, opacity, count = gen_canvas_nest()
+        return render_template(
+            path,
+            color=color,
+            opacity=opacity,
+            count=count,)
+    except Exception as e:
+        logging.exception(e)
+        abort(404)
 
 
 @app.route('/subscribe')
@@ -176,7 +191,7 @@ def subscribe():
 
 @app.route('/json')
 def subscribe_json():
-    return random.sample(random.sample(servers, 1)[0]['data'], 1)[0]['json']
+    return '{}' if len(jsons) == 0 else random.sample(jsons, 1)[0]
 
 
 @app.route('/js/<path:path>')
