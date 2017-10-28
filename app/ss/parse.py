@@ -30,7 +30,7 @@ def encode(decoded):
 
 
 def reverse_str(string):
-    return ''.join(list(reversed(string)))
+    return ''.join(list(reversed(string.strip()))).strip()
 
 
 def parse(uri, default_title='untitled'):

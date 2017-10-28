@@ -56,7 +56,8 @@ def request_url(url, headers=None, name=''):
                 logging.exception(e, stack_info=False)
                 print('URL:', url, 'SERVER', server)
     except Exception as e:
-        logging.exception(e, stack_info=True)
+        print(url)
+        logging.exception(e, stack_info=False)
         return [], {'message': str(e), 'url': '', 'name': ''}
     return servers, info
 
@@ -78,7 +79,8 @@ def request_freess_cx(url='https://freess.cx/', headers=None):
             try:
                 servers.append(parse(scanNetQR(img_url), ' '.join([title, str(i)])))
             except Exception as e:
-                logging.exception(e, stack_info=True)
+                print(img_url)
+                logging.exception(e, stack_info=False)
                 print('IMG_URL FOR freess.cx:', img_url)
     except Exception as e:
         logging.exception(e, stack_info=True)
@@ -409,6 +411,8 @@ def gen_uri(servers):
                 server['href'] = href
             except Exception as e:
                 logging.exception(e, stack_info=True)
+        except ValueError as e:
+            logging.exception(e, stack_info=True)
     return servers
 
 
