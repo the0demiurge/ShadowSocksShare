@@ -2,6 +2,7 @@ Flask
 pysocks
 zbar-py
 numpy
+libnacl
 Flask-Script
 regex
 beautifulsoup4
