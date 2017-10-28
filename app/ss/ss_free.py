@@ -56,7 +56,8 @@ def request_url(url, headers=None, name=''):
                 logging.exception(e, stack_info=False)
                 print('URL:', url, 'SERVER', server)
     except Exception as e:
-        logging.exception(e, stack_info=True)
+        print(url)
+        logging.exception(e, stack_info=False)
         return [], {'message': str(e), 'url': '', 'name': ''}
     return servers, info
 
@@ -78,7 +79,8 @@ def request_freess_cx(url='https://freess.cx/', headers=None):
             try:
                 servers.append(parse(scanNetQR(img_url), ' '.join([title, str(i)])))
             except Exception as e:
-                logging.exception(e, stack_info=True)
+                print(img_url)
+                logging.exception(e, stack_info=False)
                 print('IMG_URL FOR freess.cx:', img_url)
     except Exception as e:
         logging.exception(e, stack_info=True)
@@ -330,12 +332,11 @@ def gen_uri(servers):
 
     def decode(string):
         return str(base64.urlsafe_b64decode(bytes(string + (4 - len(string) % 4) * '=', 'utf-8')), 'utf-8')
+
+    result_servers = list()
     for server in servers:
         if 'password' not in server:
             server['password'] = ''
-        if ":" in server["server"] and "[" not in server["server"]:
-            server["server"] = "[{}]".format(server["server"])
-
         try:
             try:
                 # SSR信息是否完整
@@ -406,13 +407,16 @@ def gen_uri(servers):
             server['json'] = json.dumps(server_data_to_json,
                                         ensure_ascii=False,
                                         indent=2)
+            result_servers.append(server)
         except (KeyError, EOFError):
             try:
                 href = get_href(server['string'], '.*查看连接信息.*')
                 server['href'] = href
             except Exception as e:
                 logging.exception(e, stack_info=True)
-    return servers
+        except ValueError as e:
+            logging.exception(e, stack_info=True)
+    return result_servers
 
 
 def main(debug=list()):

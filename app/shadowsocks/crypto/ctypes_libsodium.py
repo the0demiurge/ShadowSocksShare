@@ -24,6 +24,7 @@ from __future__ import absolute_import, division, print_function, \
     with_statement
 
 import logging
+import os
 from ctypes import CDLL, c_char_p, c_int, c_ulonglong, byref, \
     create_string_buffer, c_void_p
 
@@ -36,17 +37,19 @@ buf_size = 2048
 
 # for salsa20 and chacha20
 BLOCK_SIZE = 64
+lib_path = os.path.dirname(os.path.realpath(__file__))
 
 
 def load_libsodium():
     global loaded, libsodium, buf
 
-    from ctypes.util import find_library
+    # from ctypes.util import find_library
     for p in ('sodium',):
-        libsodium_path = find_library(p)
+        # libsodium_path = find_library(p)
+        libsodium_path = os.path.join(lib_path, 'lib', 'libsodium.so')
         if libsodium_path:
             break
-    else:
+    if not libsodium_path:
         raise Exception('libsodium not found')
     logging.info('loading libsodium from %s', libsodium_path)
     libsodium = CDLL(libsodium_path)
@@ -69,6 +72,7 @@ def load_libsodium():
 
 
 class Salsa20Crypto(object):
+
     def __init__(self, cipher_name, key, iv, op):
         if not loaded:
             load_libsodium()

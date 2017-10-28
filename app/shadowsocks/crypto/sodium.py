@@ -18,9 +18,14 @@ from __future__ import absolute_import, division, print_function, \
     with_statement
 
 from ctypes import c_char_p, c_int, c_ulong, c_ulonglong, byref, \
-    create_string_buffer, c_void_p
+    create_string_buffer, c_void_p, CDLL
 
 from app.shadowsocks.crypto import util
+
+import os
+
+lib_path = os.path.dirname(os.path.realpath(__file__))
+
 
 __all__ = ['ciphers']
 
@@ -36,8 +41,9 @@ BLOCK_SIZE = 64
 def load_libsodium():
     global loaded, libsodium, buf
 
-    libsodium = util.find_library('sodium', 'crypto_stream_salsa20_xor_ic',
-                                  'libsodium')
+    libsodium = CDLL(os.path.join(lib_path, 'lib', 'libsodium.so'))
+    # libsodium = util.find_library('sodium', 'crypto_stream_salsa20_xor_ic',
+    #                               'libsodium')
     if libsodium is None:
         raise Exception('libsodium not found')
 
@@ -55,9 +61,9 @@ def load_libsodium():
     try:
         libsodium.crypto_stream_chacha20_ietf_xor_ic.restype = c_int
         libsodium.crypto_stream_chacha20_ietf_xor_ic.argtypes = (c_void_p, c_char_p,
-                                                        c_ulonglong,
-                                                        c_char_p, c_ulong,
-                                                        c_char_p)
+                                                                 c_ulonglong,
+                                                                 c_char_p, c_ulong,
+                                                                 c_char_p)
     except:
         pass
 
@@ -66,6 +72,7 @@ def load_libsodium():
 
 
 class SodiumCrypto(object):
+
     def __init__(self, cipher_name, key, iv, op):
         if not loaded:
             load_libsodium()
@@ -133,6 +140,7 @@ def test_chacha20_ietf():
     decipher = SodiumCrypto('chacha20-ietf', b'k' * 32, b'i' * 16, 0)
 
     util.run_cipher(cipher, decipher)
+
 
 if __name__ == '__main__':
     test_chacha20_ietf()
