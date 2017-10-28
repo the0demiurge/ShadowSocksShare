@@ -22,7 +22,9 @@ curtime = time.ctime()
 # decoded = '\n'.join(decoded)
 # encoded = base64.urlsafe_b64encode(bytes(decoded, 'utf-8'))
 encoded = ''
+full_encoded = ''
 jsons = list()
+full_jsons = list()
 
 
 def update_servers():
@@ -32,17 +34,24 @@ def update_servers():
         servers = ss_free.main()
         # subscription
         global encoded
+        global full_encoded
         global jsons
+        global full_jsons
         jsons = list()
         decoded = list()
+        full_decoded = list()
         for website in servers:
             for server in website['data']:
+                full_decoded.append(server['ssr_uri'])
+                full_jsons.append(server['json'])
                 if server['status'] is True:
                     decoded.append(server['ssr_uri'])
                     jsons.append(server['json'])
 
         decoded = '\n'.join(decoded)
         encoded = base64.urlsafe_b64encode(bytes(decoded, 'utf-8'))
+        full_decoded = '\n'.join(full_decoded)
+        full_encoded = base64.urlsafe_b64encode(bytes(full_decoded, 'utf-8'))
     except Exception as e:
         logging.exception(e, stack_info=True)
 
@@ -189,9 +198,19 @@ def subscribe():
     return encoded
 
 
+@app.route('/full/subscribe')
+def full_subscribe():
+    return full_encoded
+
+
 @app.route('/json')
 def subscribe_json():
     return '{}' if len(jsons) == 0 else random.sample(jsons, 1)[0]
+
+
+@app.route('/full/json')
+def full_subscribe_json():
+    return '{}' if len(jsons) == 0 else random.sample(full_jsons, 1)[0]
 
 
 @app.route('/js/<path:path>')
