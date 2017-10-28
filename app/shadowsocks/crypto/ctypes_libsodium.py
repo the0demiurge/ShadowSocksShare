@@ -43,13 +43,13 @@ lib_path = os.path.dirname(os.path.realpath(__file__))
 def load_libsodium():
     global loaded, libsodium, buf
 
-    from ctypes.util import find_library
+    # from ctypes.util import find_library
     for p in ('sodium',):
         # libsodium_path = find_library(p)
         libsodium_path = os.path.join(lib_path, 'lib', 'libsodium.so')
         if libsodium_path:
             break
-    else:
+    if not libsodium_path:
         raise Exception('libsodium not found')
     logging.info('loading libsodium from %s', libsodium_path)
     libsodium = CDLL(libsodium_path)
