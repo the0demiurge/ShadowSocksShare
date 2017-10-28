@@ -332,6 +332,8 @@ def gen_uri(servers):
 
     def decode(string):
         return str(base64.urlsafe_b64decode(bytes(string + (4 - len(string) % 4) * '=', 'utf-8')), 'utf-8')
+
+    result_servers = list()
     for server in servers:
         if 'password' not in server:
             server['password'] = ''
@@ -405,6 +407,7 @@ def gen_uri(servers):
             server['json'] = json.dumps(server_data_to_json,
                                         ensure_ascii=False,
                                         indent=2)
+            result_servers.append(server)
         except (KeyError, EOFError):
             try:
                 href = get_href(server['string'], '.*查看连接信息.*')
@@ -413,7 +416,7 @@ def gen_uri(servers):
                 logging.exception(e, stack_info=True)
         except ValueError as e:
             logging.exception(e, stack_info=True)
-    return servers
+    return result_servers
 
 
 def main(debug=list()):
