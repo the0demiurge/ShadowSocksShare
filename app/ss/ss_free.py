@@ -333,9 +333,6 @@ def gen_uri(servers):
     for server in servers:
         if 'password' not in server:
             server['password'] = ''
-        if ":" in server["server"] and "[" not in server["server"]:
-            server["server"] = "[{}]".format(server["server"])
-
         try:
             try:
                 # SSR信息是否完整

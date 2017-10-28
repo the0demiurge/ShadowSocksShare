@@ -42,11 +42,13 @@ def parse(uri, default_title='untitled'):
         else:
             server['remarks'] = default_title
         decoded = decode(stripped)
-        data = decoded.split('@')
-        server['method'], server['password'] = data[0].split(':')
+        data = list(map(
+            reverse_str,
+            reverse_str(decoded).split('@', maxsplit=1)))
+        server['method'], server['password'] = data[1].split(':')
         server['server_port'], server['server'] = map(
             reverse_str,
-            reverse_str(data[1]).split(':', maxsplit=1))
+            reverse_str(data[0]).split(':', maxsplit=1))
     elif uri[2] is 'r':
         decoded = decode(stripped)
         if '/?' in decoded:
