@@ -96,11 +96,11 @@
   某位没有留下名字的朋友捐献了2元：）
 </p>
 <p>
-  hsu_bicheng 朋友捐助了50元：）
+  hsu_bicheng 朋友捐献了50元：）
 </p>
 <!--
-计算捐款数额的一行python脚本：
-import re,functools;print(functools.reduce(lambda x,y:x+y,map(float,re.findall('[\.\d]+',info))))
+计算捐款数额的一行python代码：
+python3 -c "import re,functools;info=open('donate.html', 'r').read();print(functools.reduce(lambda x,y:x+y,map(float,re.findall('(?<=捐献了)[\.\d]+(?=元)',info))))"
 -->
 
 {% endblock %}
