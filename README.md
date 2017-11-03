@@ -4,6 +4,18 @@
 |--------|--------|
 | [![Build Status](https://travis-ci.org/the0demiurge/ShadowSocksShare-OpenShift.svg?branch=master)](https://travis-ci.org/the0demiurge/ShadowSocksShare-OpenShift) | [![Build Status](https://travis-ci.org/the0demiurge/ShadowSocksShare-OpenShift.svg?branch=dev)](https://travis-ci.org/the0demiurge/ShadowSocksShare-OpenShift) |
 
+## 免责声明
+
+本项目仅进行技术展示，对所爬到的帐号不负任何责任。
+
+本项目仅面向海外华人用户，中华人民共和国境内居民禁止使用，并请立即关闭本网站！
+
+本项目所提供的帐号均来自网络，仅供科研、学习之用。
+
+请用本项目分享的帐号进行学习、科研，切勿用于其他用途。
+
+请于24小时之内删掉与本项目相关的一切内容，否则出现一切问题本站作者概不负责。
+
 ## 简介：
 
 本项目是我的 [Python 实验室](https://github.com/the0demiurge/Python-Scripts)子模块，欢迎大家 STAR/FORK/ISSUE/提交 PR ～
@@ -48,19 +60,19 @@
 
 `python manage.py runserver`
 
+## Heroku 部署方法：
+1. 注册 [Heroku](https://heroku.com) 
+2. Fork 本项目
+3. 创建一个应用：在[创建应用页面](https://dashboard.heroku.com/new-app)创建一个应用
+4. 在部署 (Deploy) 页面选择 GitHub，在Connect to GitHub 这一栏连接上你的 GitHub 帐号，搜索并连接本项目
+5. 选择一个分支并点击 `Deploy Branch`
+6. 部署完毕后，将网页拉到最上面，并点击`Open app`打开你的网站。注意：网站访问第二次之后会进行爬取并检测帐号可用性，大概花费20分钟的时间。
+
 ## OpenShift v3 部署方法：
 
 **不再维护OpenShift版本，如果出现任何问题或有解决方案，请提交PR**
 
 注册 OpenShift v3 之后，在创建项目中选择 Python，Python 版本选择 3.5, 之后部署的时候链接输入本项目的 https 类型的 git 链接即可。
-
-## Heroku 部署方法：
-1. 注册 Heroku 并安装 heroku 的命令行工具，登陆上，不用多说了吧，免费。具体操作请阅读[Heroku 指南（官方英文版）](https://devcenter.heroku.com/articles/getting-started-with-python#set-up)
-2. 下载本项目：`git clone https://github.com/the0demiurge/ShadowSocksShare-OpenShift.git`
-3. 进入项目目录：`cd ShadowSocksShare-OpenShift`
-4. 创建一个 heroku 应用：`heroku create`
-5. 部署到云端：`git push heroku master`
-6. 打开部署好的网站：`heroku open`
 
 ### 编写的软件版本：
 
