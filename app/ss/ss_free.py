@@ -372,7 +372,9 @@ def gen_uri(servers):
                 ssr_decoded = ':'.join([
                     server['server'],
                     server['server_port'],
+                    'origin',
                     server['method'],
+                    'plain',
                     encode(server['password'])
                 ])
                 ssr_decoded += '/?remarks={remarks}&group={group}'.format(
