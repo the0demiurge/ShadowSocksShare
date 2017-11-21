@@ -2,6 +2,14 @@
 
 # info contains (number, message, name, comment)
 info = [
+    (6.66, '谢谢'),
+    (10),
+    (1, '感谢大佬！'),
+    (10),
+    (10, '支持'),
+    (1),
+    (2, '万分感谢'),
+    (8.88, '再接再励。')，
     (10, '谢谢你的努力'),
     (10, '很好用，点赞！'),
     (2.33, '牛批'),
@@ -47,7 +55,10 @@ info = [
 
 
 def parse(data):
-    number, message = data[:2]
+    if len(data) == 1:
+        number, message = data[0], ''
+    else:
+        number, message = data[:2]
     if message:
         message = '，并留言：”{}“'.format(message)
     if len(data) >= 3:
