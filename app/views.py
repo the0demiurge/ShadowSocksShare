@@ -13,7 +13,7 @@ from app import donation
 from flask import render_template, send_from_directory, abort
 
 PERIOD = int(os.environ.get('PERIOD', 300))
-servers = list()
+servers = [{'data': [], 'info': {'message': '别着急，正在爬数据，十分钟后再回来吧：）', 'url': 'http://ss.pythonic.life', 'name':'免费 ShadowSocks 帐号分享'}}]
 curtime = time.ctime()
 
 # decoded = list()
