@@ -36,6 +36,7 @@
 
 
 示例网站：[ss.pythonic.life](http://ss.pythonic.life)
+备用地址：[ssr.pythonic.life](http://ssr.pythonic.life)
 
 博客连接：[the0demiurge.blogspot.jp](https://the0demiurge.blogspot.jp/2017/07/shadowsocks.html)
 
