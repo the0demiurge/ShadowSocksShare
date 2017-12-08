@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# -*- utf-8 -*-
+# -*- coding: utf-8 -*-
 """
 本代码使用了 regex beautifulsoup4 这些第三方库，
 只支持Python3以上的版本，在Linux下写成，请读者自行安装这三个第三方库，

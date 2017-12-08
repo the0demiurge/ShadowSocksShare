@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# -*- utf-8 -*-
+# -*- coding: utf-8 -*-
 import re
 import zbar
 import requests

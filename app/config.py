@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# -*- utf-8 -*-
+# -*- coding: utf-8 -*-
 url = [
     # 'http://www.ssglobal.me/wp/blog/2017/02/22/%E8%B4%A6%E5%8F%B7%E5%88%86%E4%BA%AB/',
     # 'https://plus.google.com/communities/103542666306656189846/stream/dd570c04-df51-4394-8c83-eabb12cc0d0c',
