@@ -2,7 +2,7 @@
 
 # info contains (number, message, name, comment)
 info = [
-    (1),
+    (1,),
     (1.11, 'saner'),
     (10, 'HOLD ON!'),
     (5.2, '谢谢分享'),
