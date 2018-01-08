@@ -104,7 +104,7 @@ def request_doub_url(url='https://doub.io/sszhfx/'):
     return set(urls)
 
 
-def request_iss(url='http://ss.ishadowx.com/'):
+def request_iss(url='https://global.ishadowx.net'):
     print('req iss...')
 
     try:
@@ -139,10 +139,10 @@ def request_iss(url='http://ss.ishadowx.com/'):
     for i, server in enumerate(server_data):
         try:
             servers.append(dict())
-            server_data = server.text.strip().split('\n')
+            server_data = re.split('\s*\n\s*', server.text.strip())
             servers[-1]['server'] = server_data[0].split(':')[-1].strip()
             servers[-1]['server_port'] = re.findall('\d+', server_data[1])[0]
-            servers[-1]['remarks'] = ' '.join(['ss.ishadowx.com', str(i)])
+            servers[-1]['remarks'] = ' '.join(['global.ishadowx.com', str(i)])
             servers[-1]['password'] = server_data[2].split(':')[-1].strip()
             servers[-1]['method'] = server_data[3].split(':')[-1].strip()
             if 'QR' not in server_data[4]:
@@ -222,6 +222,23 @@ def request_nobey(url='https://raw.githubusercontent.com/NoBey/Shadowsocks-free/
                         servers[-1]['server_port'],
                         servers[-1]['method']) = (ip, password, port, method)
 
+    except Exception as e:
+        logging.exception(e, stack_info=True)
+        return [], {'message': str(e), 'url': '', 'name': ''}
+    return servers, info
+
+
+def request_fq123(url='https://raw.githubusercontent.com/fq1234/home/master/README.md'):
+    try:
+        data = re.split('\s*\n\s*', requests.get(url).text.split('```')[1].strip())
+        servers = [{
+            'remarks': 'fq123.tk',
+            'server': data[0].split()[1],
+            'server_port': data[1].split()[1],
+            'password': data[2].split()[1],
+            'method': data[3].split()[1],
+        }]
+        info = {'message': '', 'name': 'fq123', 'url': 'http://fq123.tk/'}
     except Exception as e:
         logging.exception(e, stack_info=True)
         return [], {'message': str(e), 'url': '', 'name': ''}
@@ -428,8 +445,9 @@ def main(debug=list()):
     websites = [
         request_iss,
         request_freess_cx,
-        request_nobey,
-        request_5752me,
+        # request_nobey,
+        # request_5752me,
+        request_fq123,
     ]
     from app.config import url
 

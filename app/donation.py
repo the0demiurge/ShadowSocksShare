@@ -2,6 +2,10 @@
 
 # info contains (number, message, name, comment)
 info = [
+    (1,),
+    (1.11, 'saner'),
+    (10, 'HOLD ON!'),
+    (5.2, '谢谢分享'),
     (5, '大佬喝冰阔落'),
     (20, '支持一下 emoji:smile'),
     (6.66, '谢谢'),
