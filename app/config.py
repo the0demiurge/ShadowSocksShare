@@ -10,5 +10,5 @@ url = [
     'https://plus.google.com/communities/109204483693184691558',
     'https://plus.google.com/communities/117702818760720009772/stream/47c69db4-9362-4d91-a017-97f3be948437',
     'https://plus.google.com/communities/107859708371989171939',
-    'https://52ssr.cn/',
+    'http://www.ssr.blue'/,
 ]
