@@ -78,6 +78,6 @@ def parse(uri, default_title='untitled'):
 uri = 'https://freess.cx/images/servers/jp01.png'
 
 
-def scanNetQR(img_url):
-    img = array(Image.open(BytesIO(requests.get(img_url).content)))
+def scanNetQR(img_url, headers=None):
+    img = array(Image.open(BytesIO(requests.get(img_url, headers=headers).content)))
     return scanner.scan(img.astype(uint8) * 255)[0].data.decode('utf-8')

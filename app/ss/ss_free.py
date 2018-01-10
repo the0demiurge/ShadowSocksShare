@@ -62,7 +62,7 @@ def request_url(url, headers=None, name=''):
     return servers, info
 
 
-def request_freess_cx(url='https://freess.cx/', headers=None):
+def request_freess_cx(url='https://freess.cx/', headers=fake_ua):
     print('req fscx...')
     qr = list()
     servers = list()
@@ -77,7 +77,7 @@ def request_freess_cx(url='https://freess.cx/', headers=None):
         for i, img_url in enumerate(qr):
             print('req img', img_url)
             try:
-                servers.append(parse(scanNetQR(img_url), ' '.join([title, str(i)])))
+                servers.append(parse(scanNetQR(img_url, headers=headers), ' '.join([title, str(i)])))
             except Exception as e:
                 print(img_url)
                 logging.exception(e, stack_info=False)
