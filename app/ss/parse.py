@@ -17,7 +17,7 @@ def decode(string):
         return str(
             base64.urlsafe_b64decode(
                 bytes(
-                    string.strip('/') + (4 - len(string.strip('/')) % 4) * '=',
+                    string.strip('/') + (4 - len(string.strip('/')) % 4) * '=' + '====',
                     'utf-8')), 'utf-8')
     except Exception as e:
         print(e, string)
@@ -37,6 +37,7 @@ def parse(uri, default_title='untitled'):
     server = dict()
     stripped = re.sub('ssr?://', '', uri)
     if uri[2] is ':':
+        # ss
         if '#' in uri:
             stripped, server['remarks'] = stripped.split('#')[:2]
         else:
@@ -45,11 +46,12 @@ def parse(uri, default_title='untitled'):
         data = list(map(
             reverse_str,
             reverse_str(decoded).split('@', maxsplit=1)))
-        server['method'], server['password'] = data[1].split(':')
+        server['method'], server['password'] = data[1].split(':', maxsplit=1)
         server['server_port'], server['server'] = map(
             reverse_str,
             reverse_str(data[0]).split(':', maxsplit=1))
     elif uri[2] is 'r':
+        # ssr
         decoded = decode(stripped)
         if '/?' in decoded:
             data = decoded.split('/?')
