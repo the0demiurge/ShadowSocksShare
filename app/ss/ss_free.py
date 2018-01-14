@@ -325,6 +325,19 @@ def request_newpac(url='https://github.com/Alvin9999/new-pac/wiki/ss%E5%85%8D%E8
     return servers, info
 
 
+def request_free_ss(url='https://free-ss.site/ss.json', headers=fake_ua):
+    info = {'message': '部分账号大概每隔6小时变1次', 'name': '免费上网帐号', 'url': 'https://free-ss.site/'}
+    data = requests.get(url, headers=headers).json()['data']
+    servers = list(map(lambda x: {
+                       'remarks': x[6],
+                       'server': x[1],
+                       'server_port': x[2],
+                       'password': x[3],
+                       'method': x[4]
+                       }, data))
+    return servers, info
+
+
 def gen_uri(servers):
     '''{
                 "server": server['server'],
@@ -448,6 +461,7 @@ def main(debug=list()):
         # request_nobey,
         # request_5752me,
         request_fq123,
+        request_free_ss,
     ]
     from app.config import url
 
