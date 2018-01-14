@@ -10,11 +10,14 @@ def test_connection(url='http://cip.cc', headers={'User-Agent': 'cURL'}, proxies
         proxies = {'http': 'socks5://localhost:{}'.format(port),
                    'https': 'socks5://localhost:{}'.format(port)}
     ok = False
+    content = ''
     try:
-        ok = requests.get(url, headers=headers, proxies=proxies, timeout=timeout).text
+        respond = requests.get(url, headers=headers, proxies=proxies, timeout=timeout)
+        ok = respond.ok
+        content = respond.text
     except Exception as e:
         print(e)
-    return ok
+    return ok, content
 
 
 def test_socks_server(dictionary=None, str_json=None, port=2001):
@@ -23,36 +26,37 @@ def test_socks_server(dictionary=None, str_json=None, port=2001):
             loop, tcps, udps = ss_local.main(dictionary=dictionary, str_json=str_json, port=port)
         except Exception as e:
             print(e)
-            return -1
+            return -1, 'SSR start failed'
         try:
             t = threading.Thread(target=loop.run)
             t.start()
             time.sleep(3)
-            conn = test_connection(port=port)
+            conn, content = test_connection(port=port)
             loop.stop()
             t.join()
             tcps.close(next_tick=True)
             udps.close(next_tick=True)
             time.sleep(1)
-            return conn
+            return conn, content
         except Exception as e:
             print(e)
-            return -2
+            return -2, 'Thread or Connection to website failed'
     except SystemExit as e:
-        return e.code - 10
+        return e.code - 10, 'Unknown failure'
 
 
 def validate(websites):
     for servers in websites:
         print(servers['info'])
         for server in servers['data']:
-            result = test_socks_server(str_json=server['json'])
+            result, info = test_socks_server(str_json=server['json'])
             print('>' * 10, '结果:', result)
             if result is True:
                 print('>' * 10, '测试通过！')
             elif result == -1:
                 print(server['json'])
             server['status'] = result
+            server['content'] = info
     return websites
 
 

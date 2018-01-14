@@ -13,7 +13,7 @@ from app import donation
 from flask import render_template, send_from_directory, abort
 
 PERIOD = int(os.environ.get('PERIOD', 300))
-servers = [{'data': [], 'info': {'message': '别着急，正在爬数据，十分钟后再回来吧：）', 'url': 'http://ss.pythonic.life', 'name':'免费 ShadowSocks 帐号分享'}}]
+servers = [{'data': [], 'info': {'message': '别着急，正在爬数据，十分钟后再回来吧：）', 'url': 'http://ss.pythonic.life', 'name': '免费 ShadowSocks 帐号分享'}}]
 curtime = time.ctime()
 
 # decoded = list()
@@ -144,19 +144,20 @@ def pages(path):
         abort(404)
 
     try:
-        uri = servers[a]['data'][b]['decoded_url'] if 'decoded_url' in servers[a]['data'][b] else ''
-        remarks = servers[a]['data'][b]['remarks'] if 'remarks' in servers[a]['data'][b] else 'None'
-        server = servers[a]['data'][b]['server'] if 'server' in servers[a]['data'][b] else 'None'
-        server_port = servers[a]['data'][b]['server_port'] if 'server_port' in servers[a]['data'][b] else 'None'
-        password = servers[a]['data'][b]['password'] if 'password' in servers[a]['data'][b] else 'None'
-        method = servers[a]['data'][b]['method'] if 'method' in servers[a]['data'][b] else 'None'
-        ssr_protocol = servers[a]['data'][b]['ssr_protocol'] if 'ssr_protocol' in servers[a]['data'][b] else 'None'
-        obfs = servers[a]['data'][b]['obfs'] if 'obfs' in servers[a]['data'][b] else 'None'
-        href = servers[a]['data'][b]['href'] if 'href' in servers[a]['data'][b] else 'None'
-        json = servers[a]['data'][b]['json'] if 'json' in servers[a]['data'][b] else 'None'
-        obfsparam = servers[a]['data'][b]['obfsparam'] if 'obfsparam' in servers[a]['data'][b] else 'None'
-        protoparam = servers[a]['data'][b]['protoparam'] if 'protoparam' in servers[a]['data'][b] else 'None'
-        status = servers[a]['data'][b]['status'] if 'status' in servers[a]['data'][b] else 'None'
+        uri = servers[a]['data'][b].get('decoded_url', '')
+        remarks = servers[a]['data'][b].get('remarks', 'None')
+        server = servers[a]['data'][b].get('server', 'None')
+        server_port = servers[a]['data'][b].get('server_port', 'None')
+        password = servers[a]['data'][b].get('password', 'None')
+        method = servers[a]['data'][b].get('method', 'None')
+        ssr_protocol = servers[a]['data'][b].get('ssr_protocol', 'None')
+        obfs = servers[a]['data'][b].get('obfs', 'None')
+        href = servers[a]['data'][b].get('href', 'None')
+        json = servers[a]['data'][b].get('json', 'None')
+        obfsparam = servers[a]['data'][b].get('obfsparam', 'None')
+        protoparam = servers[a]['data'][b].get('protoparam', 'None')
+        status = servers[a]['data'][b].get('status', 'None')
+        content = servers[a]['data'][b].get('content', 'None')
 
         color, opacity, count = gen_canvas_nest()
 
@@ -180,6 +181,7 @@ def pages(path):
             obfsparam=obfsparam,
             protoparam=protoparam,
             status=status,
+            content=content,
         )
     except Exception as e:
         logging.exception(e, stack_info=True)
@@ -272,4 +274,3 @@ def gift():
 
 
 print('部署完成')
-
