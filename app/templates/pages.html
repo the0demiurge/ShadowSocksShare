@@ -49,8 +49,11 @@
         {%- if obfsparam != 'None' -%}
         <tr><td>混淆参数</td><td>{{obfsparam}}</td></tr>
         {% endif %}
-        <tr><td>连接状态</td><td>{{status}}</td></tr>
     </table>
+        <h4>连接状态</h4>
+        <textarea rows="7" cols="40" onclick="this.select()" readonly>
+            {{status}}
+        </textarea><br>
     </div>
 
 

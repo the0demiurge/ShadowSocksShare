@@ -5,13 +5,13 @@ import threading
 from app.ss import ss_local
 
 
-def test_connection(url='http://ip.cn', headers=None, proxies=None, port=1080, timeout=10):
+def test_connection(url='http://cip.cc', headers={'User-Agent': 'cURL'}, proxies=None, port=1080, timeout=10):
     if not proxies:
         proxies = {'http': 'socks5://localhost:{}'.format(port),
                    'https': 'socks5://localhost:{}'.format(port)}
     ok = False
     try:
-        ok = requests.get(url, headers=headers, proxies=proxies, timeout=timeout).ok
+        ok = requests.get(url, headers=headers, proxies=proxies, timeout=timeout).text
     except Exception as e:
         print(e)
     return ok
