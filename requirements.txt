@@ -7,3 +7,4 @@ regex
 beautifulsoup4
 requests
 pillow
+cfscrape
