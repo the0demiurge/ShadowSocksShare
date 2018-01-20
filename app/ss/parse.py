@@ -73,9 +73,12 @@ def parse(uri, default_title='untitled'):
         server['remarks'] = default_title
         if len(data) > 1:
             data = data[1].split('&')
-            content = {i.split('=')[0]: decode(i.split('=')[1]) for i in data}
+            content = {i.split('=')[0]: i.split('=')[1] for i in data}
             for key in content:
-                server[key] = content[key]
+                if key in ['remarks', 'group']:
+                    server[key] = decode(content[key])
+                else:
+                    server[key] = content[key]
         server['remarks'] += ' SSR'
     return server
 
@@ -183,7 +186,7 @@ def gen_uri(servers):
                 # "workers": 1,
                 "group": "Charles Xu"
             }
-            for key in ['obfs', 'method', 'ssr_protocol', 'obfsparam', 'protoparam']:
+            for key in ['obfs', 'method', 'ssr_protocol', 'obfsparam', 'protoparam', 'udpport', 'uot']:
                 if key in server:
                     server_data_to_json[key] = server.get(key)
 

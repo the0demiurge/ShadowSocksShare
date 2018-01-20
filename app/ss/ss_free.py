@@ -177,6 +177,7 @@ def request_5752me(url='https://wget.5752.me/Computer/soft/socks5%E4%BB%A3%E7%90
 
 
 def request_fq123(url='https://raw.githubusercontent.com/fq1234/home/master/README.md'):
+    print('req fq123...')
     try:
         data = re.split('\s*\n\s*', requests.get(url).text.split('```')[1].strip())
         servers = [{
@@ -193,7 +194,8 @@ def request_fq123(url='https://raw.githubusercontent.com/fq1234/home/master/READ
     return servers, info
 
 
-def request_free_ss(url='https://free-ss.site/ss.json', headers=fake_ua):
+def request_free_ss_site(url='https://free-ss.site/ss.json', headers=fake_ua):
+    print('req free_ss_site/ss.json...')
     info = {'message': '部分账号大概每隔6小时变1次', 'name': '免费上网帐号', 'url': 'https://free-ss.site/'}
     data = cf_request(url, headers=headers).json()['data']
     servers = list(map(lambda x: {
@@ -216,7 +218,7 @@ def main(debug=list()):
         # request_nobey,
         # request_5752me,
         request_fq123,
-        request_free_ss,
+        request_free_ss_site,
     ]
     from app.config import url
 
