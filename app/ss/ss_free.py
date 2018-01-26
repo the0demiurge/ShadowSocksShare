@@ -24,7 +24,7 @@ __email__ = 'charl3s.xu@gmail.com'
 __my_girlfriend__ = '小胖儿～'
 
 
-fake_ua = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.2; Win64; x64; rv:16.0.1) Gecko/20121011 Firefox/16.0.1'}
+fake_ua = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.108 Safari/537.36'}
 
 
 def request_url(url, headers=None, name=''):
@@ -197,14 +197,20 @@ def request_fq123(url='https://raw.githubusercontent.com/fq1234/home/master/READ
 def request_free_ss_site(url='https://free-ss.site/ss.json', headers=fake_ua):
     print('req free_ss_site/ss.json...')
     info = {'message': '部分账号大概每隔6小时变1次', 'name': '免费上网帐号', 'url': 'https://free-ss.site/'}
-    data = cf_request(url, headers=headers).json()['data']
-    servers = list(map(lambda x: {
+    try:
+        respond = cf_request(url, headers=headers)
+        data = respond.json()['data']
+        servers = list(map(lambda x: {
                        'remarks': x[6],
                        'server': x[1],
                        'server_port': x[2],
                        'password': x[3],
                        'method': x[4]
                        }, data))
+    except Exception as e:
+        logging.exception(e, stack_info=True)
+        print(respond.text)
+        print('-' * 30)
     return servers, info
 
 
