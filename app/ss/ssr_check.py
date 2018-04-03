@@ -5,14 +5,19 @@ import threading
 from app.ss import ss_local
 
 
-def test_connection(url='http://ip.cn', headers={'User-Agent': 'cURL'}, proxies=None, port=1080, timeout=10):
+def test_connection(
+        url='http://ip.cn',
+        headers={'User-Agent': 'curl/7.21.3 (i686-pc-linux-gnu) '
+                 'libcurl/7.21.3 OpenSSL/0.9.8o zlib/1.2.3.4 libidn/1.18'},
+        proxies=None, port=1080, timeout=10):
     if not proxies:
         proxies = {'http': 'socks5://localhost:{}'.format(port),
                    'https': 'socks5://localhost:{}'.format(port)}
     ok = False
     content = ''
     try:
-        respond = requests.get(url, headers=headers, proxies=proxies, timeout=timeout)
+        respond = requests.get(url, headers=headers,
+                               proxies=proxies, timeout=timeout)
         ok = respond.ok
         content = respond.text
     except Exception as e:
@@ -23,7 +28,8 @@ def test_connection(url='http://ip.cn', headers={'User-Agent': 'cURL'}, proxies=
 def test_socks_server(dictionary=None, str_json=None, port=2001):
     try:
         try:
-            loop, tcps, udps = ss_local.main(dictionary=dictionary, str_json=str_json, port=port)
+            loop, tcps, udps = ss_local.main(
+                dictionary=dictionary, str_json=str_json, port=port)
         except Exception as e:
             print(e)
             return -1, 'SSR start failed'

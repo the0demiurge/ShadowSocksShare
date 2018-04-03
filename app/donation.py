@@ -105,3 +105,8 @@ def parse(data):
 sum_people = len(info)
 sum_money = sum(list(zip(*info))[0])
 data = '\n'.join(map(parse, info))
+
+
+if __name__ == '__main__':
+    print("sum_people: ", sum_people)
+    print("sum_money: ", sum_money)
