@@ -62,13 +62,48 @@
 `python manage.py runserver`
 
 ## Heroku 部署方法：
-1. 注册 [Heroku](https://heroku.com) 
+1. 注册 [Heroku](https://heroku.com)
 2. Fork 本项目
 3. 创建一个应用：在[创建应用页面](https://dashboard.heroku.com/new-app)创建一个应用
 4. 在部署 (Deploy) 页面选择 GitHub，在Connect to GitHub 这一栏连接上你的 GitHub 帐号，搜索并连接本项目
 6. 环境变量添加 `PERIOD` 字段，以控制网站内容更新周期（每访问 `PERIOD` 次重新爬取信息），`PERIOD` 建议设置为`用户数量 × 5`。
 7. 选择一个分支并点击 `Deploy Branch`
 8. 部署完毕后，将网页拉到最上面，并点击`Open app`打开你的网站。注意：网站访问第二次之后会进行爬取并检测帐号可用性，大概花费20分钟的时间。
+
+## PythonAnywhere.com 部署方法：
+
+***警告：pythonanywhere.com 部署的网站并没有ssl加密（不是https），所以网站很容易被关键词检测到而被墙***
+
+- 注册 [PythonAnywhere](https://www.pythonanywhere.com)
+- 选择 Dashboard 中的 Console 中的 New console 中的 Bash
+- 输入
+
+```bash
+git clone https://github.com/the0demiurge/ShadowSocksShare-OpenShift.git
+cd ShadowSocksShare-OpenShift
+pip3.6 install -r requirements.txe --user
+python3.6 setup.py install --user
+```
+
+- 回到刚才的 Dashboard，选择创建 Web App
+- 在 Web App 配置界面 Code 一栏，Python version 选择 3.6，并点开 WSGI configuration file 进行编辑，把下面的内容粘贴到里面
+
+```python
+import sys
+
+project_home = u'/home/the0demiurge/ShadowSocksShare-OpenShift'
+if project_home not in sys.path:
+    sys.path = [project_home] + sys.path
+
+from app import app as application
+
+```
+
+- 在回到 Web App 配置界面，点那个绿色的 `Reload xxx.pythonanywhere.com`
+
+一会之后，http://你的用户名.pythonanywhere.com 就能用了
+
+** 我是部署之后写的这个教程，如果按照流程部署失败，请提交 Issue **
 
 ## OpenShift v3 部署方法：
 
