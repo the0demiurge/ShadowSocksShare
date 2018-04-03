@@ -70,6 +70,26 @@
 7. 选择一个分支并点击 `Deploy Branch`
 8. 部署完毕后，将网页拉到最上面，并点击`Open app`打开你的网站。注意：网站访问第二次之后会进行爬取并检测帐号可用性，大概花费20分钟的时间。
 
+## Google App Engine 部署方法：
+优点：每月限流量不限时间；缺点：墙内肯定访问不了
+
+- 进入 [GAE](https://console.cloud.google.com/appengine) 并选择创建一个应用
+- 选择 Python 并选择一个地点，按教程打开一个 Google Shell 控制台
+- 克隆本项目，输入`git clone https://github.com/the0demiurge/ShadowSocksShare-OpenShift.git`
+- 进入项目，分入`cd ShadowSocksShare-OpenShift`
+- 输入 `gcloud app deploy app.yaml --project xxx` 部署应用，输入y同意部署。
+
+需要注意的是：
+
+1. xxx 必须为你的项目名称且必须全部为小写
+2. 必须添加付款方式（信用卡）才能部署，不然会报错
+
+```
+ERROR: (gcloud.app.deploy) Error [400] Operation does not satisfy the following requirements: billing-enabled {Billing must be enabled for activation of service '' in project 'shadowsocksshare' to proceed., https://console.developers.google.com/project/shadowsocksshare/settings}
+```
+
+如果有谁不用信用卡部署成功，请联系我
+
 ## PythonAnywhere.com 部署方法：
 
 ***警告：pythonanywhere.com 部署的网站并没有ssl加密（不是https），所以网站很容易被关键词检测到而被墙***
