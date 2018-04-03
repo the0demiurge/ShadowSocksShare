@@ -8,3 +8,4 @@ beautifulsoup4
 requests
 pillow
 cfscrape
+gunicorn
