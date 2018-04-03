@@ -92,38 +92,7 @@ ERROR: (gcloud.app.deploy) Error [400] Operation does not satisfy the following 
 
 ## PythonAnywhere.com 部署方法：
 
-***警告：pythonanywhere.com 部署的网站并没有ssl加密（不是https），所以网站很容易被关键词检测到而被墙***
-
-- 注册 [PythonAnywhere](https://www.pythonanywhere.com)
-- 选择 Dashboard 中的 Console 中的 New console 中的 Bash
-- 输入
-
-```bash
-git clone https://github.com/the0demiurge/ShadowSocksShare-OpenShift.git
-cd ShadowSocksShare-OpenShift
-pip3.6 install -r requirements.txe --user
-python3.6 setup.py install --user
-```
-
-- 回到刚才的 Dashboard，选择创建 Web App
-- 在 Web App 配置界面 Code 一栏，Python version 选择 3.6，并点开 WSGI configuration file 进行编辑，把下面的内容粘贴到里面
-
-```python
-import sys
-
-project_home = u'/home/the0demiurge/ShadowSocksShare-OpenShift'
-if project_home not in sys.path:
-    sys.path = [project_home] + sys.path
-
-from app import app as application
-
-```
-
-- 在回到 Web App 配置界面，点那个绿色的 `Reload xxx.pythonanywhere.com`
-
-一会之后，http://你的用户名.pythonanywhere.com 就能用了
-
-** 我是部署之后写的这个教程，如果按照流程部署失败，请提交 Issue **
+部署了也用不了，是该网站对服务器作了限制
 
 ## OpenShift v3 部署方法：
 
