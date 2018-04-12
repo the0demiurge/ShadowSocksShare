@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# -*- utf-8 -*-
+# -*- coding: utf-8 -*-
 
 import os
 from flask_script import Manager, Server

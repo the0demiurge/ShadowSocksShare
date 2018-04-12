@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# -*- utf-8 -*-
+# -*- coding: utf-8 -*-
 import base64
 import random
 import logging
@@ -9,22 +9,19 @@ import os
 from app import app
 from app.ascii import birthday_2017, ss_title
 from app.ss import ss_free
+from app import donation
 from flask import render_template, send_from_directory, abort
+from apscheduler.schedulers.background import BackgroundScheduler
 
 
-servers = list()
+servers = [{'data': [], 'info': {'message': '别着急，正在爬数据，十分钟后再回来吧：）', 'url': 'http://ss.pythonic.life', 'name': '免费 ShadowSocks 帐号分享'}}]
 curtime = time.ctime()
 
-# decoded = list()
-# for i in servers:
-#     for j in i['data']:
-#         decoded.append(j['ssr_uri'])
-# decoded = '\n'.join(decoded)
-# encoded = base64.urlsafe_b64encode(bytes(decoded, 'utf-8'))
 encoded = ''
 full_encoded = ''
 jsons = list()
 full_jsons = list()
+scheduler = BackgroundScheduler()
 
 
 def update_servers():
@@ -52,6 +49,7 @@ def update_servers():
         encoded = base64.urlsafe_b64encode(bytes(decoded, 'utf-8'))
         full_decoded = '\n'.join(full_decoded)
         full_encoded = base64.urlsafe_b64encode(bytes(full_decoded, 'utf-8'))
+        time.sleep(7200)
     except Exception as e:
         logging.exception(e, stack_info=True)
 
@@ -61,20 +59,18 @@ counter_path = 'memory'
 count = 0
 
 
-def counter(counter_path=counter_path):
-    if counter_path == 'memory':
-        global count
-        count += 1
-    else:
-        if not os.path.exists(os.path.split(counter_path)[0]):
-            os.makedirs(os.path.split(counter_path)[0])
-        if not os.path.exists(counter_path):
-            open(counter_path, 'w').write('0')
-        count = int(open(counter_path).readline())
-        open(counter_path, 'w').write(str(count + 1))
-    if count % 150 == 2:
-        update_thread = threading.Thread(target=update_servers)
-        update_thread.start()
+def counter(counter_path=counter_path, update=True):
+    if update:
+        if counter_path == 'memory':
+            global count
+            count += 1
+        else:
+            if not os.path.exists(os.path.split(counter_path)[0]):
+                os.makedirs(os.path.split(counter_path)[0])
+            if not os.path.exists(counter_path):
+                open(counter_path, 'w').write('0')
+            count = int(open(counter_path).readline())
+            open(counter_path, 'w').write(str(count + 1))
     return count
 
 
@@ -138,19 +134,20 @@ def pages(path):
         abort(404)
 
     try:
-        uri = servers[a]['data'][b]['decoded_url'] if 'decoded_url' in servers[a]['data'][b] else ''
-        remarks = servers[a]['data'][b]['remarks'] if 'remarks' in servers[a]['data'][b] else 'None'
-        server = servers[a]['data'][b]['server'] if 'server' in servers[a]['data'][b] else 'None'
-        server_port = servers[a]['data'][b]['server_port'] if 'server_port' in servers[a]['data'][b] else 'None'
-        password = servers[a]['data'][b]['password'] if 'password' in servers[a]['data'][b] else 'None'
-        method = servers[a]['data'][b]['method'] if 'method' in servers[a]['data'][b] else 'None'
-        ssr_protocol = servers[a]['data'][b]['ssr_protocol'] if 'ssr_protocol' in servers[a]['data'][b] else 'None'
-        obfs = servers[a]['data'][b]['obfs'] if 'obfs' in servers[a]['data'][b] else 'None'
-        href = servers[a]['data'][b]['href'] if 'href' in servers[a]['data'][b] else 'None'
-        json = servers[a]['data'][b]['json'] if 'json' in servers[a]['data'][b] else 'None'
-        obfsparam = servers[a]['data'][b]['obfsparam'] if 'obfsparam' in servers[a]['data'][b] else 'None'
-        protoparam = servers[a]['data'][b]['protoparam'] if 'protoparam' in servers[a]['data'][b] else 'None'
-        status = servers[a]['data'][b]['status'] if 'status' in servers[a]['data'][b] else 'None'
+        uri = servers[a]['data'][b].get('decoded_url', '')
+        remarks = servers[a]['data'][b].get('remarks', 'None')
+        server = servers[a]['data'][b].get('server', 'None')
+        server_port = servers[a]['data'][b].get('server_port', 'None')
+        password = servers[a]['data'][b].get('password', 'None')
+        method = servers[a]['data'][b].get('method', 'None')
+        ssr_protocol = servers[a]['data'][b].get('ssr_protocol', 'None')
+        obfs = servers[a]['data'][b].get('obfs', 'None')
+        href = servers[a]['data'][b].get('href', 'None')
+        json = servers[a]['data'][b].get('json', 'None')
+        obfsparam = servers[a]['data'][b].get('obfsparam', 'None')
+        protoparam = servers[a]['data'][b].get('protoparam', 'None')
+        status = servers[a]['data'][b].get('status', 'None')
+        content = servers[a]['data'][b].get('content', 'None')
 
         color, opacity, count = gen_canvas_nest()
 
@@ -174,6 +171,7 @@ def pages(path):
             obfsparam=obfsparam,
             protoparam=protoparam,
             status=status,
+            content=content,
         )
     except Exception as e:
         logging.exception(e, stack_info=True)
@@ -193,23 +191,44 @@ def static_html(path):
         abort(404)
 
 
+@app.route('/donation')
+def html_donation():
+    try:
+        color, opacity, count = gen_canvas_nest()
+        return render_template(
+            'donate.html',
+            color=color,
+            opacity=opacity,
+            count=count,
+            data=donation.data,
+            sum_people=donation.sum_people,
+            sum_money=donation.sum_money)
+    except Exception as e:
+        logging.exception(e)
+        abort(404)
+
+
 @app.route('/subscribe')
 def subscribe():
+    counter('', False)
     return encoded
 
 
 @app.route('/full/subscribe')
 def full_subscribe():
+    counter('', False)
     return full_encoded
 
 
 @app.route('/json')
 def subscribe_json():
+    counter('', False)
     return '{}' if len(jsons) == 0 else random.sample(jsons, 1)[0]
 
 
 @app.route('/full/json')
 def full_subscribe_json():
+    counter('', False)
     return '{}' if len(jsons) == 0 else random.sample(full_jsons, 1)[0]
 
 
@@ -243,5 +262,14 @@ def page_not_found(e):
 def gift():
     return birthday_2017
 
+
+update_thread = threading.Thread(target=update_servers)
+scheduler.add_job(update_servers, "cron", minute=random.randint(1, 15), second=random.randint(0, 59))
+
+if not os.environ.get('TEST', False):
+    update_thread.start()
+    scheduler.start()
+else:
+    print('Testing mode on:', os.environ.get('TEST', False))
 
 print('部署完成')

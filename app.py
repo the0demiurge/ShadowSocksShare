@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# -*- utf-8 -*-
+# -*- coding: utf-8 -*-
 from app import app as application
 import logging
 import os

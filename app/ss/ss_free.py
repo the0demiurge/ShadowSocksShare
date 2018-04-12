@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# -*- utf-8 -*-
+# -*- coding: utf-8 -*-
 """
 本代码使用了 regex beautifulsoup4 这些第三方库，
 只支持Python3以上的版本，在Linux下写成，请读者自行安装这三个第三方库，
@@ -9,18 +9,14 @@
 try:
     import regex as re
     from bs4 import BeautifulSoup
+    import logging
+    import requests
+    from app.ss.parse import parse, scanNetQR, gen_uri
+    from app.ss.ssr_check import validate
+    from app.ss.tools import cf_request
 except ImportError:
-    print('''Python缺少依赖库，请使用 pip install -U regex beautifulsoup4 或者其他方式安装此依赖。
-          本软件在Linux下写成，Python版本为3.5，如果遇到任何错误，请到GitHub上提交Issue。\n''')
+    print('You should install python modules following requirements.txt')
     exit(0)
-
-import urllib
-import logging
-import requests
-import base64
-import json
-from app.ss.parse import parse, scanNetQR
-from app.ss.ssr_check import validate
 
 
 __author__ = 'Charles Xu'
@@ -28,13 +24,7 @@ __email__ = 'charl3s.xu@gmail.com'
 __my_girlfriend__ = '小胖儿～'
 
 
-fake_ua = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.2; Win64; x64; rv:16.0.1) Gecko/20121011 Firefox/16.0.1'}
-
-
-def get_href(string, pattern='.*'):
-    found = re.findall('(?<=<a\s+href=")[^"]+(?=">%s</a>)' % pattern, string)
-    if found:
-        return found[0]
+fake_ua = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.108 Safari/537.36'}
 
 
 def request_url(url, headers=None, name=''):
@@ -44,7 +34,7 @@ def request_url(url, headers=None, name=''):
     servers = list()
     try:
         response = requests.get(url, headers=headers, verify=False).text
-        data.update(map(lambda x: re.sub('\s', '', x), re.findall('ssr?://[a-zA-Z0-9=]+', response)))
+        data.update(map(lambda x: re.sub('\s', '', x), re.findall('ssr?://[a-zA-Z0-9_]+=*', response)))
         soup = BeautifulSoup(response, 'html.parser')
         title = soup.find('title').text
 
@@ -62,7 +52,7 @@ def request_url(url, headers=None, name=''):
     return servers, info
 
 
-def request_freess_cx(url='https://freess.cx/', headers=None):
+def request_freess_cx(url='https://freess.cx/', headers=fake_ua):
     print('req fscx...')
     qr = list()
     servers = list()
@@ -77,7 +67,7 @@ def request_freess_cx(url='https://freess.cx/', headers=None):
         for i, img_url in enumerate(qr):
             print('req img', img_url)
             try:
-                servers.append(parse(scanNetQR(img_url), ' '.join([title, str(i)])))
+                servers.append(parse(scanNetQR(img_url, headers=headers), ' '.join([title, str(i)])))
             except Exception as e:
                 print(img_url)
                 logging.exception(e, stack_info=False)
@@ -104,7 +94,7 @@ def request_doub_url(url='https://doub.io/sszhfx/'):
     return set(urls)
 
 
-def request_iss(url='http://ss.ishadowx.com/'):
+def request_iss(url='https://global.ishadowx.net'):
     print('req iss...')
 
     try:
@@ -139,10 +129,10 @@ def request_iss(url='http://ss.ishadowx.com/'):
     for i, server in enumerate(server_data):
         try:
             servers.append(dict())
-            server_data = server.text.strip().split('\n')
+            server_data = re.split('\s*\n\s*', server.text.strip())
             servers[-1]['server'] = server_data[0].split(':')[-1].strip()
             servers[-1]['server_port'] = re.findall('\d+', server_data[1])[0]
-            servers[-1]['remarks'] = ' '.join(['ss.ishadowx.com', str(i)])
+            servers[-1]['remarks'] = ' '.join(['global.ishadowx.com', str(i)])
             servers[-1]['password'] = server_data[2].split(':')[-1].strip()
             servers[-1]['method'] = server_data[3].split(':')[-1].strip()
             if 'QR' not in server_data[4]:
@@ -186,239 +176,42 @@ def request_5752me(url='https://wget.5752.me/Computer/soft/socks5%E4%BB%A3%E7%90
     return servers, info
 
 
-def request_nobey(url='https://raw.githubusercontent.com/NoBey/Shadowsocks-free/master/README.md'):
-    def strip_dot(x):
-        return
-    print('req nobey...')
-    servers = list()
+def request_fq123(url='https://raw.githubusercontent.com/fq1234/home/master/README.md'):
+    print('req fq123...')
     try:
-        data = re.split('##+|---+', requests.get(url).text)[2:5:2]
-        info = {'message': '', 'name': 'NoBey', 'url': 'https://github.com/NoBey/Shadowsocks-free'}
-
-        for i, server in enumerate(data):
-            server = server.split('\n')
-
-            name = server[0].strip()
-            (
-                ips,
-                ports,
-                _,
-                method,
-                password) = list(map(
-                    lambda server: list(map(
-                        lambda x: x.strip().strip('`').strip(),
-                        server.strip('-').strip().split()[1:])),
-                    server[1:6]))
-            method = method[0]
-            password = password[0]
-
-            for j, ip in enumerate(ips):
-                for k, port in enumerate(ports):
-                    servers.append(dict())
-                    servers[-1]['remarks'] = 'NoBey {}-{}-{}'.format(name, j, k)
-                    (
-                        servers[-1]['server'],
-                        servers[-1]['password'],
-                        servers[-1]['server_port'],
-                        servers[-1]['method']) = (ip, password, port, method)
-
+        data = re.split('\s*\n\s*', requests.get(url).text.split('```')[1].strip())
+        servers = [{
+            'remarks': 'fq123.tk',
+            'server': data[0].split()[1],
+            'server_port': data[1].split()[1],
+            'password': data[2].split()[1],
+            'method': data[3].split()[1],
+        }]
+        info = {'message': '', 'name': 'fq123', 'url': 'http://fq123.tk/'}
     except Exception as e:
         logging.exception(e, stack_info=True)
         return [], {'message': str(e), 'url': '', 'name': ''}
     return servers, info
 
 
-def request_xiaoshuang(url='https://xsjs.yhyhd.org/free-ss'):
-    print('req xcud...')
+def request_free_ss_site(url='https://free-ss.site/ss.json', headers=fake_ua):
+    print('req free_ss_site/ss.json...')
+    info = {'message': '部分账号大概每隔6小时变1次', 'name': '免费上网帐号', 'url': 'https://free-ss.site/'}
     try:
-        data = requests.get(url)
-        soup = BeautifulSoup(data.text, 'html.parser')
-        data = soup.find('div', attrs={'id': 'ss-body'})
-        data = data.text.strip().split('\n\n\n')
-        info = {'message': data[0].split('\n')[0], 'name': '小双加速', 'url': url}
-        data[0] = data[0].split('\n', maxsplit=1)[-1]
-        servers = list()
-        for server in data:
-            server_data = server.strip().split('\n')
-            servers.append(dict())
-            servers[-1]['remarks'] = '小双{}'.format(server_data[0]).strip()
-            servers[-1]['server'] = server_data[1].split()[1].strip()
-            servers[-1]['server_port'] = server_data[1].split()[3].strip()
-            servers[-1]['password'] = server_data[2].split()[3].strip()
-            servers[-1]['method'] = server_data[2].split()[1].strip()
-            servers[-1]['ssr_protocol'] = server_data[3].split()[1].split(':')[1].strip()
-            servers[-1]['obfs'] = server_data[3].split()[2].split(':')[1].strip()
+        respond = cf_request(url, headers=headers)
+        data = respond.json()['data']
+        servers = list(map(lambda x: {
+                       'remarks': x[6],
+                       'server': x[1],
+                       'server_port': x[2],
+                       'password': x[3],
+                       'method': x[4]
+                       }, data))
     except Exception as e:
         logging.exception(e, stack_info=True)
-        return [], {'message': str(e), 'url': '', 'name': ''}
+        print(respond.text)
+        print('-' * 30)
     return servers, info
-
-# this cannot use for now
-
-
-def request_newpac(url='https://github.com/Alvin9999/new-pac/wiki/ss%E5%85%8D%E8%B4%B9%E8%B4%A6%E5%8F%B7'):
-    data = requests.get(url)
-    soup = BeautifulSoup(data.text, 'html.parser')
-
-    ss_list = list()
-
-    for i in soup.find_all('p'):
-        if re.match('\<p\>\s*服务器\d+[^:：]*[:：]', str(i)):
-            ss_list.append(str(i))
-
-    servers = list()
-    for i in ss_list:
-        servers.append(dict())
-        servers[-1]['string'] = i
-        # name
-        tmp = re.findall('服务器\d+[^:：]*(?=\s*[:：])', i)
-        if tmp:
-            servers[-1]['remarks'] = tmp[0]
-
-        # server
-        tmp = re.findall('(?<=服务器\s*\d+[^:：]*[:：]\s*[^a-zA-Z0-9_]*)[\w\d\.]+', i)
-        if tmp:
-            servers[-1]['server'] = tmp[0]
-
-        # server_port
-        tmp = re.findall('(?<=端口\s*[^:：]*[:：]\s*[^a-zA-Z0-9_]*)\d+', i)
-        if tmp:
-            servers[-1]['server_port'] = tmp[0]
-
-        # password
-        tmp = re.findall('(?<=密码\s*[^:：]*[:：]\s*[^a-zA-Z0-9_]*)[a-zA-Z\d\.\+\-_\*\\/]+', i)
-        if tmp:
-            servers[-1]['password'] = tmp[0]
-
-        # method
-        tmp = re.findall('(?<=加密方[式法]\s*[^:：]*[:：]\s*[^a-zA-Z0-9_]*)[a-zA-Z\d\.\+\-_\*\\/]+', i)
-        if tmp:
-            servers[-1]['method'] = tmp[0]
-
-        # SSR协议
-        tmp = re.findall('(?<=SSR协议\s*[^:：]*[:：]\s*[^a-zA-Z_0-9]*)[a-zA-Z\d\.\+\-_\*\\/]+', i)
-        if tmp:
-            servers[-1]['ssr_protocol'] = tmp[0]
-
-        # 混淆
-        tmp = re.findall('(?<=混淆\s*[^:：]*[:：]\s*[^a-zA-Z0-9_]*)[a-zA-Z\d\.\+\-_\*\\/]+', i)
-        if tmp:
-            servers[-1]['obfs'] = tmp[0]
-    info = {'message': '', 'name': 'new-pac', 'url': url}
-    return servers, info
-
-
-def gen_uri(servers):
-    '''{
-                "server": server['server'],
-                "server_ipv6": "::",
-                "server_port": int(server['server_port']),
-                "local_address": "127.0.0.1",
-                "local_port": 1080,
-                "password": server['password'],
-                "timeout": 300,
-                "udp_timeout": 60,
-                "method": method,
-                "protocol": ssr_protocol,
-                "protocol_param": "",
-                "obfs": obfs,
-                "obfs_param": "",
-                "fast_open": False,
-                "workers": 1,
-                "group": "ss.pythonic.life"
-            },'''
-    def encode(decoded):
-        return base64.urlsafe_b64encode(bytes(decoded, 'utf-8')).decode('utf-8').replace('=', '')
-
-    def decode(string):
-        return str(base64.urlsafe_b64decode(bytes(string + (4 - len(string) % 4) * '=', 'utf-8')), 'utf-8')
-
-    result_servers = list()
-    for server in servers:
-        if 'password' not in server:
-            server['password'] = ''
-        try:
-            try:
-                # SSR信息是否完整
-                decoded = ':'.join([
-                                   server['server'],
-                                   server['server_port'],
-                                   server['ssr_protocol'],
-                                   server['method'],
-                                   server['obfs'],
-                                   encode(server['password'])
-                                   ])
-                decoded += '/?remarks={remarks}&group={group}'.format(
-                    remarks=encode(server['remarks']),
-                    group=encode("Charles Xu"))
-
-                ss_uri = 'ssr://{endoced}'.format(
-                    endoced=encode(decoded))
-                ssr_uri = ss_uri
-
-            except (KeyError, EOFError):
-                # 不完整则是SS
-                decoded = '{method}:{password}@{hostname}:{port}'.format(
-                    method=server['method'],
-                    password=server['password'],
-                    hostname=server['server'],
-                    port=server['server_port'],
-                )
-                ss_uri = 'ss://{}#{}'.format(
-                    str(base64.urlsafe_b64encode(bytes(decoded, encoding='utf8')), encoding='utf-8'),
-                    urllib.parse.quote(server['remarks']))
-
-                # ssr格式的ss帐号信息
-                ssr_decoded = ':'.join([
-                    server['server'],
-                    server['server_port'],
-                    'origin',
-                    server['method'],
-                    'plain',
-                    encode(server['password'])
-                ])
-                ssr_decoded += '/?remarks={remarks}&group={group}'.format(
-                    remarks=encode(server['remarks']),
-                    group=encode("Charles Xu"))
-
-                ssr_uri = 'ssr://{endoced}'.format(
-                    endoced=encode(ssr_decoded))
-
-            server['uri'] = ss_uri
-            server['ssr_uri'] = ssr_uri
-            # print(ssr_uri, decode(ssr_uri[6:]))
-            server['decoded_url'] = urllib.parse.unquote(ss_uri)
-
-            server_data_to_json = {
-                "server": server['server'],
-                "server_ipv6": "::",
-                "server_port": int(server['server_port']),
-                "local_address": "127.0.0.1",
-                "local_port": 1080,
-                "password": server['password'],
-                # "timeout": 300,
-                # "udp_timeout": 60,
-                # "fast_open": False,
-                # "workers": 1,
-                "group": "Charles Xu"
-            }
-            for key in ['obfs', 'method', 'ssr_protocol', 'obfsparam', 'protoparam']:
-                if key in server:
-                    server_data_to_json[key] = server.get(key)
-
-            server['json'] = json.dumps(server_data_to_json,
-                                        ensure_ascii=False,
-                                        indent=2)
-            result_servers.append(server)
-        except (KeyError, EOFError):
-            try:
-                href = get_href(server['string'], '.*查看连接信息.*')
-                server['href'] = href
-            except Exception as e:
-                logging.exception(e, stack_info=True)
-        except ValueError as e:
-            logging.exception(e, stack_info=True)
-    return result_servers
 
 
 def main(debug=list()):
@@ -428,8 +221,10 @@ def main(debug=list()):
     websites = [
         request_iss,
         request_freess_cx,
-        request_nobey,
-        request_5752me,
+        # request_nobey,
+        # request_5752me,
+        request_fq123,
+        request_free_ss_site,
     ]
     from app.config import url
 
