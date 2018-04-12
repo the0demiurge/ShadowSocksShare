@@ -8,4 +8,5 @@ beautifulsoup4
 requests
 pillow
 cfscrape
+apscheduler
 gunicorn

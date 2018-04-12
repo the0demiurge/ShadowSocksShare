@@ -11,6 +11,7 @@ from app.ascii import birthday_2017, ss_title
 from app.ss import ss_free
 from app import donation
 from flask import render_template, send_from_directory, abort
+from apscheduler.schedulers.background import BackgroundScheduler
 
 
 servers = [{'data': [], 'info': {'message': '别着急，正在爬数据，十分钟后再回来吧：）', 'url': 'http://ss.pythonic.life', 'name': '免费 ShadowSocks 帐号分享'}}]
@@ -20,37 +21,37 @@ encoded = ''
 full_encoded = ''
 jsons = list()
 full_jsons = list()
+scheduler = BackgroundScheduler()
 
 
 def update_servers():
-    while 1:
-        try:
-            # servers
-            global servers
-            servers = ss_free.main()
-            # subscription
-            global encoded
-            global full_encoded
-            global jsons
-            global full_jsons
-            jsons = list()
-            decoded = list()
-            full_decoded = list()
-            for website in servers:
-                for server in website['data']:
-                    full_decoded.append(server['ssr_uri'])
-                    full_jsons.append(server['json'])
-                    if server['status'] is True:
-                        decoded.append(server['ssr_uri'])
-                        jsons.append(server['json'])
+    try:
+        # servers
+        global servers
+        servers = ss_free.main()
+        # subscription
+        global encoded
+        global full_encoded
+        global jsons
+        global full_jsons
+        jsons = list()
+        decoded = list()
+        full_decoded = list()
+        for website in servers:
+            for server in website['data']:
+                full_decoded.append(server['ssr_uri'])
+                full_jsons.append(server['json'])
+                if server['status'] is True:
+                    decoded.append(server['ssr_uri'])
+                    jsons.append(server['json'])
 
-            decoded = '\n'.join(decoded)
-            encoded = base64.urlsafe_b64encode(bytes(decoded, 'utf-8'))
-            full_decoded = '\n'.join(full_decoded)
-            full_encoded = base64.urlsafe_b64encode(bytes(full_decoded, 'utf-8'))
-            time.sleep(7200)
-        except Exception as e:
-            logging.exception(e, stack_info=True)
+        decoded = '\n'.join(decoded)
+        encoded = base64.urlsafe_b64encode(bytes(decoded, 'utf-8'))
+        full_decoded = '\n'.join(full_decoded)
+        full_encoded = base64.urlsafe_b64encode(bytes(full_decoded, 'utf-8'))
+        time.sleep(7200)
+    except Exception as e:
+        logging.exception(e, stack_info=True)
 
 
 # counter_path = os.path.expanduser('/tmp/counter')
@@ -263,6 +264,12 @@ def gift():
 
 
 update_thread = threading.Thread(target=update_servers)
-if os.environ.get('TEST', False):
+scheduler.add_job(update_servers, "cron", minute=random.randint(1, 15), second=random.randint(0, 59))
+
+if not os.environ.get('TEST', False):
     update_thread.start()
+    scheduler.start()
+else:
+    print('Testing mode on:', os.environ.get('TEST', False))
+
 print('部署完成')

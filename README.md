@@ -1,21 +1,42 @@
-# ShadowSocks免费帐号共享
+<h1 align="center">
+    <pre>
+╔═╗┬ ┬┌─┐┌┬┐┌─┐┬ ┬╔═╗┌─┐┌─┐┬┌─┌─┐
+╚═╗├─┤├─┤ │││ ││││╚═╗│ ││  ├┴┐└─┐
+╚═╝┴ ┴┴ ┴─┴┘└─┘└┴┘╚═╝└─┘└─┘┴ ┴└─┘
+    </pre>
+</h1>
 
-| **master** | **dev** |
-|--------|--------|
-| [![Build Status](https://travis-ci.org/the0demiurge/ShadowSocksShare-OpenShift.svg?branch=master)](https://travis-ci.org/the0demiurge/ShadowSocksShare-OpenShift) | [![Build Status](https://travis-ci.org/the0demiurge/ShadowSocksShare-OpenShift.svg?branch=dev)](https://travis-ci.org/the0demiurge/ShadowSocksShare-OpenShift) |
+<h1 align="center"> 免责声明 </h1>
 
-## 免责声明
-
+<p align="center">
 本项目仅进行技术展示，对所爬到的帐号不负任何责任。
-
+<br>
 本项目仅面向海外华人用户，中华人民共和国境内居民禁止使用，并请立即关闭本网站！
-
+<br>
 本项目所提供的帐号均来自网络，仅供科研、学习之用。
-
+<br>
 请用本项目分享的帐号进行学习、科研，切勿用于其他用途。
-
+<br>
 请于24小时之内删掉与本项目相关的一切内容，否则出现一切问题本站作者概不负责。
+</p>
+<hr>
 
+<div align="center">
+    <table>
+        <tr>
+            <td>Master</td><td>dev</td>
+        </tr>
+
+        <tr>
+            <td>
+                <img src="https://travis-ci.org/the0demiurge/ShadowSocksShare-OpenShift.svg?branch=master">
+            </td>
+            <td>
+                <img src="https://travis-ci.org/the0demiurge/ShadowSocksShare-OpenShift.svg?branch=dev">
+            </td>
+        </tr>
+    </table>
+</div>
 ## 简介：
 
 本项目是我的 [Python 实验室](https://github.com/the0demiurge/Python-Scripts)子模块，欢迎大家 STAR/FORK/ISSUE/提交 PR ～
@@ -24,15 +45,20 @@
 
 *我不生产 ss(r) 帐号，我只是帐号的搬运工。不保证可用，不保证速度，不保证安全，不保证隐私。*
 
-
 ### 功能：
 
 1. 二维码
 2. ss(r) 分享URL
 3. json 配置
 4. **ssr 订阅和 json 配置订阅**
-5. **自动更新爬虫数据**
+5. **每小时自动更新爬虫数据**
 6. 自动检测 ssr 帐号可用性
+
+### TO DO
+
+- [ ] 使用MySQL存储数据
+- [ ] 添加留言版功能
+- [ ] 爬[#33](https://github.com/the0demiurge/ShadowSocksShare-OpenShift/issues/33)分享的网址
 
 
 示例网站：[ss.pythonic.life](http://ss.pythonic.life)
@@ -67,7 +93,7 @@
 3. 创建一个应用：在[创建应用页面](https://dashboard.heroku.com/new-app)创建一个应用
 4. 在部署 (Deploy) 页面选择 GitHub，在Connect to GitHub 这一栏连接上你的 GitHub 帐号，搜索并连接本项目
 7. 选择一个分支并点击 `Deploy Branch`
-8. 部署完毕后，将网页拉到最上面，并点击`Open app`打开你的网站。注意：网站访问第二次之后会进行爬取并检测帐号可用性，大概花费20分钟的时间。
+8. 部署完毕后，将网页拉到最上面，并点击`Open app`打开你的网站。注意：网站建立之后会进行爬取并检测帐号可用性，大概花费20分钟的时间。
 
 ## Google App Engine 部署方法：
 优点：每月限流量不限时间；缺点：墙内肯定访问不了
@@ -105,8 +131,3 @@ ERROR: (gcloud.app.deploy) Error [400] Operation does not satisfy the following 
 * Flask 0.12.2
 * 其他，反正都安装最新版就行了
 
-### TO DO
-
-1. - [ ] 使用MySQL存储数据
-2. - [ ] 添加留言版功能
-3. - [ ] 搞定ssl证书，弄https加密
