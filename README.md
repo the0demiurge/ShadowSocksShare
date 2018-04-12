@@ -21,22 +21,11 @@
 </p>
 <hr>
 
-<div align="center">
-    <table>
-        <tr>
-            <td>Master</td><td>dev</td>
-        </tr>
+| **master** | **dev** |
+|--------|--------|
+| [![Build Status](https://travis-ci.org/the0demiurge/ShadowSocksShare-OpenShift.svg?branch=master)](https://travis-ci.org/the0demiurge/ShadowSocksShare-OpenShift) | [![Build Status](https://travis-ci.org/the0demiurge/ShadowSocksShare-OpenShift.svg?branch=dev)](https://travis-ci.org/the0demiurge/ShadowSocksShare-OpenShift) |
 
-        <tr>
-            <td>
-                <img src="https://travis-ci.org/the0demiurge/ShadowSocksShare-OpenShift.svg?branch=master">
-            </td>
-            <td>
-                <img src="https://travis-ci.org/the0demiurge/ShadowSocksShare-OpenShift.svg?branch=dev">
-            </td>
-        </tr>
-    </table>
-</div>
+
 ## 简介：
 
 本项目是我的 [Python 实验室](https://github.com/the0demiurge/Python-Scripts)子模块，欢迎大家 STAR/FORK/ISSUE/提交 PR ～
