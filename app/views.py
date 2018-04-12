@@ -263,5 +263,6 @@ def gift():
 
 
 update_thread = threading.Thread(target=update_servers)
-update_thread.start()
+if os.environ.get('TEST', False):
+    update_thread.start()
 print('部署完成')
