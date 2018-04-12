@@ -2,6 +2,9 @@
 
 # info contains (number, message, name, comment)
 info = [
+    (1,),
+    (1, "", "sz6101238"),
+    (6.66,),
     (2,),
     (2.33,),
     (1,),
