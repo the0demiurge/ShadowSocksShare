@@ -21,7 +21,6 @@ except ImportError:
 
 __author__ = 'Charles Xu'
 __email__ = 'charl3s.xu@gmail.com'
-__my_girlfriend__ = '小胖儿～'
 
 
 fake_ua = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.108 Safari/537.36'}

@@ -7,32 +7,7 @@ import logging
 import regex as re
 
 
-def request_xiaoshuang(url='https://xsjs.yhyhd.org/free-ss'):
-    print('req xcud...')
-    try:
-        data = requests.get(url)
-        soup = BeautifulSoup(data.text, 'html.parser')
-        data = soup.find('div', attrs={'id': 'ss-body'})
-        data = data.text.strip().split('\n\n\n')
-        info = {'message': data[0].split('\n')[0], 'name': '小双加速', 'url': url}
-        data[0] = data[0].split('\n', maxsplit=1)[-1]
-        servers = list()
-        for server in data:
-            server_data = server.strip().split('\n')
-            servers.append(dict())
-            servers[-1]['remarks'] = '小双{}'.format(server_data[0]).strip()
-            servers[-1]['server'] = server_data[1].split()[1].strip()
-            servers[-1]['server_port'] = server_data[1].split()[3].strip()
-            servers[-1]['password'] = server_data[2].split()[3].strip()
-            servers[-1]['method'] = server_data[2].split()[1].strip()
-            servers[-1]['ssr_protocol'] = server_data[3].split()[1].split(':')[1].strip()
-            servers[-1]['obfs'] = server_data[3].split()[2].split(':')[1].strip()
-    except Exception as e:
-        logging.exception(e, stack_info=True)
-        return [], {'message': str(e), 'url': '', 'name': ''}
-    return servers, info
 
-# this cannot use for now
 
 
 def request_newpac(url='https://github.com/Alvin9999/new-pac/wiki/ss%E5%85%8D%E8%B4%B9%E8%B4%A6%E5%8F%B7'):
