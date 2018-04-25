@@ -7,9 +7,8 @@ import time
 import threading
 import os
 from app import app
-from app.ascii import birthday_2017, ss_title
+from app.ascii import  ss_title
 from app.ss import ss_free
-from app import donation
 from flask import render_template, send_from_directory, abort
 
 PERIOD = int(os.environ.get('PERIOD', 300))
@@ -201,21 +200,6 @@ def static_html(path):
         abort(404)
 
 
-@app.route('/donation')
-def html_donation():
-    try:
-        color, opacity, count = gen_canvas_nest()
-        return render_template(
-            'donate.html',
-            color=color,
-            opacity=opacity,
-            count=count,
-            data=donation.data,
-            sum_people=donation.sum_people,
-            sum_money=donation.sum_money)
-    except Exception as e:
-        logging.exception(e)
-        abort(404)
 
 
 @app.route('/subscribe')
@@ -267,10 +251,6 @@ def page_not_found(e):
         count=count,
     ), 404
 
-
-@app.route('/gift')
-def gift():
-    return birthday_2017
 
 
 print('部署完成')
