@@ -1,0 +1,13 @@
+ERROR:root:name 'url' is not defined
+Traceback (most recent call last):
+  File "/home/niuhe/ShadowSocksShare-OpenShift/app/ss/test.py", line 52, in request_freess_cx
+    info = {'message': msg, 'url': url, 'name': str(title)}
+NameError: name 'url' is not defined
+Stack (most recent call last):
+  File "/home/niuhe/ShadowSocksShare-OpenShift/app/ss/test.py", line 68, in <module>
+    server, info = request_freess_cx()
+  File "/home/niuhe/ShadowSocksShare-OpenShift/app/ss/test.py", line 39, in wrapper
+    return func(response)
+  File "/home/niuhe/ShadowSocksShare-OpenShift/app/ss/test.py", line 63, in request_freess_cx
+    logging.exception(e, stack_info=True)
+ERROR:root:requests timeout: https://my.freess.org/
