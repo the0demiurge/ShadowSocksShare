@@ -11,15 +11,56 @@ try:
     from bs4 import BeautifulSoup
     import logging
     import requests
-    from app.ss.parse import parse, scanNetQR, gen_uri
+    from app.ss.parse import parse, gen_uri
     from app.ss.ssr_check import validate
     from app.ss.tools import cf_request
+    from app.ss.util import get_page_html,scanNetQR
+    import functools
+    import logging
+    from bs4 import BeautifulSoup
+    from app.config import HEADERS, PROXIES, TIMEOUT, LOG_FILENAME
+    import array
+    import regex as re
+    import pyqrcode
+    import requests
+    from PIL import Image
+    from io import BytesIO
+    from pyzbar.pyzbar import decode
+    from app.config import HEADERS
+    from app.ss.parse import parse
+    import time
 except ImportError:
     print('You should install python modules following requirements.txt')
-    exit(0)
+    # exit(0)
 
 
-fake_ua = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.108 Safari/537.36'}
+logging.basicConfig(
+    filename=LOG_FILENAME,
+    level=logging.ERROR,
+)
+
+
+@get_page_html('http://my.freess.org/', proxies=PROXIES)
+def request_freess_cx(response):
+    servers = []
+    names = []
+    suffixs = ['jp01.png', 'jp02.png', 'jp03.png', 'us01.png', 'us02.png', 'us03.png']
+    qr_urls = ['http://my.freess.org/images/servers/' + suffix for suffix in suffixs]
+    try:
+        soup = BeautifulSoup(response, 'lxml')
+        for title in soup.find_all('div', class_="4u 12u(mobile)"):
+            soup = BeautifulSoup(str(title), 'lxml')
+            names.append(soup.get_text())
+        info = {'message': '', 'url': qr_urls, 'name': names}
+        print(names)
+        for i in range(6):
+            ss_list = scanNetQR(qr_urls[i], proxies=PROXIES)
+            servers.append(parse(ss_list, names[i]))
+            time.sleep(3)
+    except Exception:
+        logging.ERROR('请求出错' + 'http://my.freess.org/')
+    finally:
+        return servers, info
 
 
 def request_url(url, headers=None, name=''):
@@ -47,37 +88,11 @@ def request_url(url, headers=None, name=''):
     return servers, info
 
 
-def request_freess_cx(url='https://freess.cx/', headers=fake_ua):
-    print('req fscx...')
-    qr = list()
-    servers = list()
-    try:
-        response = requests.get(url, headers=headers).text
-        soup = BeautifulSoup(response, 'html.parser')
-        title = soup.find('title').text
-        msg = soup.find('section', attrs={'id': 'banner'}).text.strip()
-
-        info = {'message': msg, 'url': url, 'name': str(title)}
-        qr = list(map(lambda x: url.strip('/') + '/' + x.find('a').get('href'), soup.find_all('div', attrs={'class': '4u 12u(mobile)'})))
-        for i, img_url in enumerate(qr):
-            print('req img', img_url)
-            try:
-                servers.append(parse(scanNetQR(img_url, headers=headers), ' '.join([title, str(i)])))
-            except Exception as e:
-                print(img_url)
-                logging.exception(e, stack_info=False)
-                print('IMG_URL FOR freess.cx:', img_url)
-    except Exception as e:
-        logging.exception(e, stack_info=True)
-        return [], {'message': str(e), 'url': '', 'name': ''}
-    return servers, info
-
-
 def request_doub_url(url='https://doub.io/sszhfx/'):
     print('req doub...')
 
     try:
-        html = requests.get(url, headers=fake_ua)
+        html = requests.get(url, headers=HEADERS)
         soup = BeautifulSoup(html.text, 'html.parser')
         urls = list(set(map(lambda x: x.get('href'), filter(
             lambda x: x.text.strip() != '1', soup.find_all('a', attrs={'class': 'page-numbers'})))))
@@ -189,7 +204,7 @@ def request_fq123(url='https://raw.githubusercontent.com/fq1234/home/master/READ
     return servers, info
 
 
-def request_free_ss_site(url='https://free-ss.site/ss.json', headers=fake_ua):
+def request_free_ss_site(url='https://free-ss.site/ss.json', headers=HEADERS):
     print('req free_ss_site/ss.json...')
     info = {'message': '部分账号大概每隔6小时变1次', 'name': '免费上网帐号', 'url': 'https://free-ss.site/'}
     try:
@@ -224,7 +239,7 @@ def main(debug=list()):
     from app.config import url
 
     websites.extend([(i, None) for i in url])
-    websites.extend([(i, fake_ua, i[-1]) for i in request_doub_url()])
+    websites.extend([(i, HEADERS, i[-1]) for i in request_doub_url()])
 
     for website in websites:
         try:

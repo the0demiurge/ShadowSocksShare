@@ -1,18 +1,17 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import re
-import zbar
-import requests
-from PIL import Image
-from io import BytesIO
-from numpy import array, uint8
 import base64
 import urllib
 import json
 import logging
+import requests
+from PIL import Image
+from io import BytesIO
+from pyzbar.pyzbar import decode
+from app.config import HEADERS
 
 
-scanner = zbar.Scanner()
 
 
 def decode(string):
@@ -82,13 +81,6 @@ def parse(uri, default_title='untitled'):
         server['remarks'] += ' SSR'
     return server
 
-
-uri = 'https://freess.cx/images/servers/jp01.png'
-
-
-def scanNetQR(img_url, headers=None):
-    img = array(Image.open(BytesIO(requests.get(img_url, headers=headers).content)))
-    return scanner.scan(img.astype(uint8) * 255)[0].data.decode('utf-8')
 
 
 def get_href(string, pattern='.*'):

@@ -5,6 +5,7 @@ numpy
 Flask-Script
 regex
 beautifulsoup4
+pyqrcode
 requests
 pillow
 cfscrape
