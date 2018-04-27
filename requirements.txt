@@ -1,6 +1,6 @@
 Flask
 pysocks
-zbar-py
+pyzbar
 numpy
 Flask-Script
 regex

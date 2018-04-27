@@ -33,7 +33,7 @@ def get_page_html(url, proxies={}):
 def scanNetQR(url, proxies={}):
     try:
         if isinstance(url, str):
-            ss_data = decode(Image.open(BytesIO(requests.get(urls, headers=HEADERS, proxies=proxies).content)))
+            ss_data = decode(Image.open(BytesIO(requests.get(url, headers=HEADERS, proxies=proxies).content)))
             return str(ss_data[0].data, encoding='utf-8')
     except Exception as e:
         logging.ERROR(str(e) + '请求二维码失败')
