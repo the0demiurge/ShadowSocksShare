@@ -4,7 +4,6 @@ from bs4 import BeautifulSoup
 from app.config import HEADERS, PROXIES, TIMEOUT, LOG_FILENAME
 import array
 import regex as re
-import pyqrcode
 import requests
 from PIL import Image
 from io import BytesIO

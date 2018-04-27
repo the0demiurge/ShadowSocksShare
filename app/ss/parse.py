@@ -5,11 +5,7 @@ import base64
 import urllib
 import json
 import logging
-import requests
-from PIL import Image
-from io import BytesIO
 from pyzbar.pyzbar import decode
-from app.config import HEADERS
 
 
 

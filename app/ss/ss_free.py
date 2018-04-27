@@ -6,32 +6,22 @@
 如果遇到任何运行问题请联系我。
 如果觉得这个脚本帮到了你，不妨为我的GitHub项目加个星呗～
 """
-try:
-    import regex as re
-    from bs4 import BeautifulSoup
-    import logging
-    import requests
-    from app.ss.parse import parse, gen_uri
-    from app.ss.ssr_check import validate
-    from app.ss.tools import cf_request
-    from app.ss.util import get_page_html,scanNetQR
-    import functools
-    import logging
-    from bs4 import BeautifulSoup
-    from app.config import HEADERS, PROXIES, TIMEOUT, LOG_FILENAME
-    import array
-    import regex as re
-    import pyqrcode
-    import requests
-    from PIL import Image
-    from io import BytesIO
-    from pyzbar.pyzbar import decode
-    from app.config import HEADERS
-    from app.ss.parse import parse
-    import time
-except ImportError:
-    print('You should install python modules following requirements.txt')
-    # exit(0)
+
+from app.ss.parse import parse, gen_uri
+from app.ss.ssr_check import validate
+from app.ss.tools import cf_request
+from app.ss.util import get_page_html,scanNetQR
+import functools
+import logging
+from bs4 import BeautifulSoup
+from app.config import HEADERS, PROXIES, TIMEOUT, LOG_FILENAME
+import array
+import regex as re
+from PIL import Image
+from io import BytesIO
+from pyzbar.pyzbar import decode
+import time
+
 
 
 logging.basicConfig(
