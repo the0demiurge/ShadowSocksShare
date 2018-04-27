@@ -7,15 +7,15 @@
 如果觉得这个脚本帮到了你，不妨为我的GitHub项目加个星呗～
 """
 
-from app.ss.parse import parse, gen_uri,scanNetQR
+from app.ss.parse import parse, gen_uri
 from app.ss.ssr_check import validate
 from app.ss.tools import cf_request
 from app.ss.util import get_page_html
 import functools
+from app.ss.util import scanNetQR
 import logging
 from bs4 import BeautifulSoup
 from app.config import HEADERS, PROXIES, TIMEOUT, LOG_FILENAME
-import array
 import regex as re
 import time
 
@@ -42,7 +42,7 @@ def request_freess_cx(response):
         print(names)
         for i in range(6):
             ss_list = scanNetQR(qr_urls[i],headers=HEADERS)
-            print(ss_list)
+            print('请求中haha:' + ss_list)
             servers.append(parse(ss_list, names[i]))
             time.sleep(3)
     except Exception:
