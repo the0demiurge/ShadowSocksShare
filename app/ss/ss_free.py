@@ -27,7 +27,7 @@ logging.basicConfig(
 )
 
 
-@get_page_html('http://my.freess.org/', proxies=PROXIES)
+@get_page_html('http://my.freess.org/')
 def request_freess_cx(response):
     servers = []
     names = []
@@ -42,7 +42,6 @@ def request_freess_cx(response):
         print(names)
         for i in range(6):
             ss_list = scanNetQR(qr_urls[i],headers=HEADERS)
-            print('请求中haha:' + ss_list)
             servers.append(parse(ss_list, names[i]))
             time.sleep(3)
     except Exception:

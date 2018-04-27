@@ -12,14 +12,14 @@ from app.config import HEADERS
 from app.ss.parse import parse
 import time
 
-def get_page_html(url, proxies={}):
+def get_page_html(url):
     def decorator(func):
         @functools.wraps(func)
         def wrapper(*args, **kw):
             print('requesting', url)
             try:
                 response = ''
-                response = requests.get(url, headers=HEADERS, timeout=TIMEOUT, proxies=proxies).text
+                response = requests.get(url, headers=HEADERS, timeout=TIMEOUT).text
             except requests.exceptions.Timeout:
                 logging.error('requests timeout: ' + url)
             except Exception as e:
