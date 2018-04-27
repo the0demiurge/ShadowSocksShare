@@ -9,9 +9,7 @@ import array
 from PIL.Image import Image
 from io import BytesIO
 import requests
-from numpy import array, uint8
 
-scanner = zbar.Scanner()
 
 
 
