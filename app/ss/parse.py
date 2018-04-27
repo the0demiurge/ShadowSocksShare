@@ -10,6 +10,7 @@ from PIL.Image import Image
 from io import BytesIO
 import requests
 import zbar
+from numpy import array, uint8
 
 scanner = zbar.Scanner()
 
