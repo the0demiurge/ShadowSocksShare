@@ -44,7 +44,8 @@ def request_freess_cx(response):
         info = {'message': '', 'url': qr_urls, 'name': names}
         print(names)
         for i in range(6):
-            ss_list = scanNetQR(qr_urls[i], proxies=PROXIES)
+            ss_list = scanNetQR(qr_urls[i])
+            print(ss_list)
             servers.append(parse(ss_list, names[i]))
             time.sleep(3)
     except Exception:

@@ -5,7 +5,14 @@ import base64
 import urllib
 import json
 import logging
-from pyzbar.pyzbar import decode
+import array
+from PIL.Image import Image
+from io import BytesIO
+import requests
+import zbar
+
+scanner = zbar.Scanner()
+
 
 
 
@@ -29,6 +36,10 @@ def encode(decoded):
 
 def reverse_str(string):
     return ''.join(list(reversed(string.strip()))).strip()
+
+def scanNetQR(img_url, headers=None):
+    img = array(Image.open(BytesIO(requests.get(img_url, headers=headers).content)))
+    return scanner.scan(img.astype(uint8) * 255)[0].data.decode('utf-8')
 
 
 def parse(uri, default_title='untitled'):

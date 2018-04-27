@@ -30,10 +30,15 @@ def get_page_html(url, proxies={}):
     return decorator
 
 
-def scanNetQR(url, proxies={}):
+def scanNetQR(url):
     try:
         if isinstance(url, str):
-            ss_data = decode(Image.open(BytesIO(requests.get(url, headers=HEADERS, proxies=proxies).content)))
+            ss_data = decode(Image.open(BytesIO(requests.get(url, headers=HEADERS,proxies=PROXIES).content)))
             return str(ss_data[0].data, encoding='utf-8')
     except Exception as e:
         logging.ERROR(str(e) + '请求二维码失败')
+
+
+if __name__ == '__main__':
+    dates = scanNetQR('http://my.freess.org/images/servers/jp01.png')
+    print(dates)

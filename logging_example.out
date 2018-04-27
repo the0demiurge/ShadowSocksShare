@@ -666,3 +666,432 @@ Traceback (most recent call last):
   File "E:\Temp\ShadowSocksShare-OpenShift\app\ss\ss_free.py", line 62, in request_url
     response = requests.get(url, headers=headers, verify=False).text
 NameError: name 'requests' is not defined
+ERROR:root:name 'requests' is not defined
+Traceback (most recent call last):
+  File "E:\Temp\ShadowSocksShare-OpenShift\app\ss\ss_free.py", line 85, in request_doub_url
+    html = requests.get(url, headers=HEADERS)
+NameError: name 'requests' is not defined
+Stack (most recent call last):
+  File "C:\Users\NiuHe\Anaconda3\lib\threading.py", line 884, in _bootstrap
+    self._bootstrap_inner()
+  File "C:\Users\NiuHe\Anaconda3\lib\threading.py", line 916, in _bootstrap_inner
+    self.run()
+  File "C:\Users\NiuHe\Anaconda3\lib\threading.py", line 864, in run
+    self._target(*self._args, **self._kwargs)
+  File "E:\Temp\ShadowSocksShare-OpenShift\app\views.py", line 34, in update_servers
+    servers = ss_free.main()
+  File "E:\Temp\ShadowSocksShare-OpenShift\app\ss\ss_free.py", line 232, in main
+    websites.extend([(i, HEADERS, i[-1]) for i in request_doub_url()])
+  File "E:\Temp\ShadowSocksShare-OpenShift\app\ss\ss_free.py", line 91, in request_doub_url
+    logging.exception(e, stack_info=True)
+ERROR:root:name 'requests' is not defined
+Traceback (most recent call last):
+  File "E:\Temp\ShadowSocksShare-OpenShift\app\ss\ss_free.py", line 101, in request_iss
+    data = requests.get(url)
+NameError: name 'requests' is not defined
+Stack (most recent call last):
+  File "C:\Users\NiuHe\Anaconda3\lib\threading.py", line 884, in _bootstrap
+    self._bootstrap_inner()
+  File "C:\Users\NiuHe\Anaconda3\lib\threading.py", line 916, in _bootstrap_inner
+    self.run()
+  File "C:\Users\NiuHe\Anaconda3\lib\threading.py", line 864, in run
+    self._target(*self._args, **self._kwargs)
+  File "E:\Temp\ShadowSocksShare-OpenShift\app\views.py", line 34, in update_servers
+    servers = ss_free.main()
+  File "E:\Temp\ShadowSocksShare-OpenShift\app\ss\ss_free.py", line 239, in main
+    data, info = website()
+  File "E:\Temp\ShadowSocksShare-OpenShift\app\ss\ss_free.py", line 104, in request_iss
+    logging.exception(e, stack_info=True)
+ERROR:root:('Connection aborted.', ConnectionResetError(10054, '远程主机强迫关闭了一个现有的连接。', None, 10054, None))http://my.freess.org/
+ERROR:root:name 'requests' is not defined
+Traceback (most recent call last):
+  File "E:\Temp\ShadowSocksShare-OpenShift\app\ss\ss_free.py", line 182, in request_fq123
+    data = re.split('\s*\n\s*', requests.get(url).text.split('```')[1].strip())
+NameError: name 'requests' is not defined
+Stack (most recent call last):
+  File "C:\Users\NiuHe\Anaconda3\lib\threading.py", line 884, in _bootstrap
+    self._bootstrap_inner()
+  File "C:\Users\NiuHe\Anaconda3\lib\threading.py", line 916, in _bootstrap_inner
+    self.run()
+  File "C:\Users\NiuHe\Anaconda3\lib\threading.py", line 864, in run
+    self._target(*self._args, **self._kwargs)
+  File "E:\Temp\ShadowSocksShare-OpenShift\app\views.py", line 34, in update_servers
+    servers = ss_free.main()
+  File "E:\Temp\ShadowSocksShare-OpenShift\app\ss\ss_free.py", line 239, in main
+    data, info = website()
+  File "E:\Temp\ShadowSocksShare-OpenShift\app\ss\ss_free.py", line 192, in request_fq123
+    logging.exception(e, stack_info=True)
+ERROR:root:HTTPSConnectionPool(host='free-ss.site', port=443): Max retries exceeded with url: /ss.json (Caused by NewConnectionError('<urllib3.connection.VerifiedHTTPSConnection object at 0x0000027E3822E7F0>: Failed to establish a new connection: [WinError 10060] 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。',))
+Traceback (most recent call last):
+  File "C:\Users\NiuHe\Anaconda3\lib\site-packages\urllib3\connection.py", line 141, in _new_conn
+    (self.host, self.port), self.timeout, **extra_kw)
+  File "C:\Users\NiuHe\Anaconda3\lib\site-packages\urllib3\util\connection.py", line 83, in create_connection
+    raise err
+  File "C:\Users\NiuHe\Anaconda3\lib\site-packages\urllib3\util\connection.py", line 73, in create_connection
+    sock.connect(sa)
+TimeoutError: [WinError 10060] 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\NiuHe\Anaconda3\lib\site-packages\urllib3\connectionpool.py", line 601, in urlopen
+    chunked=chunked)
+  File "C:\Users\NiuHe\Anaconda3\lib\site-packages\urllib3\connectionpool.py", line 346, in _make_request
+    self._validate_conn(conn)
+  File "C:\Users\NiuHe\Anaconda3\lib\site-packages\urllib3\connectionpool.py", line 850, in _validate_conn
+    conn.connect()
+  File "C:\Users\NiuHe\Anaconda3\lib\site-packages\urllib3\connection.py", line 284, in connect
+    conn = self._new_conn()
+  File "C:\Users\NiuHe\Anaconda3\lib\site-packages\urllib3\connection.py", line 150, in _new_conn
+    self, "Failed to establish a new connection: %s" % e)
+urllib3.exceptions.NewConnectionError: <urllib3.connection.VerifiedHTTPSConnection object at 0x0000027E3822E7F0>: Failed to establish a new connection: [WinError 10060] 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\NiuHe\Anaconda3\lib\site-packages\requests\adapters.py", line 440, in send
+    timeout=timeout
+  File "C:\Users\NiuHe\Anaconda3\lib\site-packages\urllib3\connectionpool.py", line 639, in urlopen
+    _stacktrace=sys.exc_info()[2])
+  File "C:\Users\NiuHe\Anaconda3\lib\site-packages\urllib3\util\retry.py", line 388, in increment
+    raise MaxRetryError(_pool, url, error or ResponseError(cause))
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='free-ss.site', port=443): Max retries exceeded with url: /ss.json (Caused by NewConnectionError('<urllib3.connection.VerifiedHTTPSConnection object at 0x0000027E3822E7F0>: Failed to establish a new connection: [WinError 10060] 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。',))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "E:\Temp\ShadowSocksShare-OpenShift\app\ss\ss_free.py", line 201, in request_free_ss_site
+    respond = cf_request(url, headers=headers)
+  File "E:\Temp\ShadowSocksShare-OpenShift\app\ss\tools.py", line 9, in cf_request
+    response = scraper.get(url)
+  File "C:\Users\NiuHe\Anaconda3\lib\site-packages\requests\sessions.py", line 521, in get
+    return self.request('GET', url, **kwargs)
+  File "C:\Users\NiuHe\Anaconda3\lib\site-packages\cfscrape\__init__.py", line 64, in request
+    resp = super(CloudflareScraper, self).request(method, url, *args, **kwargs)
+  File "C:\Users\NiuHe\Anaconda3\lib\site-packages\requests\sessions.py", line 508, in request
+    resp = self.send(prep, **send_kwargs)
+  File "C:\Users\NiuHe\Anaconda3\lib\site-packages\requests\sessions.py", line 618, in send
+    r = adapter.send(request, **kwargs)
+  File "C:\Users\NiuHe\Anaconda3\lib\site-packages\requests\adapters.py", line 508, in send
+    raise ConnectionError(e, request=request)
+requests.exceptions.ConnectionError: HTTPSConnectionPool(host='free-ss.site', port=443): Max retries exceeded with url: /ss.json (Caused by NewConnectionError('<urllib3.connection.VerifiedHTTPSConnection object at 0x0000027E3822E7F0>: Failed to establish a new connection: [WinError 10060] 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。',))
+Stack (most recent call last):
+  File "C:\Users\NiuHe\Anaconda3\lib\threading.py", line 884, in _bootstrap
+    self._bootstrap_inner()
+  File "C:\Users\NiuHe\Anaconda3\lib\threading.py", line 916, in _bootstrap_inner
+    self.run()
+  File "C:\Users\NiuHe\Anaconda3\lib\threading.py", line 864, in run
+    self._target(*self._args, **self._kwargs)
+  File "E:\Temp\ShadowSocksShare-OpenShift\app\views.py", line 34, in update_servers
+    servers = ss_free.main()
+  File "E:\Temp\ShadowSocksShare-OpenShift\app\ss\ss_free.py", line 239, in main
+    data, info = website()
+  File "E:\Temp\ShadowSocksShare-OpenShift\app\ss\ss_free.py", line 211, in request_free_ss_site
+    logging.exception(e, stack_info=True)
+ERROR:root:local variable 'respond' referenced before assignment
+Traceback (most recent call last):
+  File "C:\Users\NiuHe\Anaconda3\lib\site-packages\urllib3\connection.py", line 141, in _new_conn
+    (self.host, self.port), self.timeout, **extra_kw)
+  File "C:\Users\NiuHe\Anaconda3\lib\site-packages\urllib3\util\connection.py", line 83, in create_connection
+    raise err
+  File "C:\Users\NiuHe\Anaconda3\lib\site-packages\urllib3\util\connection.py", line 73, in create_connection
+    sock.connect(sa)
+TimeoutError: [WinError 10060] 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\NiuHe\Anaconda3\lib\site-packages\urllib3\connectionpool.py", line 601, in urlopen
+    chunked=chunked)
+  File "C:\Users\NiuHe\Anaconda3\lib\site-packages\urllib3\connectionpool.py", line 346, in _make_request
+    self._validate_conn(conn)
+  File "C:\Users\NiuHe\Anaconda3\lib\site-packages\urllib3\connectionpool.py", line 850, in _validate_conn
+    conn.connect()
+  File "C:\Users\NiuHe\Anaconda3\lib\site-packages\urllib3\connection.py", line 284, in connect
+    conn = self._new_conn()
+  File "C:\Users\NiuHe\Anaconda3\lib\site-packages\urllib3\connection.py", line 150, in _new_conn
+    self, "Failed to establish a new connection: %s" % e)
+urllib3.exceptions.NewConnectionError: <urllib3.connection.VerifiedHTTPSConnection object at 0x0000027E3822E7F0>: Failed to establish a new connection: [WinError 10060] 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\NiuHe\Anaconda3\lib\site-packages\requests\adapters.py", line 440, in send
+    timeout=timeout
+  File "C:\Users\NiuHe\Anaconda3\lib\site-packages\urllib3\connectionpool.py", line 639, in urlopen
+    _stacktrace=sys.exc_info()[2])
+  File "C:\Users\NiuHe\Anaconda3\lib\site-packages\urllib3\util\retry.py", line 388, in increment
+    raise MaxRetryError(_pool, url, error or ResponseError(cause))
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='free-ss.site', port=443): Max retries exceeded with url: /ss.json (Caused by NewConnectionError('<urllib3.connection.VerifiedHTTPSConnection object at 0x0000027E3822E7F0>: Failed to establish a new connection: [WinError 10060] 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。',))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "E:\Temp\ShadowSocksShare-OpenShift\app\ss\ss_free.py", line 201, in request_free_ss_site
+    respond = cf_request(url, headers=headers)
+  File "E:\Temp\ShadowSocksShare-OpenShift\app\ss\tools.py", line 9, in cf_request
+    response = scraper.get(url)
+  File "C:\Users\NiuHe\Anaconda3\lib\site-packages\requests\sessions.py", line 521, in get
+    return self.request('GET', url, **kwargs)
+  File "C:\Users\NiuHe\Anaconda3\lib\site-packages\cfscrape\__init__.py", line 64, in request
+    resp = super(CloudflareScraper, self).request(method, url, *args, **kwargs)
+  File "C:\Users\NiuHe\Anaconda3\lib\site-packages\requests\sessions.py", line 508, in request
+    resp = self.send(prep, **send_kwargs)
+  File "C:\Users\NiuHe\Anaconda3\lib\site-packages\requests\sessions.py", line 618, in send
+    r = adapter.send(request, **kwargs)
+  File "C:\Users\NiuHe\Anaconda3\lib\site-packages\requests\adapters.py", line 508, in send
+    raise ConnectionError(e, request=request)
+requests.exceptions.ConnectionError: HTTPSConnectionPool(host='free-ss.site', port=443): Max retries exceeded with url: /ss.json (Caused by NewConnectionError('<urllib3.connection.VerifiedHTTPSConnection object at 0x0000027E3822E7F0>: Failed to establish a new connection: [WinError 10060] 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。',))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "E:\Temp\ShadowSocksShare-OpenShift\app\ss\ss_free.py", line 239, in main
+    data, info = website()
+  File "E:\Temp\ShadowSocksShare-OpenShift\app\ss\ss_free.py", line 212, in request_free_ss_site
+    print(respond.text)
+UnboundLocalError: local variable 'respond' referenced before assignment
+ERROR:root:name 'requests' is not defined
+Traceback (most recent call last):
+  File "E:\Temp\ShadowSocksShare-OpenShift\app\ss\ss_free.py", line 62, in request_url
+    response = requests.get(url, headers=headers, verify=False).text
+NameError: name 'requests' is not defined
+ERROR:root:name 'requests' is not defined
+Traceback (most recent call last):
+  File "E:\Temp\ShadowSocksShare-OpenShift\app\ss\ss_free.py", line 62, in request_url
+    response = requests.get(url, headers=headers, verify=False).text
+NameError: name 'requests' is not defined
+ERROR:root:name 'requests' is not defined
+Traceback (most recent call last):
+  File "E:\Temp\ShadowSocksShare-OpenShift\app\ss\ss_free.py", line 62, in request_url
+    response = requests.get(url, headers=headers, verify=False).text
+NameError: name 'requests' is not defined
+ERROR:root:name 'requests' is not defined
+Traceback (most recent call last):
+  File "E:\Temp\ShadowSocksShare-OpenShift\app\ss\ss_free.py", line 62, in request_url
+    response = requests.get(url, headers=headers, verify=False).text
+NameError: name 'requests' is not defined
+ERROR:root:name 'requests' is not defined
+Traceback (most recent call last):
+  File "E:\Temp\ShadowSocksShare-OpenShift\app\ss\ss_free.py", line 62, in request_url
+    response = requests.get(url, headers=headers, verify=False).text
+NameError: name 'requests' is not defined
+ERROR:root:name 'requests' is not defined
+Traceback (most recent call last):
+  File "E:\Temp\ShadowSocksShare-OpenShift\app\ss\ss_free.py", line 62, in request_url
+    response = requests.get(url, headers=headers, verify=False).text
+NameError: name 'requests' is not defined
+ERROR:root:name 'requests' is not defined
+Traceback (most recent call last):
+  File "E:\Temp\ShadowSocksShare-OpenShift\app\ss\ss_free.py", line 85, in request_doub_url
+    html = requests.get(url, headers=HEADERS)
+NameError: name 'requests' is not defined
+Stack (most recent call last):
+  File "C:\Users\NiuHe\Anaconda3\lib\threading.py", line 884, in _bootstrap
+    self._bootstrap_inner()
+  File "C:\Users\NiuHe\Anaconda3\lib\threading.py", line 916, in _bootstrap_inner
+    self.run()
+  File "C:\Users\NiuHe\Anaconda3\lib\threading.py", line 864, in run
+    self._target(*self._args, **self._kwargs)
+  File "E:\Temp\ShadowSocksShare-OpenShift\app\views.py", line 34, in update_servers
+    servers = ss_free.main()
+  File "E:\Temp\ShadowSocksShare-OpenShift\app\ss\ss_free.py", line 232, in main
+    websites.extend([(i, HEADERS, i[-1]) for i in request_doub_url()])
+  File "E:\Temp\ShadowSocksShare-OpenShift\app\ss\ss_free.py", line 91, in request_doub_url
+    logging.exception(e, stack_info=True)
+ERROR:root:name 'requests' is not defined
+Traceback (most recent call last):
+  File "E:\Temp\ShadowSocksShare-OpenShift\app\ss\ss_free.py", line 101, in request_iss
+    data = requests.get(url)
+NameError: name 'requests' is not defined
+Stack (most recent call last):
+  File "C:\Users\NiuHe\Anaconda3\lib\threading.py", line 884, in _bootstrap
+    self._bootstrap_inner()
+  File "C:\Users\NiuHe\Anaconda3\lib\threading.py", line 916, in _bootstrap_inner
+    self.run()
+  File "C:\Users\NiuHe\Anaconda3\lib\threading.py", line 864, in run
+    self._target(*self._args, **self._kwargs)
+  File "E:\Temp\ShadowSocksShare-OpenShift\app\views.py", line 34, in update_servers
+    servers = ss_free.main()
+  File "E:\Temp\ShadowSocksShare-OpenShift\app\ss\ss_free.py", line 239, in main
+    data, info = website()
+  File "E:\Temp\ShadowSocksShare-OpenShift\app\ss\ss_free.py", line 104, in request_iss
+    logging.exception(e, stack_info=True)
+ERROR:root:name 'requests' is not defined
+Traceback (most recent call last):
+  File "E:\Temp\ShadowSocksShare-OpenShift\app\ss\ss_free.py", line 182, in request_fq123
+    data = re.split('\s*\n\s*', requests.get(url).text.split('```')[1].strip())
+NameError: name 'requests' is not defined
+Stack (most recent call last):
+  File "C:\Users\NiuHe\Anaconda3\lib\threading.py", line 884, in _bootstrap
+    self._bootstrap_inner()
+  File "C:\Users\NiuHe\Anaconda3\lib\threading.py", line 916, in _bootstrap_inner
+    self.run()
+  File "C:\Users\NiuHe\Anaconda3\lib\threading.py", line 864, in run
+    self._target(*self._args, **self._kwargs)
+  File "E:\Temp\ShadowSocksShare-OpenShift\app\views.py", line 34, in update_servers
+    servers = ss_free.main()
+  File "E:\Temp\ShadowSocksShare-OpenShift\app\ss\ss_free.py", line 239, in main
+    data, info = website()
+  File "E:\Temp\ShadowSocksShare-OpenShift\app\ss\ss_free.py", line 192, in request_fq123
+    logging.exception(e, stack_info=True)
+ERROR:root:HTTPSConnectionPool(host='free-ss.site', port=443): Max retries exceeded with url: /ss.json (Caused by NewConnectionError('<urllib3.connection.VerifiedHTTPSConnection object at 0x000001D349C377B8>: Failed to establish a new connection: [WinError 10060] 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。',))
+Traceback (most recent call last):
+  File "C:\Users\NiuHe\Anaconda3\lib\site-packages\urllib3\connection.py", line 141, in _new_conn
+    (self.host, self.port), self.timeout, **extra_kw)
+  File "C:\Users\NiuHe\Anaconda3\lib\site-packages\urllib3\util\connection.py", line 83, in create_connection
+    raise err
+  File "C:\Users\NiuHe\Anaconda3\lib\site-packages\urllib3\util\connection.py", line 73, in create_connection
+    sock.connect(sa)
+TimeoutError: [WinError 10060] 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\NiuHe\Anaconda3\lib\site-packages\urllib3\connectionpool.py", line 601, in urlopen
+    chunked=chunked)
+  File "C:\Users\NiuHe\Anaconda3\lib\site-packages\urllib3\connectionpool.py", line 346, in _make_request
+    self._validate_conn(conn)
+  File "C:\Users\NiuHe\Anaconda3\lib\site-packages\urllib3\connectionpool.py", line 850, in _validate_conn
+    conn.connect()
+  File "C:\Users\NiuHe\Anaconda3\lib\site-packages\urllib3\connection.py", line 284, in connect
+    conn = self._new_conn()
+  File "C:\Users\NiuHe\Anaconda3\lib\site-packages\urllib3\connection.py", line 150, in _new_conn
+    self, "Failed to establish a new connection: %s" % e)
+urllib3.exceptions.NewConnectionError: <urllib3.connection.VerifiedHTTPSConnection object at 0x000001D349C377B8>: Failed to establish a new connection: [WinError 10060] 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\NiuHe\Anaconda3\lib\site-packages\requests\adapters.py", line 440, in send
+    timeout=timeout
+  File "C:\Users\NiuHe\Anaconda3\lib\site-packages\urllib3\connectionpool.py", line 639, in urlopen
+    _stacktrace=sys.exc_info()[2])
+  File "C:\Users\NiuHe\Anaconda3\lib\site-packages\urllib3\util\retry.py", line 388, in increment
+    raise MaxRetryError(_pool, url, error or ResponseError(cause))
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='free-ss.site', port=443): Max retries exceeded with url: /ss.json (Caused by NewConnectionError('<urllib3.connection.VerifiedHTTPSConnection object at 0x000001D349C377B8>: Failed to establish a new connection: [WinError 10060] 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。',))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "E:\Temp\ShadowSocksShare-OpenShift\app\ss\ss_free.py", line 201, in request_free_ss_site
+    respond = cf_request(url, headers=headers)
+  File "E:\Temp\ShadowSocksShare-OpenShift\app\ss\tools.py", line 9, in cf_request
+    response = scraper.get(url)
+  File "C:\Users\NiuHe\Anaconda3\lib\site-packages\requests\sessions.py", line 521, in get
+    return self.request('GET', url, **kwargs)
+  File "C:\Users\NiuHe\Anaconda3\lib\site-packages\cfscrape\__init__.py", line 64, in request
+    resp = super(CloudflareScraper, self).request(method, url, *args, **kwargs)
+  File "C:\Users\NiuHe\Anaconda3\lib\site-packages\requests\sessions.py", line 508, in request
+    resp = self.send(prep, **send_kwargs)
+  File "C:\Users\NiuHe\Anaconda3\lib\site-packages\requests\sessions.py", line 618, in send
+    r = adapter.send(request, **kwargs)
+  File "C:\Users\NiuHe\Anaconda3\lib\site-packages\requests\adapters.py", line 508, in send
+    raise ConnectionError(e, request=request)
+requests.exceptions.ConnectionError: HTTPSConnectionPool(host='free-ss.site', port=443): Max retries exceeded with url: /ss.json (Caused by NewConnectionError('<urllib3.connection.VerifiedHTTPSConnection object at 0x000001D349C377B8>: Failed to establish a new connection: [WinError 10060] 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。',))
+Stack (most recent call last):
+  File "C:\Users\NiuHe\Anaconda3\lib\threading.py", line 884, in _bootstrap
+    self._bootstrap_inner()
+  File "C:\Users\NiuHe\Anaconda3\lib\threading.py", line 916, in _bootstrap_inner
+    self.run()
+  File "C:\Users\NiuHe\Anaconda3\lib\threading.py", line 864, in run
+    self._target(*self._args, **self._kwargs)
+  File "E:\Temp\ShadowSocksShare-OpenShift\app\views.py", line 34, in update_servers
+    servers = ss_free.main()
+  File "E:\Temp\ShadowSocksShare-OpenShift\app\ss\ss_free.py", line 239, in main
+    data, info = website()
+  File "E:\Temp\ShadowSocksShare-OpenShift\app\ss\ss_free.py", line 211, in request_free_ss_site
+    logging.exception(e, stack_info=True)
+ERROR:root:local variable 'respond' referenced before assignment
+Traceback (most recent call last):
+  File "C:\Users\NiuHe\Anaconda3\lib\site-packages\urllib3\connection.py", line 141, in _new_conn
+    (self.host, self.port), self.timeout, **extra_kw)
+  File "C:\Users\NiuHe\Anaconda3\lib\site-packages\urllib3\util\connection.py", line 83, in create_connection
+    raise err
+  File "C:\Users\NiuHe\Anaconda3\lib\site-packages\urllib3\util\connection.py", line 73, in create_connection
+    sock.connect(sa)
+TimeoutError: [WinError 10060] 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\NiuHe\Anaconda3\lib\site-packages\urllib3\connectionpool.py", line 601, in urlopen
+    chunked=chunked)
+  File "C:\Users\NiuHe\Anaconda3\lib\site-packages\urllib3\connectionpool.py", line 346, in _make_request
+    self._validate_conn(conn)
+  File "C:\Users\NiuHe\Anaconda3\lib\site-packages\urllib3\connectionpool.py", line 850, in _validate_conn
+    conn.connect()
+  File "C:\Users\NiuHe\Anaconda3\lib\site-packages\urllib3\connection.py", line 284, in connect
+    conn = self._new_conn()
+  File "C:\Users\NiuHe\Anaconda3\lib\site-packages\urllib3\connection.py", line 150, in _new_conn
+    self, "Failed to establish a new connection: %s" % e)
+urllib3.exceptions.NewConnectionError: <urllib3.connection.VerifiedHTTPSConnection object at 0x000001D349C377B8>: Failed to establish a new connection: [WinError 10060] 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\NiuHe\Anaconda3\lib\site-packages\requests\adapters.py", line 440, in send
+    timeout=timeout
+  File "C:\Users\NiuHe\Anaconda3\lib\site-packages\urllib3\connectionpool.py", line 639, in urlopen
+    _stacktrace=sys.exc_info()[2])
+  File "C:\Users\NiuHe\Anaconda3\lib\site-packages\urllib3\util\retry.py", line 388, in increment
+    raise MaxRetryError(_pool, url, error or ResponseError(cause))
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='free-ss.site', port=443): Max retries exceeded with url: /ss.json (Caused by NewConnectionError('<urllib3.connection.VerifiedHTTPSConnection object at 0x000001D349C377B8>: Failed to establish a new connection: [WinError 10060] 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。',))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "E:\Temp\ShadowSocksShare-OpenShift\app\ss\ss_free.py", line 201, in request_free_ss_site
+    respond = cf_request(url, headers=headers)
+  File "E:\Temp\ShadowSocksShare-OpenShift\app\ss\tools.py", line 9, in cf_request
+    response = scraper.get(url)
+  File "C:\Users\NiuHe\Anaconda3\lib\site-packages\requests\sessions.py", line 521, in get
+    return self.request('GET', url, **kwargs)
+  File "C:\Users\NiuHe\Anaconda3\lib\site-packages\cfscrape\__init__.py", line 64, in request
+    resp = super(CloudflareScraper, self).request(method, url, *args, **kwargs)
+  File "C:\Users\NiuHe\Anaconda3\lib\site-packages\requests\sessions.py", line 508, in request
+    resp = self.send(prep, **send_kwargs)
+  File "C:\Users\NiuHe\Anaconda3\lib\site-packages\requests\sessions.py", line 618, in send
+    r = adapter.send(request, **kwargs)
+  File "C:\Users\NiuHe\Anaconda3\lib\site-packages\requests\adapters.py", line 508, in send
+    raise ConnectionError(e, request=request)
+requests.exceptions.ConnectionError: HTTPSConnectionPool(host='free-ss.site', port=443): Max retries exceeded with url: /ss.json (Caused by NewConnectionError('<urllib3.connection.VerifiedHTTPSConnection object at 0x000001D349C377B8>: Failed to establish a new connection: [WinError 10060] 由于连接方在一段时间后没有正确答复或连接的主机没有反应，连接尝试失败。',))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "E:\Temp\ShadowSocksShare-OpenShift\app\ss\ss_free.py", line 239, in main
+    data, info = website()
+  File "E:\Temp\ShadowSocksShare-OpenShift\app\ss\ss_free.py", line 212, in request_free_ss_site
+    print(respond.text)
+UnboundLocalError: local variable 'respond' referenced before assignment
+ERROR:root:name 'requests' is not defined
+Traceback (most recent call last):
+  File "E:\Temp\ShadowSocksShare-OpenShift\app\ss\ss_free.py", line 62, in request_url
+    response = requests.get(url, headers=headers, verify=False).text
+NameError: name 'requests' is not defined
+ERROR:root:name 'requests' is not defined
+Traceback (most recent call last):
+  File "E:\Temp\ShadowSocksShare-OpenShift\app\ss\ss_free.py", line 62, in request_url
+    response = requests.get(url, headers=headers, verify=False).text
+NameError: name 'requests' is not defined
+ERROR:root:name 'requests' is not defined
+Traceback (most recent call last):
+  File "E:\Temp\ShadowSocksShare-OpenShift\app\ss\ss_free.py", line 62, in request_url
+    response = requests.get(url, headers=headers, verify=False).text
+NameError: name 'requests' is not defined
+ERROR:root:name 'requests' is not defined
+Traceback (most recent call last):
+  File "E:\Temp\ShadowSocksShare-OpenShift\app\ss\ss_free.py", line 62, in request_url
+    response = requests.get(url, headers=headers, verify=False).text
+NameError: name 'requests' is not defined
+ERROR:root:name 'requests' is not defined
+Traceback (most recent call last):
+  File "E:\Temp\ShadowSocksShare-OpenShift\app\ss\ss_free.py", line 62, in request_url
+    response = requests.get(url, headers=headers, verify=False).text
+NameError: name 'requests' is not defined
+ERROR:root:name 'requests' is not defined
+Traceback (most recent call last):
+  File "E:\Temp\ShadowSocksShare-OpenShift\app\ss\ss_free.py", line 62, in request_url
+    response = requests.get(url, headers=headers, verify=False).text
+NameError: name 'requests' is not defined
