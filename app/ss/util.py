@@ -66,24 +66,6 @@ def validate(websites):
     return websites
 
 
-def universal_request_url(url):
-    """
-    网页请求装饰器，方便本地调试，通过代理发起请求。
-    返回一个函数来对response做进一步解析
-    :param url:
-    :return: func(response),若异常，response为''
-    """
-    response = ''
-    print("requesting: " + url)
-    try:
-        response = requests.get(url, headers=HEADERS).text
-    except requests.exceptions.Timeout:
-        logging.error('requests timeout: ' + url)
-    except Exception:
-        logging.error('request exception: ' + url)
-    finally:
-        return response
-
 
 
 def parse_uri(uri, default_title='untitled'):

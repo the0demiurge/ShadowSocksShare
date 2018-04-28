@@ -2530,3 +2530,111 @@ Traceback (most recent call last):
   File "/home/niuhe/ShadowSocksShare-OpenShift/ssrshare/lib/python3.5/site-packages/requests/adapters.py", line 508, in send
     raise ConnectionError(e, request=request)
 requests.exceptions.ConnectionError: HTTPSConnectionPool(host='plus.google.com', port=443): Max retries exceeded with url: /communities/104092405342699579599/stream/8a593591-2091-4096-bb00-7d9c5659db93 (Caused by NewConnectionError('<urllib3.connection.VerifiedHTTPSConnection object at 0xb61428ec>: Failed to establish a new connection: [Errno 110] Connection timed out',))
+ERROR:root:HTTPSConnectionPool(host='plus.google.com', port=443): Max retries exceeded with url: /communities/109204483693184691558 (Caused by NewConnectionError('<urllib3.connection.VerifiedHTTPSConnection object at 0xb615bd6c>: Failed to establish a new connection: [Errno 110] Connection timed out',))
+Traceback (most recent call last):
+  File "/home/niuhe/ShadowSocksShare-OpenShift/ssrshare/lib/python3.5/site-packages/urllib3/connection.py", line 141, in _new_conn
+    (self.host, self.port), self.timeout, **extra_kw)
+  File "/home/niuhe/ShadowSocksShare-OpenShift/ssrshare/lib/python3.5/site-packages/urllib3/util/connection.py", line 83, in create_connection
+    raise err
+  File "/home/niuhe/ShadowSocksShare-OpenShift/ssrshare/lib/python3.5/site-packages/urllib3/util/connection.py", line 73, in create_connection
+    sock.connect(sa)
+TimeoutError: [Errno 110] Connection timed out
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/niuhe/ShadowSocksShare-OpenShift/ssrshare/lib/python3.5/site-packages/urllib3/connectionpool.py", line 601, in urlopen
+    chunked=chunked)
+  File "/home/niuhe/ShadowSocksShare-OpenShift/ssrshare/lib/python3.5/site-packages/urllib3/connectionpool.py", line 346, in _make_request
+    self._validate_conn(conn)
+  File "/home/niuhe/ShadowSocksShare-OpenShift/ssrshare/lib/python3.5/site-packages/urllib3/connectionpool.py", line 850, in _validate_conn
+    conn.connect()
+  File "/home/niuhe/ShadowSocksShare-OpenShift/ssrshare/lib/python3.5/site-packages/urllib3/connection.py", line 284, in connect
+    conn = self._new_conn()
+  File "/home/niuhe/ShadowSocksShare-OpenShift/ssrshare/lib/python3.5/site-packages/urllib3/connection.py", line 150, in _new_conn
+    self, "Failed to establish a new connection: %s" % e)
+urllib3.exceptions.NewConnectionError: <urllib3.connection.VerifiedHTTPSConnection object at 0xb615bd6c>: Failed to establish a new connection: [Errno 110] Connection timed out
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/niuhe/ShadowSocksShare-OpenShift/ssrshare/lib/python3.5/site-packages/requests/adapters.py", line 440, in send
+    timeout=timeout
+  File "/home/niuhe/ShadowSocksShare-OpenShift/ssrshare/lib/python3.5/site-packages/urllib3/connectionpool.py", line 639, in urlopen
+    _stacktrace=sys.exc_info()[2])
+  File "/home/niuhe/ShadowSocksShare-OpenShift/ssrshare/lib/python3.5/site-packages/urllib3/util/retry.py", line 388, in increment
+    raise MaxRetryError(_pool, url, error or ResponseError(cause))
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='plus.google.com', port=443): Max retries exceeded with url: /communities/109204483693184691558 (Caused by NewConnectionError('<urllib3.connection.VerifiedHTTPSConnection object at 0xb615bd6c>: Failed to establish a new connection: [Errno 110] Connection timed out',))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/niuhe/ShadowSocksShare-OpenShift/app/ss/ss_free.py", line 204, in request_url
+    response = requests.get(url, headers=headers, verify=False).text
+  File "/home/niuhe/ShadowSocksShare-OpenShift/ssrshare/lib/python3.5/site-packages/requests/api.py", line 72, in get
+    return request('get', url, params=params, **kwargs)
+  File "/home/niuhe/ShadowSocksShare-OpenShift/ssrshare/lib/python3.5/site-packages/requests/api.py", line 58, in request
+    return session.request(method=method, url=url, **kwargs)
+  File "/home/niuhe/ShadowSocksShare-OpenShift/ssrshare/lib/python3.5/site-packages/requests/sessions.py", line 508, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/home/niuhe/ShadowSocksShare-OpenShift/ssrshare/lib/python3.5/site-packages/requests/sessions.py", line 618, in send
+    r = adapter.send(request, **kwargs)
+  File "/home/niuhe/ShadowSocksShare-OpenShift/ssrshare/lib/python3.5/site-packages/requests/adapters.py", line 508, in send
+    raise ConnectionError(e, request=request)
+requests.exceptions.ConnectionError: HTTPSConnectionPool(host='plus.google.com', port=443): Max retries exceeded with url: /communities/109204483693184691558 (Caused by NewConnectionError('<urllib3.connection.VerifiedHTTPSConnection object at 0xb615bd6c>: Failed to establish a new connection: [Errno 110] Connection timed out',))
+ERROR:root:HTTPSConnectionPool(host='plus.google.com', port=443): Max retries exceeded with url: /communities/117702818760720009772/stream/47c69db4-9362-4d91-a017-97f3be948437 (Caused by NewConnectionError('<urllib3.connection.VerifiedHTTPSConnection object at 0xb5f0bc2c>: Failed to establish a new connection: [Errno 110] Connection timed out',))
+Traceback (most recent call last):
+  File "/home/niuhe/ShadowSocksShare-OpenShift/ssrshare/lib/python3.5/site-packages/urllib3/connection.py", line 141, in _new_conn
+    (self.host, self.port), self.timeout, **extra_kw)
+  File "/home/niuhe/ShadowSocksShare-OpenShift/ssrshare/lib/python3.5/site-packages/urllib3/util/connection.py", line 83, in create_connection
+    raise err
+  File "/home/niuhe/ShadowSocksShare-OpenShift/ssrshare/lib/python3.5/site-packages/urllib3/util/connection.py", line 73, in create_connection
+    sock.connect(sa)
+TimeoutError: [Errno 110] Connection timed out
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/niuhe/ShadowSocksShare-OpenShift/ssrshare/lib/python3.5/site-packages/urllib3/connectionpool.py", line 601, in urlopen
+    chunked=chunked)
+  File "/home/niuhe/ShadowSocksShare-OpenShift/ssrshare/lib/python3.5/site-packages/urllib3/connectionpool.py", line 346, in _make_request
+    self._validate_conn(conn)
+  File "/home/niuhe/ShadowSocksShare-OpenShift/ssrshare/lib/python3.5/site-packages/urllib3/connectionpool.py", line 850, in _validate_conn
+    conn.connect()
+  File "/home/niuhe/ShadowSocksShare-OpenShift/ssrshare/lib/python3.5/site-packages/urllib3/connection.py", line 284, in connect
+    conn = self._new_conn()
+  File "/home/niuhe/ShadowSocksShare-OpenShift/ssrshare/lib/python3.5/site-packages/urllib3/connection.py", line 150, in _new_conn
+    self, "Failed to establish a new connection: %s" % e)
+urllib3.exceptions.NewConnectionError: <urllib3.connection.VerifiedHTTPSConnection object at 0xb5f0bc2c>: Failed to establish a new connection: [Errno 110] Connection timed out
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/niuhe/ShadowSocksShare-OpenShift/ssrshare/lib/python3.5/site-packages/requests/adapters.py", line 440, in send
+    timeout=timeout
+  File "/home/niuhe/ShadowSocksShare-OpenShift/ssrshare/lib/python3.5/site-packages/urllib3/connectionpool.py", line 639, in urlopen
+    _stacktrace=sys.exc_info()[2])
+  File "/home/niuhe/ShadowSocksShare-OpenShift/ssrshare/lib/python3.5/site-packages/urllib3/util/retry.py", line 388, in increment
+    raise MaxRetryError(_pool, url, error or ResponseError(cause))
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='plus.google.com', port=443): Max retries exceeded with url: /communities/117702818760720009772/stream/47c69db4-9362-4d91-a017-97f3be948437 (Caused by NewConnectionError('<urllib3.connection.VerifiedHTTPSConnection object at 0xb5f0bc2c>: Failed to establish a new connection: [Errno 110] Connection timed out',))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/niuhe/ShadowSocksShare-OpenShift/app/ss/ss_free.py", line 204, in request_url
+    response = requests.get(url, headers=headers, verify=False).text
+  File "/home/niuhe/ShadowSocksShare-OpenShift/ssrshare/lib/python3.5/site-packages/requests/api.py", line 72, in get
+    return request('get', url, params=params, **kwargs)
+  File "/home/niuhe/ShadowSocksShare-OpenShift/ssrshare/lib/python3.5/site-packages/requests/api.py", line 58, in request
+    return session.request(method=method, url=url, **kwargs)
+  File "/home/niuhe/ShadowSocksShare-OpenShift/ssrshare/lib/python3.5/site-packages/requests/sessions.py", line 508, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/home/niuhe/ShadowSocksShare-OpenShift/ssrshare/lib/python3.5/site-packages/requests/sessions.py", line 618, in send
+    r = adapter.send(request, **kwargs)
+  File "/home/niuhe/ShadowSocksShare-OpenShift/ssrshare/lib/python3.5/site-packages/requests/adapters.py", line 508, in send
+    raise ConnectionError(e, request=request)
+requests.exceptions.ConnectionError: HTTPSConnectionPool(host='plus.google.com', port=443): Max retries exceeded with url: /communities/117702818760720009772/stream/47c69db4-9362-4d91-a017-97f3be948437 (Caused by NewConnectionError('<urllib3.connection.VerifiedHTTPSConnection object at 0xb5f0bc2c>: Failed to establish a new connection: [Errno 110] Connection timed out',))
+ERROR:urllib3.connection:Certificate did not match expected hostname: global.ishadowx.net. Certificate: {'issuer': ((('countryName', 'US'),), (('organizationName', 'DigiCert Inc'),), (('organizationalUnitName', 'www.digicert.com'),), (('commonName', 'DigiCert SHA2 High Assurance Server CA'),)), 'notBefore': 'Apr 27 00:00:00 2017 GMT', 'subject': ((('countryName', 'US'),), (('stateOrProvinceName', 'California'),), (('localityName', 'Menlo Park'),), (('organizationName', 'Facebook, Inc.'),), (('commonName', '*.atlassolutions.com'),)), 'crlDistributionPoints': ('http://crl3.digicert.com/sha2-ha-server-g5.crl', 'http://crl4.digicert.com/sha2-ha-server-g5.crl'), 'notAfter': 'May 31 12:00:00 2018 GMT', 'subjectAltName': (('DNS', '*.atlassolutions.com'), ('DNS', 'atlassolutions.com'), ('DNS', '*.atdmt.com'), ('DNS', 'atdmt.com'), ('DNS', '*.atdmt2.com'), ('DNS', 'atdmt2.com'), ('DNS', '*.atlassbx.com'), ('DNS', 'atlassbx.com'), ('DNS', '*.xx.atlassbx.com'), ('DNS', 'xx.atlassbx.com')), 'version': 3, 'caIssuers': ('http://cacerts.digicert.com/DigiCertSHA2HighAssuranceServerCA.crt',), 'serialNumber': '041E21DDD5AC2406DD24750AA5DC19CF', 'OCSP': ('http://ocsp.digicert.com',)}
+ERROR:root:request exception: https://global.ishadowx.net
+ERROR:urllib3.connection:Certificate did not match expected hostname: global.ishadowx.net. Certificate: {'OCSP': ('http://ocsp.digicert.com',), 'issuer': ((('countryName', 'US'),), (('organizationName', 'DigiCert Inc'),), (('organizationalUnitName', 'www.digicert.com'),), (('commonName', 'DigiCert SHA2 High Assurance Server CA'),)), 'crlDistributionPoints': ('http://crl3.digicert.com/sha2-ha-server-g5.crl', 'http://crl4.digicert.com/sha2-ha-server-g5.crl'), 'subjectAltName': (('DNS', '*.atlassolutions.com'), ('DNS', 'atlassolutions.com'), ('DNS', '*.atdmt.com'), ('DNS', 'atdmt.com'), ('DNS', '*.atdmt2.com'), ('DNS', 'atdmt2.com'), ('DNS', '*.atlassbx.com'), ('DNS', 'atlassbx.com'), ('DNS', '*.xx.atlassbx.com'), ('DNS', 'xx.atlassbx.com')), 'notAfter': 'May 31 12:00:00 2018 GMT', 'subject': ((('countryName', 'US'),), (('stateOrProvinceName', 'California'),), (('localityName', 'Menlo Park'),), (('organizationName', 'Facebook, Inc.'),), (('commonName', '*.atlassolutions.com'),)), 'serialNumber': '041E21DDD5AC2406DD24750AA5DC19CF', 'caIssuers': ('http://cacerts.digicert.com/DigiCertSHA2HighAssuranceServerCA.crt',), 'version': 3, 'notBefore': 'Apr 27 00:00:00 2017 GMT'}
+ERROR:root:request exception: https://global.ishadowx.net

@@ -8,7 +8,7 @@
 """
 import requests
 from app.ss.util import  validate
-from app.ss.util import universal_request_url, parse_uri, gen_uri
+from app.ss.util import  parse_uri, gen_uri
 from bs4 import BeautifulSoup
 from app.ss.config import HEADERS,LOG_FILENAME
 import regex as re
@@ -38,6 +38,24 @@ def qr_decode(url):
         logging.ERROR("二维码解码失败:" + url)
         return ''
 
+
+def universal_request_url(url):
+    """
+    网页请求装饰器，方便本地调试，通过代理发起请求。
+    返回一个函数来对response做进一步解析
+    :param url:
+    :return: func(response),若异常，response为''
+    """
+    response = ''
+    print("requesting: " + url)
+    try:
+        response = requests.get(url, headers=HEADERS).text
+    except requests.exceptions.Timeout:
+        print('requests timeout: ' + url)
+    except Exception:
+        print('other request exception: ' + url)
+    finally:
+        return response
 
 # 有效 测试日期：2018年4月28日
 def request_iss():
@@ -87,7 +105,7 @@ def request_iss():
 
 
 # 有效 测试日期：2018年4月28日
-def request_freess_cx(response):
+def request_freess_cx():
     response = universal_request_url('http://my.freess.org/')
     servers = []
     names = []
@@ -110,7 +128,7 @@ def request_freess_cx(response):
 
 
 # 有效 测试日期： 2018年4月28日
-def request_fq123(response):
+def request_fq123():
     response = universal_request_url('https://raw.githubusercontent.com/fq1234/home/master/README.md')
     if response:
         servers = [{
@@ -126,22 +144,22 @@ def request_fq123(response):
     return servers, info
 
 # 有效 测试日期： 2018年4月28日
-def request_doub_url(response):
-    response = universal_request_url('https://doub.io/sszhfx/')
-    urls = list()
-    url = 'https://doub.io/sszhfx/'
-    try:
-        if response:
-            soup = BeautifulSoup(response, 'lxml')
-        else:
-            raise Exception
-        urls = list(set(map(lambda x: x.get('href'), filter(
-            lambda x: x.text.strip() != '1', soup.find_all('a', attrs={'class': 'page-numbers'})))))
-        urls.append(url)
-    except Exception:
-        logging.ERROR('查找逗比网址失败')
-        urls = [url]
-    return set(urls)
+# def request_doub_url(response):
+#     response = universal_request_url('https://doub.io/sszhfx/')
+#     urls = list()
+#     url = 'https://doub.io/sszhfx/'
+#     try:
+#         if response:
+#             soup = BeautifulSoup(response, 'lxml')
+#         else:
+#             raise Exception
+#         urls = list(set(map(lambda x: x.get('href'), filter(
+#             lambda x: x.text.strip() != '1', soup.find_all('a', attrs={'class': 'page-numbers'})))))
+#         urls.append(url)
+#     except Exception:
+#         logging.ERROR('查找逗比网址失败')
+#         urls = [url]
+#     return set(urls)
 
 # def request_newpac(url='https://github.com/Alvin9999/new-pac/wiki/ss%E5%85%8D%E8%B4%B9%E8%B4%A6%E5%8F%B7'):
 #     data = requests.get(url)
@@ -218,13 +236,6 @@ def request_url(url, headers=None, name=''):
         logging.exception(e, stack_info=False)
         return [], {'message': str(e), 'url': '', 'name': ''}
     return servers, info
-
-
-
-
-
-
-
 # 函数字典
 # url:url爬虫函数名
 
