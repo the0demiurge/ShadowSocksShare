@@ -10,7 +10,7 @@ port = os.environ.get('PORT')
 manager = Manager(app)
 
 manager.add_command(
-    "runserver", Server(host="0.0.0.0", port=port, use_debugger=False)
+    "runserver", Server(host="0.0.0.0", port=port, use_debugger=True)
 )
 manager.add_command(
     "debug", Server(host="0.0.0.0", port=8080, use_debugger=True)
