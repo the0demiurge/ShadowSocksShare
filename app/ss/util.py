@@ -3,7 +3,7 @@ import logging
 from PIL import Image
 from io import BytesIO
 from pyzbar.pyzbar import decode
-from app.ss.config import HEADERS,PROXIES
+from app.ss.config import HEADERS
 import cfscrape
 import requests
 import time
@@ -84,7 +84,7 @@ def universal_request_url(url):
             print("requesting: " + url)
             try:
                 response = ''
-                response = requests.get(url, headers=HEADERS, proxies=PROXIES).text
+                response = requests.get(url, headers=HEADERS).text
             except requests.exceptions.Timeout:
                 logging.error('requests timeout: ' + url)
             except Exception:

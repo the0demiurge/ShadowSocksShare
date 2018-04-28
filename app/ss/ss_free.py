@@ -11,7 +11,7 @@ from app.ss.util import  validate
 from app.ss.util import universal_request_url, parse_uri, gen_uri
 import logging
 from bs4 import BeautifulSoup
-from app.ss.config import HEADERS,LOG_FILENAME,PROXIES
+from app.ss.config import HEADERS,LOG_FILENAME
 import regex as re
 import time
 import logging
@@ -126,22 +126,22 @@ def request_fq123(response):
     return servers, info
 
 # 有效 测试日期： 2018年4月28日
-@universal_request_url('https://doub.io/sszhfx/')
-def request_doub_url(response):
-    urls = list()
-    url = 'https://doub.io/sszhfx/'
-    try:
-        if response:
-            soup = BeautifulSoup(response, 'lxml')
-        else:
-            raise Exception
-        urls = list(set(map(lambda x: x.get('href'), filter(
-            lambda x: x.text.strip() != '1', soup.find_all('a', attrs={'class': 'page-numbers'})))))
-        urls.append(url)
-    except Exception:
-        logging.ERROR('查找逗比网址失败')
-        urls = [url]
-    return set(urls)
+# @universal_request_url('https://doub.io/sszhfx/')
+# def request_doub_url(response):
+#     urls = list()
+#     url = 'https://doub.io/sszhfx/'
+#     try:
+#         if response:
+#             soup = BeautifulSoup(response, 'lxml')
+#         else:
+#             raise Exception
+#         urls = list(set(map(lambda x: x.get('href'), filter(
+#             lambda x: x.text.strip() != '1', soup.find_all('a', attrs={'class': 'page-numbers'})))))
+#         urls.append(url)
+#     except Exception:
+#         logging.ERROR('查找逗比网址失败')
+#         urls = [url]
+#     return set(urls)
 
 # def request_newpac(url='https://github.com/Alvin9999/new-pac/wiki/ss%E5%85%8D%E8%B4%B9%E8%B4%A6%E5%8F%B7'):
 #     data = requests.get(url)
@@ -241,7 +241,7 @@ def main(debug=list()):
     ]
     from app.ss.config import url
     websites.extend([(i, None) for i in url])
-    websites.extend([(i, HEADERS, i[-1]) for i in request_doub_url()])
+    # websites.extend([(i, HEADERS, i[-1]) for i in request_doub_url()])
     for website in websites:
         try:
             if type(website) is tuple:
