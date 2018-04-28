@@ -1,10 +1,5 @@
-import functools
-import logging
-from PIL import Image
-from io import BytesIO
 from pyzbar.pyzbar import decode
 from app.ss.config import HEADERS
-import cfscrape
 import requests
 import time
 import threading
@@ -78,21 +73,17 @@ def universal_request_url(url):
     :param url:
     :return: func(response),若异常，response为''
     """
-    def decorator(func):
-        @functools.wraps(func)
-        def wrapper(*args, **kw):
-            print("requesting: " + url)
-            try:
-                response = ''
-                response = requests.get(url, headers=HEADERS).text
-            except requests.exceptions.Timeout:
-                logging.error('requests timeout: ' + url)
-            except Exception:
-                logging.error('request exception: ' + url)
-            finally:
-                return func(response)
-        return wrapper
-    return decorator
+    response = ''
+    print("requesting: " + url)
+    try:
+        response = requests.get(url, headers=HEADERS).text
+    except requests.exceptions.Timeout:
+        logging.error('requests timeout: ' + url)
+    except Exception:
+        logging.error('request exception: ' + url)
+    finally:
+        return response
+
 
 
 def parse_uri(uri, default_title='untitled'):

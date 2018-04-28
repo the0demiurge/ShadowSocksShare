@@ -9,7 +9,6 @@
 import requests
 from app.ss.util import  validate
 from app.ss.util import universal_request_url, parse_uri, gen_uri
-import logging
 from bs4 import BeautifulSoup
 from app.ss.config import HEADERS,LOG_FILENAME
 import regex as re
@@ -33,7 +32,7 @@ def qr_decode(url):
     """
     try:
         if isinstance(url, str):
-            ss_data = decode(Image.open(BytesIO(requests.get(url, headers=HEADERS, proxies=PROXIES).content)))
+            ss_data = decode(Image.open(BytesIO(requests.get(url, headers=HEADERS).content)))
             return str(ss_data[0].data, encoding='utf-8')
     except Exception:
         logging.ERROR("二维码解码失败:" + url)
@@ -41,11 +40,12 @@ def qr_decode(url):
 
 
 # 有效 测试日期：2018年4月28日
-@universal_request_url('https://global.ishadowx.net')
-def request_iss(response):
+def request_iss():
+    response = universal_request_url('https://global.ishadowx.net')
     if response == '':
         return [], {'message': '', 'url': '', 'name': ''}
     else:
+        print('获得soup')
         soup = BeautifulSoup(response, 'lxml')
 
     try:
@@ -87,8 +87,8 @@ def request_iss(response):
 
 
 # 有效 测试日期：2018年4月28日
-@universal_request_url('http://my.freess.org/')
 def request_freess_cx(response):
+    response = universal_request_url('http://my.freess.org/')
     servers = []
     names = []
     suffixs = ['jp01.png', 'jp02.png', 'jp03.png', 'us01.png', 'us02.png', 'us03.png']
@@ -110,8 +110,8 @@ def request_freess_cx(response):
 
 
 # 有效 测试日期： 2018年4月28日
-@universal_request_url('https://raw.githubusercontent.com/fq1234/home/master/README.md')
 def request_fq123(response):
+    response = universal_request_url('https://raw.githubusercontent.com/fq1234/home/master/README.md')
     if response:
         servers = [{
             'remarks': 'fq123.tk',
@@ -126,22 +126,22 @@ def request_fq123(response):
     return servers, info
 
 # 有效 测试日期： 2018年4月28日
-# @universal_request_url('https://doub.io/sszhfx/')
-# def request_doub_url(response):
-#     urls = list()
-#     url = 'https://doub.io/sszhfx/'
-#     try:
-#         if response:
-#             soup = BeautifulSoup(response, 'lxml')
-#         else:
-#             raise Exception
-#         urls = list(set(map(lambda x: x.get('href'), filter(
-#             lambda x: x.text.strip() != '1', soup.find_all('a', attrs={'class': 'page-numbers'})))))
-#         urls.append(url)
-#     except Exception:
-#         logging.ERROR('查找逗比网址失败')
-#         urls = [url]
-#     return set(urls)
+def request_doub_url(response):
+    response = universal_request_url('https://doub.io/sszhfx/')
+    urls = list()
+    url = 'https://doub.io/sszhfx/'
+    try:
+        if response:
+            soup = BeautifulSoup(response, 'lxml')
+        else:
+            raise Exception
+        urls = list(set(map(lambda x: x.get('href'), filter(
+            lambda x: x.text.strip() != '1', soup.find_all('a', attrs={'class': 'page-numbers'})))))
+        urls.append(url)
+    except Exception:
+        logging.ERROR('查找逗比网址失败')
+        urls = [url]
+    return set(urls)
 
 # def request_newpac(url='https://github.com/Alvin9999/new-pac/wiki/ss%E5%85%8D%E8%B4%B9%E8%B4%A6%E5%8F%B7'):
 #     data = requests.get(url)
@@ -250,7 +250,7 @@ def main(debug=list()):
                 data, info = website()
             result.append({'data': gen_uri(data), 'info': info})
         except Exception:
-            logging.ERROR('Error in', website, type(website))
+            print('error in ')
 
     # check ssr configs
     # try:

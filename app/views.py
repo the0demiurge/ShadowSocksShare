@@ -12,74 +12,53 @@ from app.ss import ss_free
 from flask import render_template, send_from_directory, abort
 
 PERIOD = int(os.environ.get('PERIOD', 300))
-servers = [{'data': [], 'info': {'message': '别着急，正在爬数据，十分钟后再回来吧：）', 'url': 'http://ss.pythonic.life', 'name': '免费 ShadowSocks 帐号分享'}}]
+servers = [{'data': [], 'info': {'message': '别着急，正在爬数据，十分钟后再回来吧：）', 'url': 'http://blog.niuhemoon.xyz', 'name': '免费 ShadowSocks 帐号分享'}}]
 curtime = time.ctime()
 
-# decoded = list()
-# for i in servers:
-#     for j in i['data']:
-#         decoded.append(j['ssr_uri'])
-# decoded = '\n'.join(decoded)
-# encoded = base64.urlsafe_b64encode(bytes(decoded, 'utf-8'))
+
 encoded = ''
 full_encoded = ''
 jsons = list()
 full_jsons = list()
 
 
-def update_servers():
-    try:
-        # servers
-        global servers
-        servers = ss_free.main()
-        # subscription
-        global encoded
-        global full_encoded
-        global jsons
-        global full_jsons
-        jsons = list()
-        decoded = list()
-        full_decoded = list()
-        for website in servers:
-            for server in website['data']:
-                full_decoded.append(server['ssr_uri'])
-                full_jsons.append(server['json'])
-                if server['status'] is True:
-                    decoded.append(server['ssr_uri'])
-                    jsons.append(server['json'])
+# def update_servers():
+#     try:
+#         # servers
+#         global servers
+#         servers = ss_free.main()
+#         # subscription
+#         global encoded
+#         global full_encoded
+#         global jsons
+#         global full_jsons
+#         jsons = list()
+#         decoded = list()
+#         full_decoded = list()
+#         for website in servers:
+#             for server in website['data']:
+#                 full_decoded.append(server['ssr_uri'])
+#                 full_jsons.append(server['json'])
+#                 if server['status'] is True:
+#                     decoded.append(server['ssr_uri'])
+#                     jsons.append(server['json'])
+#
+#         decoded = '\n'.join(decoded)
+#         encoded = base64.urlsafe_b64encode(bytes(decoded, 'utf-8'))
+#         full_decoded = '\n'.join(full_decoded)
+#         full_encoded = base64.urlsafe_b64encode(bytes(full_decoded, 'utf-8'))
+#     except Exception as e:
+#         logging.exception(e, stack_info=True)
 
-        decoded = '\n'.join(decoded)
-        encoded = base64.urlsafe_b64encode(bytes(decoded, 'utf-8'))
-        full_decoded = '\n'.join(full_decoded)
-        full_encoded = base64.urlsafe_b64encode(bytes(full_decoded, 'utf-8'))
-    except Exception as e:
-        logging.exception(e, stack_info=True)
 
-
-# counter_path = os.path.expanduser('/tmp/counter')
-counter_path = 'memory'
 count = 0
-update_counter = 0
 
 
-def counter(counter_path=counter_path, update=True):
+# 网页访问了计数器
+def counter(counter_path='', update=True):
     if update:
-        if counter_path == 'memory':
-            global count
-            count += 1
-        else:
-            if not os.path.exists(os.path.split(counter_path)[0]):
-                os.makedirs(os.path.split(counter_path)[0])
-            if not os.path.exists(counter_path):
-                open(counter_path, 'w').write('0')
-            count = int(open(counter_path).readline())
-            open(counter_path, 'w').write(str(count + 1))
-
-    global update_counter
-    update_counter += 1
-    if update_counter % PERIOD == 1:
-        update_thread = threading.Thread(target=update_servers)
-        update_thread.start()
+        global count
+        count += 1
     return count
 
 
@@ -200,30 +179,11 @@ def static_html(path):
         abort(404)
 
 
-
-
-@app.route('/subscribe')
-def subscribe():
-    counter('', False)
-    return encoded
-
-
-@app.route('/full/subscribe')
-def full_subscribe():
-    counter('', False)
-    return full_encoded
-
-
 @app.route('/json')
 def subscribe_json():
     counter('', False)
     return '{}' if len(jsons) == 0 else random.sample(jsons, 1)[0]
 
-
-@app.route('/full/json')
-def full_subscribe_json():
-    counter('', False)
-    return '{}' if len(jsons) == 0 else random.sample(full_jsons, 1)[0]
 
 
 @app.route('/js/<path:path>')
@@ -251,6 +211,7 @@ def page_not_found(e):
         count=count,
     ), 404
 
-
+global servers
+servers = ss_free.main()
 
 print('启动Flask服务')
