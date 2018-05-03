@@ -1,14 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import base64
 import random
 import logging
 import time
-import threading
 import os
-from app import app
+from app import app, ss_crawler
 from app.ascii import  ss_title
-from app.ss import ss_free
 from flask import render_template, send_from_directory, abort
 
 PERIOD = int(os.environ.get('PERIOD', 300))
@@ -21,34 +18,6 @@ full_encoded = ''
 jsons = list()
 full_jsons = list()
 
-
-# def update_servers():
-#     try:
-#         # servers
-#         global servers
-#         servers = ss_free.main()
-#         # subscription
-#         global encoded
-#         global full_encoded
-#         global jsons
-#         global full_jsons
-#         jsons = list()
-#         decoded = list()
-#         full_decoded = list()
-#         for website in servers:
-#             for server in website['data']:
-#                 full_decoded.append(server['ssr_uri'])
-#                 full_jsons.append(server['json'])
-#                 if server['status'] is True:
-#                     decoded.append(server['ssr_uri'])
-#                     jsons.append(server['json'])
-#
-#         decoded = '\n'.join(decoded)
-#         encoded = base64.urlsafe_b64encode(bytes(decoded, 'utf-8'))
-#         full_decoded = '\n'.join(full_decoded)
-#         full_encoded = base64.urlsafe_b64encode(bytes(full_decoded, 'utf-8'))
-#     except Exception as e:
-#         logging.exception(e, stack_info=True)
 
 
 count = 0
@@ -212,6 +181,6 @@ def page_not_found(e):
     ), 404
 
 global servers
-servers = ss_free.main()
+servers = ss_crawler.main()
 
-print('启动Flask服务')
+print('开始启动Flask服务')

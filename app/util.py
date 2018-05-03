@@ -1,14 +1,44 @@
-from pyzbar.pyzbar import decode
-from app.ss.config import HEADERS
+from app.setting import HEADERS
 import requests
 import time
 import threading
-from app.ss import ss_local
+from app import ss_local
 import re
 import base64
 import urllib
 import json
 import logging
+from PIL import Image
+from io import BytesIO
+from pyzbar.pyzbar import decode
+from requests.exceptions import ConnectionError
+
+
+def qr_decode(url):
+    """
+    对网络上二维码图片进行解码
+    :param url: 二维码图片的url
+    :return: 成功返回解码后的字符串
+    """
+    try:
+        if isinstance(url, str):
+            ss_data = decode(Image.open(BytesIO(requests.get(url, headers=HEADERS).content)))
+            return str(ss_data[0].data, encoding='utf-8')
+    except Exception:
+        logging.ERROR("二维码解码失败:" + url)
+        return ''
+
+
+def get_page(url, options={}):
+    print("requesting: " + url)
+    try:
+        response = requests.get(url, headers=HEADERS, **options)
+        print('抓取成功', url, response.status_code)
+        if response.status_code == 200:
+            return response.text
+    except ConnectionError:
+        print('抓取失败', url)
+        return None
 
 
 def test_connection(url='http://ip.cn', headers={'User-Agent': 'cURL'}, proxies=None, port=1080, timeout=10):

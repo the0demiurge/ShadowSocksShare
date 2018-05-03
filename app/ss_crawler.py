@@ -7,16 +7,12 @@
 如果觉得这个脚本帮到了你，不妨为我的GitHub项目加个星呗～
 """
 import requests
-from app.ss.util import  validate
-from app.ss.util import  parse_uri, gen_uri
+from app.util import  parse_uri, gen_uri, qr_decode, get_page
 from bs4 import BeautifulSoup
-from app.ss.config import HEADERS,LOG_FILENAME
+from app.setting import LOG_FILENAME
 import regex as re
 import time
 import logging
-from PIL import Image
-from io import BytesIO
-from pyzbar.pyzbar import decode
 
 
 logging.basicConfig(
@@ -24,42 +20,10 @@ logging.basicConfig(
     level=logging.ERROR,
 )
 
-def qr_decode(url):
-    """
-    对网络上二维码图片进行解码
-    :param url: 二维码图片的url
-    :return: 成功返回解码后的字符串
-    """
-    try:
-        if isinstance(url, str):
-            ss_data = decode(Image.open(BytesIO(requests.get(url, headers=HEADERS).content)))
-            return str(ss_data[0].data, encoding='utf-8')
-    except Exception:
-        logging.ERROR("二维码解码失败:" + url)
-        return ''
-
-
-def universal_request_url(url):
-    """
-    网页请求装饰器，方便本地调试，通过代理发起请求。
-    返回一个函数来对response做进一步解析
-    :param url:
-    :return: func(response),若异常，response为''
-    """
-    response = ''
-    print("requesting: " + url)
-    try:
-        response = requests.get(url, headers=HEADERS).text
-    except requests.exceptions.Timeout:
-        print('requests timeout: ' + url)
-    except Exception:
-        print('other request exception: ' + url)
-    finally:
-        return response
 
 # 有效 测试日期：2018年4月28日
 def request_iss():
-    response = universal_request_url('https://global.ishadowx.net')
+    response = get_page('https://global.ishadowx.net')
     if response == '':
         return [], {'message': '', 'url': '', 'name': ''}
     else:
@@ -106,7 +70,7 @@ def request_iss():
 
 # 有效 测试日期：2018年4月28日
 def request_freess_cx():
-    response = universal_request_url('http://my.freess.org/')
+    response = get_page('http://my.freess.org/')
     servers = []
     names = []
     suffixs = ['jp01.png', 'jp02.png', 'jp03.png', 'us01.png', 'us02.png', 'us03.png']
@@ -129,7 +93,7 @@ def request_freess_cx():
 
 # 有效 测试日期： 2018年4月28日
 def request_fq123():
-    response = universal_request_url('https://raw.githubusercontent.com/fq1234/home/master/README.md')
+    response = get_page('https://raw.githubusercontent.com/fq1234/home/master/README.md')
     if response:
         servers = [{
             'remarks': 'fq123.tk',
@@ -250,7 +214,7 @@ def main(debug=list()):
         request_freess_cx,
         request_fq123,
     ]
-    from app.ss.config import url
+    from app.setting import url
     websites.extend([(i, None) for i in url])
     # websites.extend([(i, HEADERS, i[-1]) for i in request_doub_url()])
     for website in websites:
