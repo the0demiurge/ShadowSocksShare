@@ -2,12 +2,15 @@
 # -*- coding: utf-8 -*-
 
 import requests
-from proxypool.util import  parse_uri, gen_uri, qr_decode, get_page
+from proxypool.util import  parse_uri, gen_uri, get_page
 from bs4 import BeautifulSoup
-from proxypool.setting import LOG_FILENAME
+from proxypool.setting import LOG_FILENAME, HEADERS
 import regex as re
 import time
 import logging
+from PIL import Image
+from io import BytesIO
+from pyzbar.pyzbar import decode
 
 
 logging.basicConfig(
@@ -15,6 +18,19 @@ logging.basicConfig(
     level=logging.ERROR,
 )
 
+def qr_decode(url):
+    """
+    对网络上二维码图片进行解码
+    :param url: 二维码图片的url
+    :return: 成功返回解码后的字符串
+    """
+    try:
+        if isinstance(url, str):
+            ss_data = decode(Image.open(BytesIO(requests.get(url, headers=HEADERS).content)))
+            return str(ss_data[0].data, encoding='utf-8')
+    except Exception:
+        logging.ERROR("二维码解码失败:" + url)
+        return ''
 
 class ProxyMetaclass(type):
     def __new__(cls, name, bases, attrs):
