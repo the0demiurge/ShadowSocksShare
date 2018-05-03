@@ -24,14 +24,15 @@ def get_page(url, options={}):
         return None
 
 
-def test_connection(url=TEST_URL, headers={'User-Agent': 'cURL'}, proxies=None, port=1080, timeout=10):
+def test_connection(url=TEST_URL, headers=HEADERS, proxies=None, port=1080, timeout=10):
     if not proxies:
         proxies = {'http': 'socks5://localhost:{}'.format(port),
                    'https': 'socks5://localhost:{}'.format(port)}
     ok = False
     try:
-        respond = requests.get(url, headers=headers, proxies=proxies, timeout=timeout)
-        ok = respond.ok
+        response = requests.get(url, headers=headers, proxies=proxies, timeout=timeout)
+        if response.status_code == 200:
+            ok = True
     except Exception as e:
         print(e)
     return ok
