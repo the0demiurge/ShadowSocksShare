@@ -106,7 +106,6 @@ def pages(path):
             json=json,
             obfsparam=obfsparam,
             protoparam=protoparam,
-            content=content,
         )
     except Exception as e:
         logging.exception(e, stack_info=True)
