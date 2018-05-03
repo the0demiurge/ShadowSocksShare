@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
-from proxypool import ss_crawler
+from . import run
+run.main()
 
-ss_crawler.main()
+

@@ -42,14 +42,14 @@ POOL_UPPER_THRESHOLD = 50000
 TESTER_CYCLE = 20
 
 # 获取周期
-GETTER_CYCLE = 300
+GETTER_CYCLE = 3000
 
-# 测试API，建议抓哪个网站测哪个
-TEST_URL = 'http://www.baidu.com'
+# 测试API
+TEST_URL = 'http://ip.cn'
 
 # API配置
 API_HOST = '0.0.0.0'
-API_PORT = 5555
+API_PORT = 8080
 
 # 开关
 TESTER_ENABLED = True

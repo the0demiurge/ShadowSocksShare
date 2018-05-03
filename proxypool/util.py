@@ -1,4 +1,4 @@
-from proxypool.setting import HEADERS
+from proxypool.setting import HEADERS, TEST_URL
 import requests
 import time
 import threading
@@ -41,7 +41,7 @@ def get_page(url, options={}):
         return None
 
 
-def test_connection(url='http://ip.cn', headers={'User-Agent': 'cURL'}, proxies=None, port=1080, timeout=10):
+def test_connection(url=TEST_URL, headers={'User-Agent': 'cURL'}, proxies=None, port=1080, timeout=10):
     if not proxies:
         proxies = {'http': 'socks5://localhost:{}'.format(port),
                    'https': 'socks5://localhost:{}'.format(port)}
@@ -81,19 +81,14 @@ def test_socks_server(dictionary=None, str_json=None, port=2001):
         return e.code - 10, 'Unknown failure'
 
 
-def validate(websites):
-    for servers in websites:
-        print(servers['info'])
-        for server in servers['data']:
-            result, info = test_socks_server(str_json=server['json'])
-            print('>' * 10, '结果:', result)
-            if result is True:
-                print('>' * 10, '测试通过！')
-            elif result == -1:
-                print(server['json'])
-            server['status'] = result
-            server['content'] = info
-    return websites
+def validate(server):
+    result, info = test_socks_server(str_json=server['json'])
+    print('>' * 10, '结果:', result)
+    if result is True:
+        print('>' * 10, '测试通过！')
+        return True
+    elif result == -1:
+        return False
 
 
 
@@ -150,113 +145,98 @@ def parse_uri(uri, default_title='untitled'):
         server['remarks'] += ' SSR'
     return server
 
-def gen_uri(servers):
-    '''{
-                "server": server['server'],
-                "server_ipv6": "::",
-                "server_port": int(server['server_port']),
-                "local_address": "127.0.0.1",
-                "local_port": 1080,
-                "password": server['password'],
-                "timeout": 300,
-                "udp_timeout": 60,
-                "method": method,
-                "protocol": ssr_protocol,
-                "protocol_param": "",
-                "obfs": obfs,
-                "obfs_param": "",
-                "fast_open": False,
-                "workers": 1,
-                "group": "ss.pythonic.life"
-            },'''
 
-    result_servers = list()
-    for server in servers:
-        if 'password' not in server:
-            server['password'] = ''
+def gen_uri(server):
+
+    '''
+    根据一个sever字典生成赌赢的url，包含ss链接和json
+    :param server:
+    :return:
+    '''
+
+    if 'password' not in server:
+        server['password'] = ''
+    try:
         try:
-            try:
-                # SSR信息是否完整
-                decoded = ':'.join([
-                                   server['server'],
-                                   server['server_port'],
-                                   server['ssr_protocol'],
-                                   server['method'],
-                                   server['obfs'],
-                                   encode(server['password'])
-                                   ])
-                decoded += '/?remarks={remarks}&group={group}'.format(
-                    remarks=encode(server['remarks']),
-                    group=encode("Charles Xu"))
+            # SSR信息是否完整
+            decoded = ':'.join([
+                               server['server'],
+                               server['server_port'],
+                               server['ssr_protocol'],
+                               server['method'],
+                               server['obfs'],
+                               encode(server['password'])
+                               ])
+            decoded += '/?remarks={remarks}&group={group}'.format(
+                remarks=encode(server['remarks']),
+                group=encode("Charles Xu"))
 
-                ss_uri = 'ssr://{endoced}'.format(
-                    endoced=encode(decoded))
-                ssr_uri = ss_uri
+            ss_uri = 'ssr://{endoced}'.format(
+                endoced=encode(decoded))
+            ssr_uri = ss_uri
 
-            except (KeyError, EOFError):
-                # 不完整则是SS
-                decoded = '{method}:{password}@{hostname}:{port}'.format(
-                    method=server['method'],
-                    password=server['password'],
-                    hostname=server['server'],
-                    port=server['server_port'],
-                )
-                ss_uri = 'ss://{}#{}'.format(
-                    str(base64.urlsafe_b64encode(bytes(decoded, encoding='utf8')), encoding='utf-8'),
-                    urllib.parse.quote(server['remarks']))
-
-                # ssr格式的ss帐号信息
-                ssr_decoded = ':'.join([
-                    server['server'],
-                    server['server_port'],
-                    'origin',
-                    server['method'],
-                    'plain',
-                    encode(server['password'])
-                ])
-                ssr_decoded += '/?remarks={remarks}&group={group}'.format(
-                    remarks=encode(server['remarks']),
-                    group=encode("Charles Xu"))
-
-                ssr_uri = 'ssr://{endoced}'.format(
-                    endoced=encode(ssr_decoded))
-
-            server['uri'] = ss_uri
-            server['ssr_uri'] = ssr_uri
-            # print(ssr_uri, decode(ssr_uri[6:]))
-            server['decoded_url'] = urllib.parse.unquote(ss_uri)
-
-            server_data_to_json = {
-                "server": server['server'],
-                "server_ipv6": "::",
-                "server_port": int(server['server_port']),
-                "local_address": "127.0.0.1",
-                "local_port": 1080,
-                "password": server['password'],
-                # "timeout": 300,
-                # "udp_timeout": 60,
-                # "fast_open": False,
-                # "workers": 1,
-                "group": "Charles Xu"
-            }
-            for key in ['obfs', 'method', 'ssr_protocol', 'obfsparam', 'protoparam', 'udpport', 'uot']:
-                if key in server:
-                    server_data_to_json[key] = server.get(key)
-
-            server['json'] = json.dumps(server_data_to_json,
-                                        ensure_ascii=False,
-                                        indent=2)
-            result_servers.append(server)
         except (KeyError, EOFError):
-            try:
-                href = get_href(server['string'], '.*查看连接信息.*')
-                server['href'] = href
-            except Exception as e:
-                logging.exception(e, stack_info=True)
-        except ValueError as e:
-            logging.exception(e, stack_info=True)
-    return result_servers
+            # 不完整则是SS
+            decoded = '{method}:{password}@{hostname}:{port}'.format(
+                method=server['method'],
+                password=server['password'],
+                hostname=server['server'],
+                port=server['server_port'],
+            )
+            ss_uri = 'ss://{}#{}'.format(
+                str(base64.urlsafe_b64encode(bytes(decoded, encoding='utf8')), encoding='utf-8'),
+                urllib.parse.quote(server['remarks']))
 
+            # ssr格式的ss帐号信息
+            ssr_decoded = ':'.join([
+                server['server'],
+                server['server_port'],
+                'origin',
+                server['method'],
+                'plain',
+                encode(server['password'])
+            ])
+            ssr_decoded += '/?remarks={remarks}&group={group}'.format(
+                remarks=encode(server['remarks']),
+                group=encode("Charles Xu"))
+
+            ssr_uri = 'ssr://{endoced}'.format(
+                endoced=encode(ssr_decoded))
+
+        server['uri'] = ss_uri
+        server['ssr_uri'] = ssr_uri
+        # print(ssr_uri, decode(ssr_uri[6:]))
+        server['decoded_url'] = urllib.parse.unquote(ss_uri)
+
+        server_data_to_json = {
+            "server": server['server'],
+            "server_ipv6": "::",
+            "server_port": int(server['server_port']),
+            "local_address": "127.0.0.1",
+            "local_port": 1080,
+            "password": server['password'],
+            # "timeout": 300,
+            # "udp_timeout": 60,
+            # "fast_open": False,
+            # "workers": 1,
+            "group": "Charles Xu"
+        }
+        for key in ['obfs', 'method', 'ssr_protocol', 'obfsparam', 'protoparam', 'udpport', 'uot']:
+            if key in server:
+                server_data_to_json[key] = server.get(key)
+
+        server['json'] = json.dumps(server_data_to_json,
+                                    ensure_ascii=False,
+                                    indent=2)
+    except (KeyError, EOFError):
+        try:
+            href = get_href(server['string'], '.*查看连接信息.*')
+            server['href'] = href
+        except Exception as e:
+            logging.exception(e, stack_info=True)
+    except ValueError as e:
+        logging.exception(e, stack_info=True)
+    return server
 
 
 
@@ -289,5 +269,4 @@ def get_href(string, pattern='.*'):
 
 
 if __name__ == '__main__':
-    dates = qr_decode('http://my.freess.org/images/servers/jp01.png')
-    print(dates)
+    pass

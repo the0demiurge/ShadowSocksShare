@@ -3,7 +3,6 @@ from multiprocessing import Process
 from proxypool.api import app
 from proxypool.getter import Getter
 from proxypool.tester import Tester
-from proxypool.db import RedisClient
 from proxypool.setting import *
 
 
@@ -23,10 +22,9 @@ class Scheduler():
         定时获取代理
         """
         getter = Getter()
-        while True:
-            print('开始抓取代理')
-            getter.run()
-            time.sleep(cycle)
+        print('开始dd抓取代理')
+        getter.run()
+
 
     def schedule_api(self):
         """
@@ -42,6 +40,7 @@ class Scheduler():
             tester_process.start()
 
         if GETTER_ENABLED:
+            print('开始获取代理')
             getter_process = Process(target=self.schedule_getter)
             getter_process.start()
 

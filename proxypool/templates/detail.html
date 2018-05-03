@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}免费ShadowSocks帐号分享{% endblock %}
+
+{% block content %}
+
+<h1>
+      全部SS帐号信息（不能保证全都能用）
+</h1>
+
+<a href='/'>返回主页</a><br>
+
+<h2>必读信息</h2>
+<p>
+  <a href="/html/notes.html" target="_blank">以前的通知信息在此</a>
+</p>
+</div>
+<fieldset>
+
+  <legend><strong>ShadowSocks服务器信息</strong></legend>
+
+
+  {% for server in servers %}
+  {% set outer_loop = loop %}
+        <li> <a target="_blank" href="/{{outer_loop.index0}}-{{loop.index0}}"> {{ server['decoded_url'] }}</a> </li>
+  {% endfor %}
+</fieldset>
+{% endblock %}

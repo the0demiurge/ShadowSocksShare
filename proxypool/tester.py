@@ -1,11 +1,10 @@
 import asyncio
-import aiohttp
 import time
 import sys
-
+from proxypool.util import validate
 try:
     from aiohttp import ClientError
-except:
+except ImportError:
     from aiohttp import ClientProxyConnectionError as ProxyConnectionError
 from proxypool.db import RedisClient
 from proxypool.setting import *
@@ -15,29 +14,23 @@ class Tester(object):
     def __init__(self):
         self.redis = RedisClient()
 
-    async def test_single_proxy(self, proxy):
+    def test_single_proxy(self, proxy):
         """
         测试单个代理
         :param proxy:
         :return:
         """
-        conn = aiohttp.TCPConnector(verify_ssl=False)
-        async with aiohttp.ClientSession(connector=conn) as session:
-            try:
-                if isinstance(proxy, bytes):
-                    proxy = proxy.decode('utf-8')
-                real_proxy = 'http://' + proxy
-                print('正在测试', proxy)
-                async with session.get(TEST_URL, proxy=real_proxy, timeout=15, allow_redirects=False) as response:
-                    if response.status in VALID_STATUS_CODES:
-                        self.redis.max(proxy)
-                        print('代理可用', proxy)
-                    else:
-                        self.redis.decrease(proxy)
-                        print('请求响应码不合法 ', response.status, 'IP', proxy)
-            except (ClientError, aiohttp.client_exceptions.ClientConnectorError, asyncio.TimeoutError, AttributeError):
+        try:
+            server = eval(proxy)
+            if validate(server):
+                self.redis.max(proxy)
+                print('代理可用', proxy)
+            else:
                 self.redis.decrease(proxy)
-                print('代理请求失败', proxy)
+                print('请求响应码不合法 ', 'ss_data', proxy)
+        except Exception:
+            self.redis.decrease(proxy)
+            print('代理测试失败', proxy)
 
     def run(self):
         """

@@ -7,6 +7,7 @@ import sys
 
 class Getter():
     def __init__(self):
+        print('初始化获取器。。。')
         self.redis = RedisClient()
         self.crawler = Crawler()
 
@@ -22,6 +23,8 @@ class Getter():
     def run(self):
         print('获取器开始执行')
         if not self.is_over_threshold():
+            print('开是执行获取函数')
+            print(range(self.crawler.__CrawlFuncCount__))
             for callback_label in range(self.crawler.__CrawlFuncCount__):
                 callback = self.crawler.__CrawlFunc__[callback_label]
                 # 获取代理
@@ -29,3 +32,5 @@ class Getter():
                 sys.stdout.flush()
                 for proxy in proxies:
                     self.redis.add(proxy)
+
+
