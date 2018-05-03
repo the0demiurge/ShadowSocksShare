@@ -39,13 +39,13 @@ VALID_STATUS_CODES = [200, 302]
 POOL_UPPER_THRESHOLD = 50000
 
 # 检查周期
-TESTER_CYCLE = 20
+TESTER_CYCLE = 2000
 
 # 获取周期
 GETTER_CYCLE = 3000
 
 # 测试API
-TEST_URL = 'http://ip.cn'
+TEST_URL = 'http://www.baidu.com'
 
 # API配置
 API_HOST = '0.0.0.0'

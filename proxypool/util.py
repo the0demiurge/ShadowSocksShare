@@ -29,14 +29,12 @@ def test_connection(url=TEST_URL, headers={'User-Agent': 'cURL'}, proxies=None, 
         proxies = {'http': 'socks5://localhost:{}'.format(port),
                    'https': 'socks5://localhost:{}'.format(port)}
     ok = False
-    content = ''
     try:
         respond = requests.get(url, headers=headers, proxies=proxies, timeout=timeout)
         ok = respond.ok
-        content = respond.text
     except Exception as e:
         print(e)
-    return ok, content
+    return ok
 
 
 def test_socks_server(dictionary=None, str_json=None, port=2001):
@@ -50,27 +48,27 @@ def test_socks_server(dictionary=None, str_json=None, port=2001):
             t = threading.Thread(target=loop.run)
             t.start()
             time.sleep(3)
-            conn, content = test_connection(port=port)
+            conn= test_connection(port=port)
             loop.stop()
             t.join()
             tcps.close(next_tick=True)
             udps.close(next_tick=True)
             time.sleep(1)
-            return conn, content
+            return conn
         except Exception as e:
             print(e)
             return -2, 'Thread or Connection to website failed'
     except SystemExit as e:
-        return e.code - 10, 'Unknown failure'
+        return e.code - 10
 
 
 def validate(server):
-    result, info = test_socks_server(str_json=server['json'])
+    result= test_socks_server(str_json=server['json'])
     print('>' * 10, '结果:', result)
     if result is True:
         print('>' * 10, '测试通过！')
         return True
-    elif result == -1:
+    else:
         return False
 
 

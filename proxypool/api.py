@@ -85,7 +85,6 @@ def pages(path):
         json = servers[a].get('json', 'None')
         obfsparam = servers[a].get('obfsparam', 'None')
         protoparam = servers[a].get('protoparam', 'None')
-        content = servers[a].get('content', 'None')
 
         color, opacity, count = gen_canvas_nest()
 
@@ -116,7 +115,7 @@ def pages(path):
 @app.route('/json')
 def subscribe_json():
     conn = get_conn()
-    return conn.random().get['json']
+    return eval(conn.random()).get['json']
 
 
 @app.route('/random')
