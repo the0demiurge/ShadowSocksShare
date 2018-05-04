@@ -1,2 +1,2 @@
-web: gunicorn intro_to_flask:app
+web: gunicorn proxypool/api:app
 # web: python manage.py runserver
