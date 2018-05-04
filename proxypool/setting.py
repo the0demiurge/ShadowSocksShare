@@ -45,7 +45,7 @@ TESTER_CYCLE = 2000
 GETTER_CYCLE = 3000
 
 # 测试API
-TEST_URL = 'http://www.baidu.com'
+TEST_URL = 'http://ip.sb'
 
 # API配置
 API_HOST = '0.0.0.0'
