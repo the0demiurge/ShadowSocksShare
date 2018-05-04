@@ -1,5 +1,6 @@
 # -*- coding: UTF-8 –*-
 from proxypool.scheduler import Scheduler
+from proxypool.api import app
 import sys
 import io
 # apt-get install -y build-essential libzbar-dev
