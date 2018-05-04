@@ -1,3 +1,4 @@
+# -*- coding: UTF-8 –*-
 from flask import Flask, g
 from proxypool.db import RedisClient
 import random

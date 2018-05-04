@@ -1,3 +1,4 @@
+# -*- coding: UTF-8 –*-
 from proxypool.setting import HEADERS, TEST_URL
 import requests
 import time

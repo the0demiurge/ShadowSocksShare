@@ -1,3 +1,4 @@
+# -*- coding: UTF-8 –*-
 from proxypool.db import RedisClient
 
 conn = RedisClient()
