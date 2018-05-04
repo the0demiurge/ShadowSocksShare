@@ -1,3 +1,4 @@
+# -*- coding: UTF-8 –*-
 from proxypool.scheduler import Scheduler
 import sys
 import io
