@@ -135,7 +135,6 @@ class Crawler(object, metaclass=ProxyMetaclass):
         for server in servers:
             yield gen_uri(server)
 
-crawl_freess_cx
     # 有效 测试日期： 2018年4月28日
     # def request_doub_url(response):
     #     response = universal_request_url('https://doub.io/sszhfx/')
