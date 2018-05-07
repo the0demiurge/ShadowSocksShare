@@ -1,11 +1,10 @@
 # -*- coding: UTF-8 –*-
-from flask import Flask, g
 from proxypool.db import RedisClient
 import random
 import logging
 import time
 from proxypool.ascii import ss_title
-from flask import send_from_directory, render_template, abort
+from flask import send_from_directory, render_template, abort, Flask, g
 
 __all__ = ['app']
 

@@ -104,7 +104,7 @@ class Crawler(object, metaclass=ProxyMetaclass):
                 servers.append(parse_uri(ss_list, names[i]))
                 time.sleep(3)
         except Exception:
-            logging.ERROR('请求出错: ' + 'http://my.freess.org/')
+            logging.ERROR('请求出错: http://my.freess.org/')
         finally:
             for server in servers:
                 yield gen_uri(server)
@@ -135,7 +135,7 @@ class Crawler(object, metaclass=ProxyMetaclass):
         for server in servers:
             yield gen_uri(server)
 
-
+crawl_freess_cx
     # 有效 测试日期： 2018年4月28日
     # def request_doub_url(response):
     #     response = universal_request_url('https://doub.io/sszhfx/')

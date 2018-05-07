@@ -7,10 +7,12 @@ click==6.7
 fake-useragent==0.1.10
 Flask==1.0.1
 Flask-Script==2.0.6
+Frozen-Flask==0.15
 idna==2.6
 idna-ssl==1.0.1
 itsdangerous==0.24
 Jinja2==2.10
+lxml==4.2.1
 MarkupSafe==1.0
 multidict==4.2.0
 numpy==1.14.3
