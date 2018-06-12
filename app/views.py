@@ -14,6 +14,11 @@ from flask import render_template, send_from_directory, abort
 from apscheduler.schedulers.background import BackgroundScheduler
 
 
+# Config for disqus comment board
+DOMAIN = 'http://ss.pythonic.life'
+DISQUS_IDENTIFIER = 'shadowsocksshare'
+
+
 servers = [{'data': [], 'info': {'message': '别着急，正在爬数据，十分钟后再回来吧：）', 'url': 'http://ss.pythonic.life', 'name': '免费 ShadowSocks 帐号分享'}}]
 curtime = time.ctime()
 
@@ -96,6 +101,8 @@ def index():
             opacity=opacity,
             count=count,
             ctime=curtime,
+            PAGE_URL=DOMAIN+'/',
+            PAGE_IDENTIFIER='shadowsocksshare'
         )
     except Exception as e:
         logging.exception(e, stack_info=True)
@@ -202,7 +209,8 @@ def html_donation():
             count=count,
             data=donation.data,
             sum_people=donation.sum_people,
-            sum_money=donation.sum_money)
+            sum_money=donation.sum_money,
+        )
     except Exception as e:
         logging.exception(e)
         abort(404)

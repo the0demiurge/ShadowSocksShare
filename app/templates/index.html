@@ -32,8 +32,6 @@
   <a href="/html/clients.html" target="_blank">点这儿下载客户端</a><br>
   请记住本页面的主网址：<a href="http://ss.pythonic.life">ss.pythonic.life</a><br>
   以及备用网址（将会重定向到解决问题的页面）：<a href="http://ssr.pythonic.life">ssr.pythonic.life</a><br>
-  
-  
   <a href="/html/notes.html" target="_blank">点这儿查看往期通知信息</a>
 </p>
 <p><h2><a href="/donation" target="_blank">点这儿查看全部捐助信息及捐助留言：）</a></h2></p>
@@ -110,7 +108,22 @@
 ..................................
 </code></pre>
 </div>
+<h2>留言板</h2>
+<div id="disqus_thread" class="comments"></div>
 
+<script>
+var disqus_config = function () {
+this.page.url = "{{PAGE_URL}}";  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = "{{PAGE_IDENTIFIER}}"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://{{PAGE_IDENTIFIER}}.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 <div>
   <h3>友情链接</h3>
     <p>
