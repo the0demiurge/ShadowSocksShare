@@ -8,7 +8,7 @@ import threading
 import os
 from app import app
 from app.ascii import birthday_2017, ss_title
-from app.ss import ss_free
+from app.ss import crawler
 from app import donation
 from flask import render_template, send_from_directory, abort
 from apscheduler.schedulers.background import BackgroundScheduler
@@ -33,7 +33,7 @@ def update_servers():
     try:
         # servers
         global servers
-        servers = ss_free.main()
+        servers = crawler.main()
         # subscription
         global encoded
         global full_encoded

@@ -7,7 +7,7 @@ import logging
 import regex as re
 
 
-def request_xiaoshuang(url='https://xsjs.yhyhd.org/free-ss'):
+def crawl_xiaoshuang(url='https://xsjs.yhyhd.org/free-ss'):
     print('req xcud...')
     try:
         data = requests.get(url)
@@ -35,7 +35,7 @@ def request_xiaoshuang(url='https://xsjs.yhyhd.org/free-ss'):
 # this cannot use for now
 
 
-def request_newpac(url='https://github.com/Alvin9999/new-pac/wiki/ss%E5%85%8D%E8%B4%B9%E8%B4%A6%E5%8F%B7'):
+def crawl_newpac(url='https://github.com/Alvin9999/new-pac/wiki/ss%E5%85%8D%E8%B4%B9%E8%B4%A6%E5%8F%B7'):
     data = requests.get(url)
     soup = BeautifulSoup(data.text, 'html.parser')
 
@@ -87,7 +87,7 @@ def request_newpac(url='https://github.com/Alvin9999/new-pac/wiki/ss%E5%85%8D%E8
     return servers, info
 
 
-def request_nobey(url='https://raw.githubusercontent.com/NoBey/Shadowsocks-free/master/README.md'):
+def crawl_nobey(url='https://raw.githubusercontent.com/NoBey/Shadowsocks-free/master/README.md'):
     def strip_dot(x):
         return
     print('req nobey...')
@@ -123,6 +123,57 @@ def request_nobey(url='https://raw.githubusercontent.com/NoBey/Shadowsocks-free/
                         servers[-1]['server_port'],
                         servers[-1]['method']) = (ip, password, port, method)
 
+    except Exception as e:
+        logging.exception(e, stack_info=True)
+        return [], {'message': str(e), 'url': '', 'name': ''}
+    return servers, info
+
+
+def crawl_5752me(url='https://wget.5752.me/Computer/soft/socks5%E4%BB%A3%E7%90%86/%E5%85%8D%E8%B4%B9ss%E8%B4%A6%E5%8F%B7.html'):
+    print('req 5752...')
+    servers = list()
+    try:
+        data = requests.get(url)
+        if 'IP地址' in data.content.decode('gb2312'):
+            data = data.content.decode('gb2312')
+        elif 'IP地址' in data.text:
+            data = data.text
+        else:
+            raise Exception('没找到5752信息：' + url)
+        info = {'message': '', 'name': '自得其乐', 'url': 'https://www.5752.me/'}
+        data = data.split('<br/>')
+
+        avail_data = list(filter(lambda x: 'IP地址' in x, data))
+        if len(avail_data) == 0:
+            raise Exception('5752里面资料大概改变形式了' + '\n'.join(data))
+
+        for i, server in enumerate(avail_data):
+            servers.append(dict())
+            servers[-1]['remarks'] = '自得其乐 {}'.format(i)
+            (
+                servers[-1]['server'],
+                servers[-1]['password'],
+                servers[-1]['server_port'],
+                servers[-1]['method']) = server.split()[1::2]
+
+    except Exception as e:
+        logging.exception(e, stack_info=True)
+        return [], {'message': str(e), 'url': '', 'name': ''}
+    return servers, info
+
+
+def crawl_fq123(url='https://raw.githubusercontent.com/fq1234/home/master/README.md'):
+    print('req fq123...')
+    try:
+        data = re.split('\s*\n\s*', requests.get(url).text.split('```')[1].strip())
+        servers = [{
+            'remarks': 'fq123.tk',
+            'server': data[0].split()[1],
+            'server_port': data[1].split()[1],
+            'password': data[2].split()[1],
+            'method': data[3].split()[1],
+        }]
+        info = {'message': '', 'name': 'fq123', 'url': 'http://fq123.tk/'}
     except Exception as e:
         logging.exception(e, stack_info=True)
         return [], {'message': str(e), 'url': '', 'name': ''}

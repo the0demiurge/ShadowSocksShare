@@ -83,12 +83,18 @@ def parse(uri, default_title='untitled'):
     return server
 
 
-uri = 'https://freess.cx/images/servers/jp01.png'
-
 
 def scanNetQR(img_url, headers=None):
-    img = array(Image.open(BytesIO(requests.get(img_url, headers=headers).content)))
-    return scanner.scan(img.astype(uint8) * 255)[0].data.decode('utf-8')
+
+    if img_url.startswith('http'):
+        img_bytes = requests.get(img_url, headers=headers).content
+    elif img_url.startswith('data:image'):
+        img_bytes = base64.decodebytes(bytes(img_url.split(',')[1], 'utf-8'))
+    img = array(Image.open(BytesIO(img_bytes)))
+    info = scanner.scan(img.astype(uint8) * 255)
+    if len(info) == 0:
+        raise ValueError('scanner fail to identify qr code')
+    return info[0].data.decode('utf-8')
 
 
 def get_href(string, pattern='.*'):
