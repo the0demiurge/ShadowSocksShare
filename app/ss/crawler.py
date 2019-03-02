@@ -7,6 +7,7 @@
 如果觉得这个脚本帮到了你，不妨为我的GitHub项目加个星呗～
 """
 from ast import literal_eval
+import json
 import logging
 import regex as re
 import requests
@@ -46,55 +47,6 @@ def request_url(url, headers=None, name=''):
         print(url)
         logging.exception(e, stack_info=False)
         return [], {'message': str(e), 'url': '', 'name': ''}
-    return servers, info
-
-
-def crawl_iss(url='https://my.ishadowx.net', headers=fake_ua):
-    print('req iss...')
-
-    try:
-        data = requests.get(url, headers=headers)
-        soup = BeautifulSoup(data.text, 'html.parser')
-    except Exception as e:
-        logging.exception(e, stack_info=True)
-        return [], {'message': str(e), 'url': '', 'name': ''}
-
-    try:
-
-        info = {
-            'message': soup.find('div', attrs={'id': 'portfolio'}).find('div', attrs={'class': 'section-title text-center center'}).text,
-            'name': 'ishadowx',
-            'url': url}
-
-        '''servers[-1]['name'] = tmp[0]
-        servers[-1]['server'] = tmp[0]
-        servers[-1]['server_port'] = tmp[0]
-        servers[-1]['password'] = tmp[0]
-        servers[-1]['method'] = tmp[0]
-        servers[-1]['ssr_protocol'] = tmp[0]
-        servers[-1]['obfs'] = tmp[0]'''
-
-        soup = BeautifulSoup(data.text, 'html.parser')
-        all_server_data = soup.find_all('div', attrs={'class': 'hover-text'})
-        servers = list()
-    except Exception as e:
-        logging.exception(e, stack_info=True)
-        return [], {'message': str(e), 'url': '', 'name': ''}
-
-    for i, server in enumerate(all_server_data):
-        try:
-            servers.append(dict())
-            server_data = re.split('\s*\n\s*', server.text.strip())
-            servers[-1]['server'] = server_data[0].split(':')[-1].strip()
-            servers[-1]['server_port'] = re.findall('\d+', server_data[1])[0]
-            servers[-1]['remarks'] = ' '.join(['ishadowx.com', str(i)])
-            servers[-1]['password'] = server_data[2].split(':')[-1].strip()
-            servers[-1]['method'] = server_data[3].split(':')[-1].strip()
-            if 'QR' not in server_data[4]:
-                servers[-1]['ssr_protocol'], servers[-1]['obfs'] = server_data[4].strip().split(maxsplit=1)
-                servers[-1]['remarks'] = ' '.join([servers[-1]['remarks'], 'SSR'])
-        except Exception as e:
-            logging.exception(e, stack_info=True)
     return servers, info
 
 
@@ -144,9 +96,9 @@ def crawl_free_ss_site(url='https://free-ss.site/', headers=fake_ua):
                 'a': value_dict['a'],
                 'b': value_dict['b'],
                 'c': value_dict['c']
-            }).text
-        print('d')
-
+            })
+        print(d.status_code)
+        d = d.text
         assert len(d) > 0, 'request for encrypted data failed'
 
         variables = ';var a = "{a}";var d = "{d}";var b = "{b}"'.format(
@@ -160,8 +112,9 @@ def crawl_free_ss_site(url='https://free-ss.site/', headers=fake_ua):
         json_data = js2py.eval_js(crypto_js + variables + xy + ev)
         try:
             data = json.loads(json_data)
-            data = data['data'][0]
+            data = data['data']
         except Exception as e:
+            print(e)
             print(json_data)
 
         servers = [{
@@ -169,7 +122,7 @@ def crawl_free_ss_site(url='https://free-ss.site/', headers=fake_ua):
             'server': x[1],
             'server_port': x[2],
             'password': x[4],
-            'method': x[3]
+            'method': x[3],
         } for x in data]
     except Exception as e:
         logging.exception(e, stack_info=True)

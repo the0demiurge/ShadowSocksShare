@@ -238,3 +238,55 @@ def acquire_doub_url(url='https://doub.io/sszhfx/'):
         print('DOUB_URL:', url)
         urls = [url]
     return set(urls)
+
+
+def crawl_iss(url='https://my.ishadowx.net', headers=fake_ua):
+    print('req iss...')
+
+    try:
+        data = requests.get(url, headers=headers)
+        soup = BeautifulSoup(data.text, 'html.parser')
+    except Exception as e:
+        logging.exception(e, stack_info=True)
+        return [], {'message': str(e), 'url': '', 'name': ''}
+
+    try:
+
+        info = {
+            'message': soup.find('div', attrs={'id': 'portfolio'}).find('div', attrs={'class': 'section-title text-center center'}).text,
+            'name': 'ishadowx',
+            'url': url}
+
+        '''servers[-1]['name'] = tmp[0]
+        servers[-1]['server'] = tmp[0]
+        servers[-1]['server_port'] = tmp[0]
+        servers[-1]['password'] = tmp[0]
+        servers[-1]['method'] = tmp[0]
+        servers[-1]['ssr_protocol'] = tmp[0]
+        servers[-1]['obfs'] = tmp[0]'''
+
+        soup = BeautifulSoup(data.text, 'html.parser')
+        all_server_data = soup.find_all('div', attrs={'class': 'hover-text'})
+        servers = list()
+    except Exception as e:
+        logging.exception(e, stack_info=True)
+        return [], {'message': str(e), 'url': '', 'name': ''}
+
+    for i, server in enumerate(all_server_data):
+        try:
+            servers.append(dict())
+            server_data = re.split('\s*\n\s*', server.text.strip())
+            servers[-1]['server'] = server_data[0].split(':')[-1].strip()
+            servers[-1]['server_port'] = re.findall('\d+', server_data[1])[0]
+            servers[-1]['remarks'] = ' '.join(['ishadowx.com', str(i)])
+            servers[-1]['password'] = server_data[2].split(':')[-1].strip()
+            servers[-1]['method'] = server_data[3].split(':')[-1].strip()
+            if 'QR' not in server_data[4]:
+                servers[-1]['ssr_protocol'], servers[-1]['obfs'] = server_data[4].strip().split(maxsplit=1)
+                servers[-1]['remarks'] = ' '.join([servers[-1]['remarks'], 'SSR'])
+        except Exception as e:
+            logging.exception(e, stack_info=True)
+    return servers, info
+
+
+
