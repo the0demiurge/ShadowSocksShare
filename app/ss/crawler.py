@@ -71,7 +71,7 @@ def crawl_free_ss_site(url='https://free-ss.site/', headers=fake_ua):
         crypto_js = sess.get(crypto_url, headers=headers).text
         print('crypto')
 
-        soup = BeautifulSoup(html, 'lxml')
+        soup = BeautifulSoup(html, 'html.parser')
         script = next(filter(lambda x: 'src' not in x.attrs, soup.findAll('script'))).contents[0]
 
         def get_value(char):
