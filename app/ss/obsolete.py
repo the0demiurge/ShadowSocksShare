@@ -178,3 +178,63 @@ def crawl_fq123(url='https://raw.githubusercontent.com/fq1234/home/master/README
         logging.exception(e, stack_info=True)
         return [], {'message': str(e), 'url': '', 'name': ''}
     return servers, info
+
+
+def crawl_freess_cx(url='https://ss.freess.org', headers=fake_ua):
+    print('req fscx...')
+    servers = list()
+    try:
+        response = requests.get(url, headers=headers).text
+        soup = BeautifulSoup(response, 'html.parser')
+        title = soup.find('title').text
+        msg = soup.find('section', attrs={'id': 'banner'}).text.strip()
+
+        info = {'message': msg, 'url': url, 'name': str(title)}
+        qr = list(map(lambda x: x.find('a').get('href'), soup.find_all('div', attrs={'class': '4u 12u(mobile)'})))
+        for i, img_url in enumerate(qr):
+            try:
+                servers.append(parse(scanNetQR(img_url, headers=headers), ' '.join([title, str(i)])))
+            except Exception as e:
+                logging.exception(e, stack_info=False)
+                print('IMG_URL FOR freess.cx:', img_url)
+    except Exception as e:
+        logging.exception(e, stack_info=True)
+        return [], {'message': str(e), 'url': '', 'name': ''}
+    return servers, info
+
+
+def crawl_yitianjian(url='https://free.yitianjianss.com', headers=fake_ua):
+    print('req yitianjian...')
+    servers = list()
+    try:
+        response = requests.get(url, headers=headers).text
+        soup = BeautifulSoup(response, 'html.parser')
+        title = 'yitianjianss'
+        info = {'message': '为确保安全，服务器地址会不定期更新。', 'url': url, 'name': str(title)}
+        qr = map(lambda x: url + x.attrs['src'], soup.find_all('img'))
+        for i, img_url in enumerate(qr):
+            try:
+                servers.append(parse(scanNetQR(img_url, headers=headers), ' '.join([title, str(i)])))
+            except Exception as e:
+                logging.exception(e, stack_info=False)
+                print('IMG_URL FOR yitianjianss:', img_url)
+    except Exception as e:
+        logging.exception(e, stack_info=True)
+        return [], {'message': str(e), 'url': '', 'name': ''}
+    return servers, info
+
+
+def acquire_doub_url(url='https://doub.io/sszhfx/'):
+    print('req doub...')
+
+    try:
+        html = requests.get(url, headers=fake_ua)
+        soup = BeautifulSoup(html.text, 'html.parser')
+        urls = list(set(map(lambda x: x.get('href'), filter(
+            lambda x: x.text.strip() != '1', soup.find_all('a', attrs={'class': 'page-numbers'})))))
+        urls.append(url)
+    except Exception as e:
+        logging.exception(e, stack_info=True)
+        print('DOUB_URL:', url)
+        urls = [url]
+    return set(urls)

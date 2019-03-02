@@ -91,7 +91,7 @@ def scanNetQR(img_url, headers=None):
     elif img_url.startswith('data:image'):
         img_bytes = base64.decodebytes(bytes(img_url.split(',')[1], 'utf-8'))
     img = array(Image.open(BytesIO(img_bytes)))
-    info = scanner.scan(img.astype(uint8) * 255)
+    info = scanner.scan(img.astype(uint8) * 255) + scanner.scan((1 - img).astype(uint8) * 255)
     if len(info) == 0:
         raise ValueError('scanner fail to identify qr code')
     return info[0].data.decode('utf-8')

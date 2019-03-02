@@ -6,14 +6,15 @@
 如果遇到任何运行问题请联系我。
 如果觉得这个脚本帮到了你，不妨为我的GitHub项目加个星呗～
 """
-import regex as re
-from bs4 import BeautifulSoup
+from ast import literal_eval
 import logging
+import regex as re
 import requests
+import cfscrape
+import js2py
+from bs4 import BeautifulSoup
 from app.ss.parse import parse, scanNetQR, gen_uri
 from app.ss.ssr_check import validate
-from app.ss.tools import cf_request, load_headless_webdriver
-
 
 __author__ = 'Charles Xu'
 __email__ = 'charl3s.xu@gmail.com'
@@ -46,66 +47,6 @@ def request_url(url, headers=None, name=''):
         logging.exception(e, stack_info=False)
         return [], {'message': str(e), 'url': '', 'name': ''}
     return servers, info
-
-
-def crawl_freess_cx(url='https://ss.freess.org', headers=fake_ua):
-    print('req fscx...')
-    servers = list()
-    try:
-        response = requests.get(url, headers=headers).text
-        soup = BeautifulSoup(response, 'html.parser')
-        title = soup.find('title').text
-        msg = soup.find('section', attrs={'id': 'banner'}).text.strip()
-
-        info = {'message': msg, 'url': url, 'name': str(title)}
-        qr = list(map(lambda x: x.find('a').get('href'), soup.find_all('div', attrs={'class': '4u 12u(mobile)'})))
-        for i, img_url in enumerate(qr):
-            try:
-                servers.append(parse(scanNetQR(img_url, headers=headers), ' '.join([title, str(i)])))
-            except Exception as e:
-                logging.exception(e, stack_info=False)
-                print('IMG_URL FOR freess.cx:', img_url)
-    except Exception as e:
-        logging.exception(e, stack_info=True)
-        return [], {'message': str(e), 'url': '', 'name': ''}
-    return servers, info
-
-
-def crawl_yitianjian(url='https://free.yitianjianss.com', headers=fake_ua):
-    print('req yitianjian...')
-    servers = list()
-    try:
-        response = requests.get(url, headers=headers).text
-        soup = BeautifulSoup(response, 'html.parser')
-        title = 'yitianjianss'
-        info = {'message': '为确保安全，服务器地址会不定期更新。', 'url': url, 'name': str(title)}
-        qr = map(lambda x: url + x.attrs['src'], soup.find_all('img'))
-        for i, img_url in enumerate(qr):
-            try:
-                servers.append(parse(scanNetQR(img_url, headers=headers), ' '.join([title, str(i)])))
-            except Exception as e:
-                logging.exception(e, stack_info=False)
-                print('IMG_URL FOR yitianjianss:', img_url)
-    except Exception as e:
-        logging.exception(e, stack_info=True)
-        return [], {'message': str(e), 'url': '', 'name': ''}
-    return servers, info
-
-
-def acquire_doub_url(url='https://doub.io/sszhfx/'):
-    print('req doub...')
-
-    try:
-        html = requests.get(url, headers=fake_ua)
-        soup = BeautifulSoup(html.text, 'html.parser')
-        urls = list(set(map(lambda x: x.get('href'), filter(
-            lambda x: x.text.strip() != '1', soup.find_all('a', attrs={'class': 'page-numbers'})))))
-        urls.append(url)
-    except Exception as e:
-        logging.exception(e, stack_info=True)
-        print('DOUB_URL:', url)
-        urls = [url]
-    return set(urls)
 
 
 def crawl_iss(url='https://my.ishadowx.net', headers=fake_ua):
@@ -157,29 +98,79 @@ def crawl_iss(url='https://my.ishadowx.net', headers=fake_ua):
     return servers, info
 
 
-def __crawl_free_ss_site(url='https://free-ss.site', headers=fake_ua):
-    # NOT FINISHED YET, DO NOT KNOW WHY CANNOT GET THIS PAGE CORRECTLY
-    headless_webdriver = load_headless_webdriver()
+def crawl_free_ss_site(url='https://free-ss.site/', headers=fake_ua):
+    print('req free_ss_site/...')
+    info = {'message': '', 'name': '免费上网帐号', 'url': 'https://free-ss.site/'}
     try:
-        headless_webdriver.get(url)
-        source = headless_webdriver.page_source
-    finally:
-        headless_webdriver.quit()
+        fake_ua = headers
 
+        sess = cfscrape.create_scraper()
 
-def _crawl_free_ss_site(url='https://free-ss.site/ss.json', headers=fake_ua):
-    print('req free_ss_site/ss.json...')
-    info = {'message': '部分账号大概每隔6小时变1次', 'name': '免费上网帐号', 'url': 'https://free-ss.site/'}
-    try:
-        respond = cf_request(url, headers=headers)
-        data = respond.json()['data']
-        servers = list(map(lambda x: {
-                       'remarks': x[6],
-                       'server': x[1],
-                       'server_port': x[2],
-                       'password': x[3],
-                       'method': x[4]
-                       }, data))
+        encc_url = url + 'ajax/libs/encc/0.0.0/encc.min.js'
+        crypto_url = url + 'ajax/libs/crypto-js/3.1.9-1/crypto-js.min.js'
+
+        headers = {'Referer': url, 'Origin': url}
+        headers.update(fake_ua)
+
+        html = sess.get(url, headers=fake_ua).text
+        print('html')
+        encc_js = sess.get(encc_url, headers=headers).text
+        print('encc')
+        crypto_js = sess.get(crypto_url, headers=headers).text
+        print('crypto')
+
+        soup = BeautifulSoup(html, 'lxml')
+        script = next(filter(lambda x: 'src' not in x.attrs, soup.findAll('script'))).contents[0]
+
+        def get_value(char):
+            value_exp = re.findall(r'(?<=var)\s+{char}\s*=\s*[^;]+(?=;)'.format(char=char), script)[1]
+            return literal_eval(value_exp.split('=')[1])
+
+        value_dict = {
+            'a': get_value('a'),
+            'b': get_value('b'),
+            'c': get_value('c'),
+        }
+
+        value_dict['c'] = js2py.eval_js(encc_js + 'encc("{c}");'.format(c=value_dict['c']))
+        replace_char = re.findall(r'(?<=function\()\w(?=\)\{\s*\$.post\()', script, flags=re.MULTILINE)[0]
+        img = re.findall(r"(?<=decodeImage\(')data:image[^']+(?=')", script)[0]
+        value_dict[replace_char] = scanNetQR(img)
+
+        d = sess.post(
+            url + "data.php",
+            headers=headers,
+            data={
+                'a': value_dict['a'],
+                'b': value_dict['b'],
+                'c': value_dict['c']
+            }).text
+        print('d')
+
+        assert len(d) > 0, 'request for encrypted data failed'
+
+        variables = ';var a = "{a}";var d = "{d}";var b = "{b}"'.format(
+            a=value_dict['a'],
+            b=value_dict['b'],
+            d=d
+        )
+        xy = ';var x=CryptoJS.enc.Latin1.parse(a);var y=CryptoJS.enc.Latin1.parse(b);'
+        ev = js2py.eval_js(re.findall(r'(?<=eval)\(function.*', script)[1]) + 'dec.toString(CryptoJS.enc.Utf8);'
+
+        json_data = js2py.eval_js(crypto_js + variables + xy + ev)
+        try:
+            data = json.loads(json_data)
+            data = data['data'][0]
+        except Exception as e:
+            print(json_data)
+
+        servers = [{
+            'remarks': x[6],
+            'server': x[1],
+            'server_port': x[2],
+            'password': x[4],
+            'method': x[3]
+        } for x in data]
     except Exception as e:
         logging.exception(e, stack_info=True)
         print(respond.text)
@@ -195,7 +186,6 @@ def main(debug=list()):
     from app.config import url
 
     websites.extend([(i, None) for i in url])
-    websites.extend([(i, fake_ua, i[-1]) for i in acquire_doub_url()])
 
     for website in websites:
         try:
