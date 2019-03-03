@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-from app import *
+from ssshare import *
 import threading
-from app.ss import crawler, ssr_check
+from ssshare.ss import crawler, ssr_check
 import requests
 
 

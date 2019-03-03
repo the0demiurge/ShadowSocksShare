@@ -3,7 +3,7 @@
 
 import os
 from flask_script import Manager, Server
-from app import app
+from ssshare.main import app
 
 port = os.environ.get('PORT')
 
