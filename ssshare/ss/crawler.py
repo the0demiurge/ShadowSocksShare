@@ -1,10 +1,24 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-本代码使用了 regex beautifulsoup4 这些第三方库，
-只支持Python3以上的版本，在Linux下写成，请读者自行安装这三个第三方库，
-如果遇到任何运行问题请联系我。
-如果觉得这个脚本帮到了你，不妨为我的GitHub项目加个星呗～
+{
+    "server": server['server'],
+    "server_ipv6": "::",
+    "server_port": int(server['server_port']),
+    "local_address": "127.0.0.1",
+    "local_port": 1080,
+    "password": server['password'],
+    "timeout": 300,
+    "udp_timeout": 60,
+    "method": method,
+    "protocol": ssr_protocol,
+    "protocol_param": "",
+    "obfs": obfs,
+    "obfs_param": "",
+    "fast_open": False,
+    "workers": 1,
+    "group": "ss.pythonic.life"
+}
 """
 from ast import literal_eval
 import json
@@ -43,6 +57,40 @@ def request_url(url, headers=None, name=''):
         print(url)
         logging.exception(e, stack_info=False)
         return [], {'message': str(e), 'url': '', 'name': ''}
+    return servers, info
+
+
+def crawl_sstool(
+        api_url=[
+            'https://www.ssrtool.com/tool/api/free_ssr?page=1&limit=1000',
+            'https://www.ssrtool.com/tool/api/share_ssr?page=1&limit=1000',
+        ],
+        headers=fake_ua):
+    print('req sstool')
+    info = {
+        'message': 'GayHub订阅(3天自动更新一次):\nhttps://raw.githubusercontent.com/AmazingDM/sub/master/ssrshare.com',
+        'name': 'SSCAP/SSTAP 小工具/SSR/SS/V2Ray/Vmess/Socks5免费账号',
+        'url': 'https://www.ssrtool.com/tool/free_ssr'
+    }
+    data = list()
+    try:
+        for url in api_url:
+            respond = requests.get(url, headers=fake_ua)
+            if respond.status_code == 200:
+                json_data = respond.json()
+                data.extend(json_data.get('data', []))
+        for i in data:
+            if 'protocol' in i:
+                i['ssr_protocol'] = i['protocol']
+            if 'protocolparam' in i:
+                i['protoparam'] = i['protocolparam']
+            else:
+                print(i)
+        servers = data
+
+    except Exception as e:
+        logging.exception(e, stack_info=True)
+        print('-' * 30)
     return servers, info
 
 

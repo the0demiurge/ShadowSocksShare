@@ -29,11 +29,7 @@ def decode(string):
 
 def encode(decoded):
     return base64.urlsafe_b64encode(
-        bytes(decoded, 'utf-8')).decode('utf-8').replace('=', '')
-
-
-def reverse_str(string):
-    return ''.join(list(reversed(string.strip()))).strip()
+        bytes(str(decoded), 'utf-8')).decode('utf-8').replace('=', '')
 
 
 def parse(uri, default_title='untitled'):
@@ -42,46 +38,36 @@ def parse(uri, default_title='untitled'):
     if uri[2] is ':':
         # ss
         if '#' in uri:
-            stripped, server['remarks'] = stripped.split('#')[:2]
+            stripped, remarks = stripped.split('#')[:2]
+            server['remarks'] = urllib.parse.unquote(remarks)
         else:
             server['remarks'] = default_title
         decoded = decode(stripped)
-        data = list(map(
-            reverse_str,
-            reverse_str(decoded).split('@', maxsplit=1)))
-        server['method'], server['password'] = data[1].split(':', maxsplit=1)
-        server['server_port'], server['server'] = map(
-            reverse_str,
-            reverse_str(data[0]).split(':', maxsplit=1))
+        data = decoded.split('@', maxsplit=1)
+        server['method'], server['password'] = data[0].split(':', maxsplit=1)
+        server['server'], server['server_port'] = data[1].rsplit(':', maxsplit=1)
     elif uri[2] is 'r':
         # ssr
         decoded = decode(stripped)
-        if '/?' in decoded:
-            data = decoded.split('/?')
-        else:
-            data = [decoded]
+        data = decoded.split('/?')
         [
-            server['obfs'],
-            server['method'],
-            server['ssr_protocol'],
-            server['server_port'],
             server['server'],
-        ] = map(
-            reverse_str,
-            reverse_str(data[0]).split(':', maxsplit=5)[1:])
-        server['password'] = decode(data[0].split(':')[-1])
+            server['server_port'],
+            server['ssr_protocol'],
+            server['method'],
+            server['obfs'],
+            password_enc,
+        ] = data[0].rsplit(':', maxsplit=5)
+        server['password'] = decode(password_enc)
         server['remarks'] = default_title
         if len(data) > 1:
-            data = data[1].split('&')
-            content = {i.split('=')[0]: i.split('=')[1] for i in data}
+            appendix = data[1].split('&')
+            content = {i.split('=')[0]: i.split('=')[1] for i in appendix}
             for key in content:
-                if key in ['remarks', 'group']:
-                    server[key] = decode(content[key])
-                else:
-                    server[key] = content[key]
+                server[key] = decode(content[key])
+
         server['remarks'] += ' SSR'
     return server
-
 
 
 def scanNetQR(img_url, headers=None):
@@ -129,25 +115,28 @@ def gen_uri(servers):
             server['password'] = ''
         try:
             try:
-                # SSR信息是否完整
-                decoded = ':'.join([
-                                   server['server'],
-                                   server['server_port'],
-                                   server['ssr_protocol'],
-                                   server['method'],
-                                   server['obfs'],
-                                   encode(server['password'])
-                                   ])
-                decoded += '/?remarks={remarks}&group={group}'.format(
-                    remarks=encode(server['remarks']),
-                    group=encode("Charles Xu"))
+                # if ssr info is completed
+                decoded_head = ':'.join([str(i) for i in [
+                    server['server'],
+                    server['server_port'],
+                    server['ssr_protocol'],
+                    server['method'],
+                    server['obfs'],
+                    encode(server['password'])
+                ]])
+                appendix = [(key, server[key]) for key in ['obfsparam', 'protoparam', 'remarks'] if key in server]
+                appendix.append(('group', 'Charles Xu'))
+                appendix_str = '&'.join(['{key}={val}'.format(
+                    key=item[0],
+                    val=encode(item[1])
+                ) for item in appendix])
+                decoded = '/?'.join([decoded_head, appendix_str])
 
-                ss_uri = 'ssr://{endoced}'.format(
-                    endoced=encode(decoded))
+                ss_uri = 'ssr://{endoced}'.format(endoced=encode(decoded))
                 ssr_uri = ss_uri
 
             except (KeyError, EOFError):
-                # 不完整则是SS
+                # if not completed, it's ss
                 decoded = '{method}:{password}@{hostname}:{port}'.format(
                     method=server['method'],
                     password=server['password'],
@@ -156,27 +145,29 @@ def gen_uri(servers):
                 )
                 ss_uri = 'ss://{}#{}'.format(
                     str(base64.urlsafe_b64encode(bytes(decoded, encoding='utf8')), encoding='utf-8'),
-                    urllib.parse.quote(server['remarks']))
+                    urllib.parse.quote(server['remarks'])
+                )
 
-                # ssr格式的ss帐号信息
+                # ssr formatted account info
                 ssr_decoded = ':'.join([
                     server['server'],
                     server['server_port'],
                     'origin',
                     server['method'],
                     'plain',
-                    encode(server['password'])
+                    encode(server['password']),
                 ])
                 ssr_decoded += '/?remarks={remarks}&group={group}'.format(
                     remarks=encode(server['remarks']),
-                    group=encode("Charles Xu"))
+                    group=encode("Charles Xu"),
+                )
 
                 ssr_uri = 'ssr://{endoced}'.format(
-                    endoced=encode(ssr_decoded))
+                    endoced=encode(ssr_decoded)
+                )
 
             server['uri'] = ss_uri
             server['ssr_uri'] = ssr_uri
-            # print(ssr_uri, decode(ssr_uri[6:]))
             server['decoded_url'] = urllib.parse.unquote(ss_uri)
 
             server_data_to_json = {
@@ -186,26 +177,22 @@ def gen_uri(servers):
                 "local_address": "127.0.0.1",
                 "local_port": 1080,
                 "password": server['password'],
-                # "timeout": 300,
-                # "udp_timeout": 60,
-                # "fast_open": False,
-                # "workers": 1,
                 "group": "Charles Xu"
             }
-            for key in ['obfs', 'method', 'ssr_protocol', 'obfsparam', 'protoparam', 'udpport', 'uot']:
+            if 'ssr_protocol' in server:
+                server['protocol'] = server['ssr_protocol']
+            for key in ['obfs', 'method', 'protocol', 'obfsparam', 'protoparam', 'udpport', 'uot']:
                 if key in server:
                     server_data_to_json[key] = server.get(key)
 
-            server['json'] = json.dumps(server_data_to_json,
-                                        ensure_ascii=False,
-                                        indent=2)
+            server['json'] = json.dumps(
+                server_data_to_json,
+                ensure_ascii=False,
+                indent=2,
+            )
             result_servers.append(server)
         except (KeyError, EOFError):
-            try:
-                href = get_href(server['string'], '.*查看连接信息.*')
-                server['href'] = href
-            except Exception as e:
-                logging.exception(e, stack_info=True)
+            logging.exception(e, stack_info=True)
         except ValueError as e:
             logging.exception(e, stack_info=True)
     return result_servers
