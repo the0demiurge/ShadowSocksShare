@@ -208,8 +208,8 @@ def crawl_free_ss_site(url='https://free-ss.site/', headers=fake_ua):
             'remarks': x[6],
             'server': x[1],
             'server_port': x[2],
-            'password': x[4],
-            'method': x[3],
+            'password': x[3],
+            'method': x[4],
         } for x in data]
     except Exception as e:
         logging.exception(e, stack_info=True)
