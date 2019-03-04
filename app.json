@@ -5,8 +5,6 @@
     {"url": "heroku/python"}
   ],
    "addons": [
-    "papertrail",
-    {
-      "plan": "papertrail:choklad"
-    }]
+    "papertrail"
+]
 }
