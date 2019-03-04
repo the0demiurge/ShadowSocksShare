@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from app import app as application
+from ssshare.main import app as application
 import logging
 import os
-
+print(__name__)
 if 'PORT' in os.environ:
     port = int(os.environ['PORT'])
 else:

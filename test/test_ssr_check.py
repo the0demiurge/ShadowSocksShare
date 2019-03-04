@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-from app import *
+from ssshare import *
 import threading
-from app.ss import ss_free, ssr_check
+from ssshare.ss import crawler, ssr_check
 import requests
 
 
@@ -19,7 +19,7 @@ def test2():
 
 
 def test3():
-    data = ss_free.main()
+    data = crawler.main()
     for i in data:
         print(i['info'])
         for j in i['data']:
@@ -32,7 +32,7 @@ def test3():
 
 
 def test4():
-    data = ss_free.main(debug=['no_validate'])
+    data = crawler.main(debug=['no_validate'])
     data = ssr_check.validate(data)
 
     for i in data:

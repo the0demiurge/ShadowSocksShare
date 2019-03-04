@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}免费ShadowSocks帐号分享{% endblock %}
+
+{% block content %}
+
+<h1>捐助信息</h1>
+<a href='/'>返回主页</a><br>
+<fieldset>
+  <legend>说明</legend>
+<h4>微信现在看不到付款人信息了，所以捐款的时候想要留下名字就要在捐款信息里面附上-_-</h4>
+<h4>谢谢大家支持，大家的捐款现在主要用于交域名费，等到攒到一定数额会考虑用捐款搭梯子分享给大家：）</h4>
+<h4>由于我也没有搭梯子的经验，会考虑买很多不同家的VPS给大家测试（等我有空再说吧...）</h4>
+<div>
+  <h3>共计{{sum_people}}位朋友捐款，共计{{sum_money}}元：）</h3>
+</div>
+</fieldset>
+<div>
+  {{data|safe}}
+</div>
+<!--
+计算捐款数额的一行python代码：
+python3 -c "import re,functools;info=open('app/templates/donate.html', 'r').read();print(functools.reduce(lambda x,y:x+y,map(float,re.findall('(?<=捐献了)[\.\d]+(?=元)',info))))"
+-->
+{% endblock %}

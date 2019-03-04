@@ -1,0 +1,11 @@
+prefix=/tmp/build_da28d797fa3200ed2b83d92a7b6c8796/the0demiurge-ShadowSocksShare-a92f662/vendor/libsodium
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: libsodium
+Version: 1.0.15
+Description: A modern and easy-to-use crypto library
+
+Libs: -L${libdir} -lsodium
+Cflags: -I${includedir}

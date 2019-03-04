@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+{% block title %}免费ShadowSocks帐号分享{% endblock %}
+
+{% block content %}
+
+<h3>
+    <pre>
+{{ss}}
+    </pre>
+</h3>
+<div id="announcement" style="color: #311315">
+  <h2>免责声明</h2>
+  <h3>
+    本网站仅进行技术展示，对所爬到的帐号不负任何责任。<br>
+    本项目仅面向海外华人用户，中华人民共和国境内居民禁止使用，并请立即关闭本网站！<br>
+    本网站所提供的帐号均来自网络，仅供科研、学习之用。<br>
+    请用本站分享的帐号进行学习、科研，切勿用于其他用途。<br>
+    请于24小时之内删掉与本站相关的一切内容，否则出现一切问题本站作者概不负责。
+  </h3>
+</div>
+
+<div id="notice" style="background-color: #f5f5f6" target="_blank">
+<h2>最新通知</h2>
+  <legend>通知发布日期：Mon Mar  4 14:23:45 CST 2019</legend>
+  由于 Google plus 将于2019年4月2日关闭，而之前爬到的可用帐号几乎都来源于 Google plus。<br>
+  所以如果大家是自己搭的网站，请时刻关注本项目更新动态，并使用最新源码重新部署。<br>
+  最后，如果有推荐的免费ss帐号分享网站，不妨在<a href="https://github.com/the0demiurge/ShadowSocksShare/issues/50">这里</a>提供一下，或者向作者发email:<a target="_blank" href="mailto:charl3s.xu@gmail.com?subject=feedback" "email me">charl3s.xu@gmail.com</a><br>
+  作者将在学习工作之余抽空研究并爬一下试试。
+<h2>必读信息</h2>
+<p>
+  请使用 ShadowSocksR 客户端，不然无法使用。
+  <a href="/html/clients.html" target="_blank">客户端下载地址</a><br>
+  请记住本项目的主网址：<a href="http://ss.pythonic.life">ss.pythonic.life</a><br>
+  以及备用网址（将会重定向到解决问题的页面）：<a href="http://ssr.pythonic.life">ssr.pythonic.life</a><br>
+   如果主网址无法访问，可以参考<a href="https://github.com/the0demiurge/ShadowSocksShare/issues/17" target="_blank">这个 Issue</a><br>
+   获取最新信息，请持续关注本项目的 <a href="https://github.com/the0demiurge/ShadowSocksShare" target="_blank">GitHub 仓库</a>：）<br>
+  <a href="/html/notes.html" target="_blank">点这儿查看往期通知信息</a><br>
+</p>
+<p><h2><a href="/donation" target="_blank">点这儿查看全部捐助信息及捐助留言：）</a></h2></p>
+</div>
+
+
+<fieldset>
+
+  <legend><strong>ShadowSocks服务器信息</strong></legend>
+  {% for server in servers %}
+    <p>
+      请支持免费ss帐号的提供者：<a target="_blank" href="{{server['info']['url']}}">{{server['info']['name']}}</a><br>
+      <font style="color:#E13C19">服务器通知：<br>{{server['info']['message']}}</font>
+      <br>
+      <ol>
+      {%set outer_loop = loop%}
+      {% for s in server['data'] %}
+      {%- if s['status'] == True -%}
+        <li> <a target="_blank" href="/{{outer_loop.index0}}-{{loop.index0}}"> {{s['remarks']}}</a> </li>
+      {% endif %}
+      {% endfor %}
+      </ol>
+    </p>
+  {% endfor %}
+  <h3>其他信息:</h3>
+  爬到的所有帐号（包含大量失效帐号）在<a href="/full" target="_blank">这里<a><br>
+  SSR订阅地址：<a target="_blank" href="/subscribe">右键点击本链接，选择复制连接地址</a><br>
+  JSON格式的订阅地址（每次随机从库中抽取一条json返回）：<a target="_blank" href="/json">右键点击本链接，选择复制连接地址</a>
+</fieldset>
+
+
+<div id="info">
+    <p>如果遇到了什么问题或有任何建议，请到我的 <a target="_blank" href="https://github.com/the0demiurge/ShadowSocksShare/issues">GitHub Issue 页面</a>提供反馈：）</p>
+    <p>如果用着感觉挺好，不妨在朋友之间宣传宣传，然后到<a target="_blank" href="https://github.com/the0demiurge/ShadowSocksShare">GitHub 链接</a>加个星：）</p>
+</div>
+
+<div id="author">
+<table border="1">
+
+  <tr>
+      <td>作者的博客</td><td><a target="_blank" href="https://the0demiurge.blogspot.jp/">Blogger （需爬墙）</a></td>
+  </tr>
+
+  <tr>
+      <td>给作者发 Email 反馈</td><td><a target="_blank" href="mailto:charl3s.xu@gmail.com?subject=feedback" "email me">charl3s.xu@gmail.com</a></td>
+  </tr>
+
+  <tr>
+      <td>源码地址</td><td><a target="_blank" href="https://github.com/the0demiurge/ShadowSocksShare">GitHub 链接</a></td>
+  </tr>
+
+<!--   <tr>
+      <td><strong>网页源码更新时间</td><td>{{ctime}}</strong></td>
+  </tr> -->
+
+  <tr>
+      <td><strong>更新源码后访问次数</td><td>{{counter}}</strong></td>
+  </tr>
+
+</table>
+<h2>
+生日快乐！小宝儿～<br>
+<a href="/gift">点击查看生日礼物</a>
+</h2>
+<pre><code>
+..................................
+.    __________________          .
+.   ( 作者的对象：小胖儿～ )         .
+.    ------------------          .
+.        \                       .
+.         \                      .
+.          \ >()_                .
+.             (__)__ _ ___ __    .
+..................................
+</code></pre>
+</div>
+<h2>留言板</h2>
+<div id="disqus_thread" class="comments"></div>
+
+<script>
+var disqus_config = function () {
+this.page.url = "{{PAGE_URL}}";  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = "{{PAGE_IDENTIFIER}}"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://{{PAGE_IDENTIFIER}}.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<div>
+  <h3>友情链接</h3>
+    <p>
+      感谢<a href="https://www.wishosting.com/">https://www.wishosting.com/</a>提供免费被墙服务器
+    </p>
+</div>
+{% endblock %}
