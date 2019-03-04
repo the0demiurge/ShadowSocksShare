@@ -28,8 +28,8 @@
             <td><strong>dev</strong></td>
         </tr>
         <tr>
-            <td><a href="https://travis-ci.org/the0demiurge/ShadowSocksShare"><img src="https://travis-ci.org/the0demiurge/ShadowSocksShare.svg?branch=master" alt="master"></a></td>
-            <td> <a href="https://travis-ci.org/the0demiurge/ShadowSocksShare"><img src="https://travis-ci.org/the0demiurge/ShadowSocksShare.svg?branch=dev" alt="dev"></a></td></tr>
+            <td><a href="https://travis-ci.org/the0demiurge/ShadowSocksShare-OpenShift"><img src="https://travis-ci.org/the0demiurge/ShadowSocksShare-OpenShift.svg?branch=master" alt="master"></a></td>
+            <td> <a href="https://travis-ci.org/the0demiurge/ShadowSocksShare-OpenShift"><img src="https://travis-ci.org/the0demiurge/ShadowSocksShare-OpenShift.svg?branch=dev" alt="dev"></a></td></tr>
     </table>
 </center>
 
