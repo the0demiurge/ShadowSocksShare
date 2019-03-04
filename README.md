@@ -61,17 +61,19 @@
 
 为本项目添砖加瓦，您可以：
 
-以非技术方式：
+**以非技术方式：**
 
 1. 反馈建议：到[这个页面](https://github.com/the0demiurge/ShadowSocksShare/issues)提交Issue
 2. 提供比较好的 ss(r) 分享链接
 3. 捐助 ssr 帐号的来源网站
 4. 捐助我：如果你已经可以上 Google，打开[示例网站](http://ss.pythonic.life)并拖到最后，就能看到微信打赏二维码：）
+5. Fork本项目
+6. 向信得过的人宣传本项目
 
-以技术类方式：
+**以技术类方式：**
 
-1. Fork 本项目并优化本项目
-2. 提交 Pull Requests
+1. 阅读[项目贡献指南](https://github.com/the0demiurge/ShadowSocksShare/wiki)并按照项目贡献指南为本项目修改源
+2. 修改项目源码并提交 PR
 
 ## 用法：
 
