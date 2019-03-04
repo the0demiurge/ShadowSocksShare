@@ -1,0 +1,12 @@
+{
+  "name": "ShadowSocksShare",
+  "buildpacks":[
+    {"url": "heroku/nodejs"},
+    {"url": "heroku/python"}
+  ],
+   "addons": [
+    "Papertrail",
+    {
+      "plan": "Papertrail:Choklad"
+    }]
+}

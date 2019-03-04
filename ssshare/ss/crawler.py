@@ -28,9 +28,9 @@ import requests
 import cfscrape
 import js2py
 from bs4 import BeautifulSoup
-from ssshare.ss.parse import parse, scanNetQR, gen_uri
+from ssshare.ss.parse import parse, scanNetQR, gen_uri, decode
 from ssshare.ss.ssr_check import validate
-
+import time
 
 fake_ua = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.87 Safari/537.36'}
 
@@ -44,7 +44,11 @@ def request_url(url, headers=None, name=''):
         response = requests.get(url, headers=headers, verify=False).text
         data.update(map(lambda x: re.sub('\s', '', x), re.findall('ssr?://[a-zA-Z0-9_]+=*', response)))
         soup = BeautifulSoup(response, 'html.parser')
-        title = soup.find('title').text
+        title = soup.find('title')
+        if title:
+            title = title.text
+        else:
+            title = name
 
         info = {'message': '', 'url': url, 'name': str(title)}
         for i, server in enumerate(data):
@@ -60,21 +64,59 @@ def request_url(url, headers=None, name=''):
     return servers, info
 
 
-def crawl_sstool(
-        api_url=[
-            'https://www.ssrtool.com/tool/api/free_ssr?page=1&limit=1000',
-            'https://www.ssrtool.com/tool/api/share_ssr?page=1&limit=1000',
-        ],
-        headers=fake_ua):
+def request_subscription(url, headers=fake_ua, name='ssr 订阅源'):
+    print('req', url)
+    data = requests.get(url, headers=headers).text
+    ssr_links = [i for i in decode(data).split('\n') if len(i) > 3]
+    info = {
+        'message': '来自订阅源 {}'.format(url),
+        'url': url,
+        'name': str(name),
+    }
+    servers = list()
+    for i, link in enumerate(ssr_links):
+        try:
+            servers.append(parse(link, ' '.join([name, str(i)])))
+        except Exception as e:
+            logging.exception(e, stack_info=False)
+            print('URL:', url, 'SERVER', link)
+    return servers, info
+
+
+def crawl_sstool(url='https://www.ssrtool.com/', headers=fake_ua):
+    api_url = [url + i for i in [
+        'tool/api/free_ssr?page=1&limit=10',
+        'tool/api/free_ssr?page=2&limit=10',
+        'tool/api/free_ssr?page=3&limit=10',
+        'tool/api/free_ssr?page=4&limit=10',
+        'tool/api/free_ssr?page=5&limit=10',
+        'tool/api/free_ssr?page=6&limit=10',
+        'tool/api/free_ssr?page=7&limit=10',
+        'tool/api/free_ssr?page=8&limit=10',
+        'tool/api/free_ssr?page=9&limit=10',
+        'tool/api/free_ssr?page=10&limit=10',
+
+        'tool/api/share_ssr?page=1&limit=10',
+        'tool/api/share_ssr?page=2&limit=10',
+        'tool/api/share_ssr?page=3&limit=10',
+        'tool/api/share_ssr?page=4&limit=10',
+        'tool/api/share_ssr?page=5&limit=10',
+        'tool/api/share_ssr?page=6&limit=10',
+        'tool/api/share_ssr?page=7&limit=10',
+        'tool/api/share_ssr?page=8&limit=10',
+        'tool/api/share_ssr?page=9&limit=10',
+        'tool/api/share_ssr?page=10&limit=10',
+    ]]
     print('req sstool')
     info = {
         'message': 'GayHub订阅(3天自动更新一次):\nhttps://raw.githubusercontent.com/AmazingDM/sub/master/ssrshare.com',
         'name': 'SSCAP/SSTAP 小工具/SSR/SS/V2Ray/Vmess/Socks5免费账号',
-        'url': 'https://www.ssrtool.com/tool/free_ssr'
+        'url': url,
     }
     data = list()
     try:
         for url in api_url:
+            time.sleep(2)
             respond = requests.get(url, headers=fake_ua)
             if respond.status_code == 200:
                 json_data = respond.json()
@@ -143,6 +185,7 @@ def crawl_free_ss_site(url='https://free-ss.site/', headers=fake_ua):
             })
         print(d.status_code)
         d = d.text
+        print(len(d))
         assert len(d) > 0, 'request for encrypted data failed'
 
         variables = ';var a = "{a}";var d = "{d}";var b = "{b}"'.format(
@@ -170,7 +213,8 @@ def crawl_free_ss_site(url='https://free-ss.site/', headers=fake_ua):
         } for x in data]
     except Exception as e:
         logging.exception(e, stack_info=True)
-        print(respond.text)
+        print(value_dict)
+        print(d)
         print('-' * 30)
     return servers, info
 
@@ -180,7 +224,7 @@ def main(debug=list()):
     result = list()
     # Specified functions for requesting servers
     websites = [globals()[i] for i in filter(lambda x: x.startswith('crawl_'), globals())]
-    from ssshare.config import url
+    from ssshare.config import url, subscriptions
 
     websites.extend([(i, None) for i in url])
 
@@ -195,11 +239,32 @@ def main(debug=list()):
             logging.exception(e, stack_info=False)
             print('Error in', website, type(website))
 
+    for subscription in subscriptions:
+        try:
+            data, info = request_subscription(subscription)
+            result.append({'data': gen_uri(data), 'info': info})
+        except Exception as e:
+            logging.exception(e, stack_info=False)
+            print('Error in', subscription, type(subscription))
+
+    # remove duplicates
+    uniq_result = list()
+    keys = set()
+    for server in result:
+        server_data = server.get('data', [])
+        uniqed_server_data = list()
+        for ssr_data in server_data:
+            key = '{}:{}'.format(ssr_data.get('server', ''), ssr_data.get('server_port', ''))
+            if key not in keys:
+                keys.add(key)
+                uniqed_server_data.append(ssr_data)
+        uniq_result.append({'data': uniqed_server_data, 'info': server['info']})
+
     # check ssr configs
     if 'no_validate' in debug:
-        validated_servers = result
+        validated_servers = uniq_result
     else:
-        validated_servers = validate(result)
+        validated_servers = validate(uniq_result)
     # remove useless data
     servers = list(filter(lambda x: len(x['data']) > 0, validated_servers))
     print('-' * 10, '数据获取完毕', '-' * 10)

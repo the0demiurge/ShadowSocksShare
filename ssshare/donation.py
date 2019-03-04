@@ -139,7 +139,7 @@ info = [
     (5,),
     (5,),
     (10.01, '伟大，感谢与支持！'),
-    (1, '用不了了(emoji哭)不过还是', '', '具体是哪方面用不了了？欢迎到我的 <a target="_blank" href="https://github.com/the0demiurge/ShadowSocksShare-OpenShift/issues">GitHub Issue 页面</a>提供反馈；<br>此外近期有计划抽空对网站升级，把不能用的帐号过滤掉：）'),
+    (1, '用不了了(emoji哭)不过还是', '', '具体是哪方面用不了了？欢迎到我的 <a target="_blank" href="https://github.com/the0demiurge/ShadowSocksShare/issues">GitHub Issue 页面</a>提供反馈；<br>此外近期有计划抽空对网站升级，把不能用的帐号过滤掉：）'),
     (10, ''),
     (10, '感谢分享～加油'),
     (8, '喝瓶奶茶'),

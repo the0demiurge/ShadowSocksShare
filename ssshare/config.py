@@ -7,3 +7,7 @@ url = [
     'https://plus.google.com/communities/107859708371989171939',
     'http://www.52ssr.net/',
 ]
+
+subscriptions = [
+    'https://raw.githubusercontent.com/AmazingDM/sub/master/ssrshare.com'
+]

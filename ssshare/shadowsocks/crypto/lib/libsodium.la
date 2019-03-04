@@ -38,4 +38,4 @@ dlopen=''
 dlpreopen=''
 
 # Directory that this library needs to be installed in:
-libdir='/tmp/build_da28d797fa3200ed2b83d92a7b6c8796/the0demiurge-ShadowSocksShare-OpenShift-a92f662/vendor/libsodium/lib'
+libdir='/tmp/build_da28d797fa3200ed2b83d92a7b6c8796/the0demiurge-ShadowSocksShare-a92f662/vendor/libsodium/lib'
