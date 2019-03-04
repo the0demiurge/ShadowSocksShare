@@ -225,18 +225,18 @@ def parse(data):
     else:
         number, message = data[:2]
     if message:
-        message = '，并留言：”{}“'.format(message)
+        message = '，并留言：<b>”{}“</b>'.format(message)
     if len(data) >= 3:
-        name = data[2]
+        name = '<b>' + data[2]+ '</b>'
     else:
         name = '某位没有留下名字的'
 
     if len(data) >= 4:
-        comment = '<br>to 这位朋友：{}'.format(data[3])
+        comment = '<br>to 这位朋友：<b>{}</b>'.format(data[3])
     else:
         comment = ''
 
-    return_data = '<p>{name}朋友捐献了{number}元{message}：）{comment}</p>'.format(
+    return_data = '<p>{name}朋友捐献了<b>{number}</b>元{message}：）<b>{comment}<b></p>'.format(
         name=name,
         number=number,
         message=message,
