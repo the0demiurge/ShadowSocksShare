@@ -3,6 +3,7 @@ import requests
 import time
 import threading
 from ssshare.ss import ss_local
+import random
 
 
 def test_connection(
@@ -25,7 +26,9 @@ def test_connection(
     return ok, content
 
 
-def test_socks_server(dictionary=None, str_json=None, port=2001):
+def test_socks_server(dictionary=None, str_json=None, port=None):
+    if not port:
+        port = random.randint(2000, 3000)
     try:
         try:
             loop, tcps, udps = ss_local.main(
