@@ -10,25 +10,30 @@ dependencies = list()
 with open('dependencies.txt') as f:
     requirements = f.read().splitlines()
 
-readme = 'ShadowSocksShare'
+readme = '\n'.join(open('README.md').readlines())
 
-setup(name='ShadowSocks-share',
+setup(
+    name='ssshare',
+    version='1.1.1',
 
-      # PEP 440 -- Version Identification and Dependency Specification
-      version='0.0.1',
+    # Project description
+    description='Crawl ShadowSocksR(SSR) accounts, sharing them on the web, and supporting subscription.',
+    long_description=readme,
+    long_description_content_type="text/markdown",
 
-      # Project description
-      description='share free ss',
-      long_description=readme,
+    # Author details
+    author='Charles Xu',
+    author_email='charl3s.xu@gmail.com',
 
-      # Author details
-      author='Charles Xu',
-      author_email='charl3s.xu@gmail.com',
+    # Project details
+    url='https://github.com/the0demiurge/ShadowSocksShare',
 
-      # Project details
-      url='https://github.com/the0demiurge/Python-Scripts/tree/master/src/Web/Flask/ShadowSocksShare',
-
-      # Project dependencies
-      dependency_links=dependencies,
-      install_requires=requirements,
-      )
+    # Project dependencies
+    dependency_links=dependencies,
+    install_requires=requirements,
+    classifiers=[
+        "Programming Language :: Python :: 3",
+        "License :: OSI Approved :: Apache Software License",
+        "Operating System :: POSIX",
+    ],
+)

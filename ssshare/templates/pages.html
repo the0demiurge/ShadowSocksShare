@@ -12,61 +12,88 @@
 
 {%- if href != 'None' -%}
 
-    <div id="hlink">
-        请点击这个链接查看详细信息：<br>
-        <a href={{href}}>{{href}}</a>
-    </div>
+<div id="hlink">
+    请点击这个链接查看详细信息：<br>
+    <a href={{href}}>{{href}}</a>
+</div>
 
 {% else %}
 
-    <div id="uri">
-        <h4>配置URI</h4>
-        <input  value="{{uri}}" readonly onclick="this.select()" size="70"><br>
-        <button id="btn" class="js-copy" data-clipboard-text="{{uri}}"><span>一键复制URI</span></button><br />
-    </div>
+<div id="uri">
+    <h4>配置URI</h4>
+    <input value="{{uri}}" readonly onclick="this.select()" size="70"><br>
+    <button id="btn" class="js-copy" data-clipboard-text="{{uri}}"><span>一键复制URI</span></button><br />
+</div>
 
 
-    <h4>SSR二维码</h4>
-    <div id="qrcode"></div>
+<h4>SSR二维码</h4>
+<div id="qrcode"></div>
 
 
-    <div id="table">
+<div id="table">
     <table style="text-align: center;">
         <h4>服务器详细配置信息</h4>
-        <tr><td>服务器</td><td>{{server}}</td></tr>
-        <tr><td>端口</td><td>{{server_port}}</td></tr>
-        <tr><td>密码</td><td>{{password}}</td></tr>
-        <tr><td>加密方法</td><td>{{method}}</td></tr>
+        <tr>
+            <td>服务器</td>
+            <td>{{server}}</td>
+        </tr>
+        <tr>
+            <td>端口</td>
+            <td>{{server_port}}</td>
+        </tr>
+        <tr>
+            <td>密码</td>
+            <td>{{password}}</td>
+        </tr>
+        <tr>
+            <td>加密方法</td>
+            <td>{{method}}</td>
+        </tr>
         {%- if ssr_protocol != 'None' -%}
-        <tr><td>SSR协议</td><td>{{ssr_protocol}}</td></tr>
+        <tr>
+            <td>SSR协议</td>
+            <td>{{ssr_protocol}}</td>
+        </tr>
         {% endif %}
         {%- if obfs != 'None' -%}
-        <tr><td>混淆方式</td><td>{{obfs}}</td></tr>
+        <tr>
+            <td>混淆方式</td>
+            <td>{{obfs}}</td>
+        </tr>
         {% endif %}
         {%- if protoparam != 'None' -%}
-        <tr><td>协议参数</td><td>{{protoparam}}</td></tr>
+        <tr>
+            <td>协议参数</td>
+            <td>{{protoparam}}</td>
+        </tr>
         {% endif %}
         {%- if obfsparam != 'None' -%}
-        <tr><td>混淆参数</td><td>{{obfsparam}}</td></tr>
+        <tr>
+            <td>混淆参数</td>
+            <td>{{obfsparam}}</td>
+        </tr>
         {% endif %}
-        <tr><td>连接状态</td><td>{{status}}</td></tr>
+        <tr>
+            <td>连接状态</td>
+            <td>{{status}}</td>
+        </tr>
     </table>
-        <h4>IP 归属地</h4>
-        <textarea rows="10" cols="40" onclick="this.select()" readonly>
+    <h4>IP 归属地</h4>
+    <textarea rows="10" cols="40" onclick="this.select()" readonly>
             {{content}}
         </textarea><br>
-    </div>
+</div>
 
 
-    {%- if json != 'None' -%}
-    <div id="json">
-        <h4>JSON格式的配置文件</h4>
-        <textarea rows="15" cols="40" onclick="this.select()" readonly>
+{%- if json != 'None' -%}
+<div id="json">
+    <h4>JSON格式的配置文件</h4>
+    <textarea rows="15" cols="40" onclick="this.select()" readonly>
             {{json}}
         </textarea><br>
-        <button id="btn_json" class="js-copy" data-clipboard-text="{{json}}"><span>一键复制JSON配置</span></button><br />
-    </div>
-    {% endif %}
+    <button id="btn_json" class="js-copy" data-clipboard-text="{{json}}"><span>一键复制JSON配置</span></button><br />
+</div>
+{% endif %}
 
 {% endif %}
 </div>
@@ -75,39 +102,41 @@
 <script type="text/javascript" src="js/clipboard.min.js"></script>
 
 <script>
-var btn = document.getElementById('btn');
-var clipboard = new Clipboard(btn);//实例化
+    var btn = document.getElementById('btn');
+    var clipboard = new Clipboard(btn); //实例化
 
-//复制成功执行的回调，可选
-clipboard.on('success', function(e) {
-    console.log(e);
-    alert("URI复制成功")
-});
+    //复制成功执行的回调，可选
+    clipboard.on('success', function (e) {
+        console.log(e);
+        alert("URI复制成功")
+    });
 
-//复制失败执行的回调，可选
-clipboard.on('error', function(e) {
-    console.log(e);
-    alert("复制失败，请手动复制")
-});
+    //复制失败执行的回调，可选
+    clipboard.on('error', function (e) {
+        console.log(e);
+        alert("复制失败，请手动复制")
+    });
 
-var clipboard1 = new Clipboard(btn_json);//实例化
-//复制成功执行的回调，可选
-clipboard1.on('success', function(e) {
-    console.log(e);
-    alert("JSON复制成功")
-});
+    var clipboard1 = new Clipboard(btn_json); //实例化
+    //复制成功执行的回调，可选
+    clipboard1.on('success', function (e) {
+        console.log(e);
+        alert("JSON复制成功")
+    });
 
-//复制失败执行的回调，可选
-clipboard1.on('error', function(e) {
-    console.log(e);
-    alert("复制失败，请手动复制")
-});
+    //复制失败执行的回调，可选
+    clipboard1.on('error', function (e) {
+        console.log(e);
+        alert("复制失败，请手动复制")
+    });
 </script>
 
 <!-- qrcode -->
 <script src="js/jquery.min.js""></script>
-<script type="text/javascript" src="js/jquery.qrcode.js"></script>
+<script type=" text/javascript" src="js/jquery.qrcode.js"></script>
 <script type="text/javascript" src="js/qrcode.js"></script>
-<script>jQuery('#qrcode').qrcode("{{server_data['uri']}}")</script>
+<script>
+    jQuery('#qrcode').qrcode("{{server_data['uri']}}")
+</script>
 
 {% endblock %}
