@@ -35,7 +35,7 @@ def encode(decoded):
 def parse(uri, default_title='untitled'):
     server = dict()
     stripped = re.sub('ssr?://', '', uri)
-    if uri[2] is ':':
+    if uri[2] == ':':
         # ss
         if '#' in uri:
             stripped, remarks = stripped.split('#')[:2]
@@ -46,7 +46,7 @@ def parse(uri, default_title='untitled'):
         data = decoded.split('@', maxsplit=1)
         server['method'], server['password'] = data[0].split(':', maxsplit=1)
         server['server'], server['server_port'] = data[1].rsplit(':', maxsplit=1)
-    elif uri[2] is 'r':
+    elif uri[2] == 'r':
         # ssr
         decoded = decode(stripped)
         data = decoded.split('/?')
@@ -65,8 +65,8 @@ def parse(uri, default_title='untitled'):
             content = {i.split('=')[0]: i.split('=')[1] for i in appendix}
             for key in content:
                 server[key] = decode(content[key])
-
-        server['remarks'] += ' SSR'
+        if server['ssr_protocol'] != 'origin' and server['obfs'] != 'plain':
+            server['remarks'] += ' SSR'
     return server
 
 
@@ -84,7 +84,7 @@ def scanNetQR(img_url, headers=None):
 
 
 def get_href(string, pattern='.*'):
-    found = re.findall('(?<=<a\s+href=")[^"]+(?=">%s</a>)' % pattern, string)
+    found = re.findall(r'(?<=<a\s+href=")[^"]+(?=">%s</a>)' % pattern, string)
     if found:
         return found[0]
 
@@ -114,28 +114,15 @@ def gen_uri(servers):
         if 'password' not in server:
             server['password'] = ''
         try:
-            try:
-                # if ssr info is completed
-                decoded_head = ':'.join([str(i) for i in [
-                    server['server'],
-                    server['server_port'],
-                    server['ssr_protocol'],
-                    server['method'],
-                    server['obfs'],
-                    encode(server['password'])
-                ]])
-                appendix = [(key, server[key]) for key in ['obfsparam', 'protoparam', 'remarks'] if key in server]
-                appendix.append(('group', 'Charles Xu'))
-                appendix_str = '&'.join(['{key}={val}'.format(
-                    key=item[0],
-                    val=encode(item[1])
-                ) for item in appendix])
-                decoded = '/?'.join([decoded_head, appendix_str])
+            for key in ['method', 'password', 'server', 'server_port']:
+                assert key in server, '{key} not in server data'.format(key)
+            for k, v in (('ssr_protocol', 'origin'), ('obfs', 'plain')):
+                if k in server and server[k] == v:
+                    server.pop(k)
 
-                ss_uri = 'ssr://{endoced}'.format(endoced=encode(decoded))
-                ssr_uri = ss_uri
+            is_ss = 'ssr_protocol' not in server and 'obfs' not in server
 
-            except (KeyError, EOFError):
+            if is_ss:
                 # if not completed, it's ss
                 decoded = '{method}:{password}@{hostname}:{port}'.format(
                     method=server['method'],
@@ -165,6 +152,26 @@ def gen_uri(servers):
                 ssr_uri = 'ssr://{endoced}'.format(
                     endoced=encode(ssr_decoded)
                 )
+            else:
+
+                decoded_head = ':'.join([str(i) for i in [
+                    server['server'],
+                    server['server_port'],
+                    server.get('ssr_protocol', 'origin'),
+                    server['method'],
+                    server.get('obfs', 'plain'),
+                    encode(server['password'])
+                ]])
+                appendix = [(key, server[key]) for key in ['obfsparam', 'protoparam', 'remarks'] if key in server]
+                appendix.append(('group', 'Charles Xu'))
+                appendix_str = '&'.join(['{key}={val}'.format(
+                    key=item[0],
+                    val=encode(item[1])
+                ) for item in appendix])
+                decoded = '/?'.join([decoded_head, appendix_str])
+
+                ss_uri = 'ssr://{endoced}'.format(endoced=encode(decoded))
+                ssr_uri = ss_uri
 
             server['uri'] = ss_uri
             server['ssr_uri'] = ssr_uri
@@ -191,8 +198,7 @@ def gen_uri(servers):
                 indent=2,
             )
             result_servers.append(server)
-        except (KeyError, EOFError):
+        except (KeyError, EOFError, ValueError) as e:
             logging.exception(e, stack_info=True)
-        except ValueError as e:
-            logging.exception(e, stack_info=True)
+
     return result_servers

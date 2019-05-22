@@ -15,11 +15,16 @@ def test_connection(
     ok = False
     content = ''
     try:
+        start = time.time()
         respond = requests.get(url, headers=headers, proxies=proxies, timeout=timeout)
-        ok = respond.ok
+        if respond.ok:
+            ok = (time.time() - start) * 1000
+        else:
+            ok = respond.ok
         content = respond.text
     except Exception as e:
         print(e)
+        content = repr(e)
     return ok, content
 
 
@@ -57,7 +62,7 @@ def validate(websites):
         for server in servers['data']:
             result, info = test_socks_server(str_json=server['json'])
             print('>' * 10, '结果:', result)
-            if result is True:
+            if result >= 0:
                 print('>' * 10, '测试通过！')
             elif result == -1:
                 print(server['json'])

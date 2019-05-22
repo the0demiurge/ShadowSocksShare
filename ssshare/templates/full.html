@@ -26,7 +26,9 @@
     <ol>
       {%set outer_loop = loop%}
       {% for s in server['data'] %}
-      <li> <a target="_blank" href="/{{outer_loop.index0}}-{{loop.index0}}"> {{s['remarks']}}</a> </li>
+      <li>
+        <a target="_blank" href="/{{outer_loop.index0}}-{{loop.index0}}"> {{s['remarks']}} - {{s['status']}}ms</a>
+      </li>
       {% endfor %}
     </ol>
   </p>
