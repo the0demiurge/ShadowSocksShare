@@ -2,6 +2,8 @@
 
 # info contains (number, message, name, reply)
 info = [
+    (10, "谢谢"),
+    (1,),
     (5,),
     (1,),
     (5, "我成功了，谢谢。^_^"),

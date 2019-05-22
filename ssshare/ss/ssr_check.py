@@ -24,6 +24,7 @@ def test_connection(
         content = respond.text
     except Exception as e:
         print(e)
+        content = repr(e)
     return ok, content
 
 
