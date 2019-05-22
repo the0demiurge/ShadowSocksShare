@@ -14,7 +14,7 @@ readme = '\n'.join(open('README.md').readlines())
 
 setup(
     name='ssshare',
-    version='1.1.1',
+    version='1.1.2',
 
     # Project description
     description='Crawl ShadowSocksR(SSR) accounts, sharing them on the web, and supporting subscription.',

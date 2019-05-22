@@ -157,9 +157,9 @@ def gen_uri(servers):
                 decoded_head = ':'.join([str(i) for i in [
                     server['server'],
                     server['server_port'],
-                    server['ssr_protocol'],
+                    server.get('ssr_protocol', 'origin'),
                     server['method'],
-                    server['obfs'],
+                    server.get('obfs', 'plain'),
                     encode(server['password'])
                 ]])
                 appendix = [(key, server[key]) for key in ['obfsparam', 'protoparam', 'remarks'] if key in server]
