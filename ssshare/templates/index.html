@@ -54,7 +54,7 @@
     <ol>
       {%set outer_loop = loop%}
       {% for s in server['data'] %}
-      {%- if s['status'] >= 0 -%}
+      {%- if s['status'] > 0 -%}
       <li>
         <a target="_blank" href="/{{outer_loop.index0}}-{{loop.index0}}"> {{s['remarks']}} - {{s['status']}}ms</a>
       </li>
