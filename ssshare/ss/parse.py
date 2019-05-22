@@ -65,8 +65,8 @@ def parse(uri, default_title='untitled'):
             content = {i.split('=')[0]: i.split('=')[1] for i in appendix}
             for key in content:
                 server[key] = decode(content[key])
-
-        server['remarks'] += ' SSR'
+        if server['ssr_protocol'] != 'origin' and server['obfs'] != 'plain':
+            server['remarks'] += ' SSR'
     return server
 
 
