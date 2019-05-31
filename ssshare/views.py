@@ -46,7 +46,7 @@ def update_servers():
             for server in website['data']:
                 full_decoded.append(server['ssr_uri'])
                 full_jsons.append(server['json'])
-                if server['status'] >= 0:
+                if server['status'] > 0:
                     decoded.append(server['ssr_uri'])
                     jsons.append(server['json'])
 
