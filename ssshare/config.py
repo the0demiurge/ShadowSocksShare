@@ -4,6 +4,11 @@ url = [
     'http://www.52ssr.net/',
     'https://t.me/s/SSRlist',
     'https://t.me/s/SSRSUB',
+    'https://fanqiang.network/',
+    'https://fanqiang.network/free-shadowsocksr-accounts-page-2',
+    'https://fanqiang.network/free-shadowsocksr-accounts-page-3',
+    'https://fanqiang.network/free-shadowsocksr-accounts-page-4',
+    'https://fanqiang.network/free-shadowsocksr-accounts-page-5',
 ]
 
 subscriptions = [
