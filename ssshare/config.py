@@ -9,7 +9,7 @@ url = [
     'https://fanqiang.network/free-shadowsocksr-accounts-page-3',
     'https://fanqiang.network/free-shadowsocksr-accounts-page-4',
     'https://fanqiang.network/free-shadowsocksr-accounts-page-5',
-    'https://github.com/Steve-ShadowsocksR/ssr_subscrible_tool/blob/master/node.txt',
+    'https://github.com/Steve-ShadowsocksR/-SSR-/blob/master/%E5%B0%8F%E9%A3%9E%E6%9C%BA%E7%BA%AF%E5%85%AC%E7%9B%8ASSR%E5%88%86%E4%BA%AB%EF%BC%81',
 ]
 
 subscriptions = [
