@@ -4,6 +4,7 @@ url = [
     'http://www.52ssr.net/',
     'https://t.me/s/SSRlist',
     'https://t.me/s/SSRSUB',
+    'https://t.me/s/gyjclub',
 ]
 
 subscriptions = [
