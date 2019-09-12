@@ -16,6 +16,7 @@ url = [
 
 subscriptions = [
     'https://heikejilaila.xyz/keji.php?id=c134513fcd69616d4c9fc9fdf4339846',
+    'https://muma16fx.netlify.com/',
     'https://qiaomenzhuanfx.netlify.com/',
     'https://raw.githubusercontent.com/eycorsican/rule-sets/master/kitsunebi_sub',
     'https://raw.githubusercontent.com/ssrsub/ssr/master/ssrsub',
