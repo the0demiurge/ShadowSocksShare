@@ -10,8 +10,6 @@ url = [
     'https://t.me/s/gyjclub',
     'https://t.me/s/SSRlist',
     'https://t.me/s/SSRSUB',
-    'https://youneed.win/free-ss',
-    'https://youneed.win/free-ssr',
     'http://www.52ssr.net/',
 ]
 
