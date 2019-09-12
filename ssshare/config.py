@@ -14,6 +14,5 @@ url = [
 ]
 
 subscriptions = [
-    'https://raw.githubusercontent.com/AmazingDM/sub/master/ssrshare.com',
     'https://raw.githubusercontent.com/ssrsub/ssr/master/ssrsub',
 ]
