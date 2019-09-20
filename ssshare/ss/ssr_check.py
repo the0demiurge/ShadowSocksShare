@@ -62,7 +62,7 @@ def validate(websites):
         for server in servers['data']:
             result, info = test_socks_server(str_json=server['json'])
             print('>' * 10, '结果:', result)
-            if result >= 0:
+            if result > 0:
                 print('>' * 10, '测试通过！')
             elif result == -1:
                 print(server['json'])
