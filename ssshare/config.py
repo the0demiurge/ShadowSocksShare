@@ -13,6 +13,7 @@ url = [
     'https://t.me/s/SSRlist',
     'https://t.me/s/gyjclub',
     'https://www.goroutine.me/ssr/index.html',
+    'https://viencoding.com/ss-ssr-share',
 ]
 
 subscriptions = [
