@@ -27,7 +27,7 @@
 - 严格按照接口规范返回值
 - 不显式指定函数的输入也能正确输出结果
 
-的函数，运行网站后就可以自动爬取帐号，并将帐号于网站上显示。
+的函数，运行网站后就可以自动爬取账号，并将账号于网站上显示。
 
 ### 临时运行与测试指南
 
@@ -37,7 +37,7 @@
 
 - 注释掉[ssshare/config.py](https://github.com/the0demiurge/ShadowSocksShare/blob/master/ssshare/config.py)中所有其他内容
 - 将[ssshare/ss/crawler.py](https://github.com/the0demiurge/ShadowSocksShare/blob/master/ssshare/ss/crawler.py)中所有其他以`crawler_`开头的函数名修改为非`crawler_`开头
-- 运行`python .travis-test.py`，将运行一遍完整的爬虫和验证ss帐号的功能。由于代码运行的时候捕获并打印了所有异常，所以应当阅读终端输出的日志判断爬虫成功还是失败。
+- 运行`python .travis-test.py`，将运行一遍完整的爬虫和验证ss账号的功能。由于代码运行的时候捕获并打印了所有异常，所以应当阅读终端输出的日志判断爬虫成功还是失败。
 - 撤销前两步的修改
 
 上线后的日志阅读：
@@ -76,7 +76,7 @@ heroku的dashboard中有个名为“papertrail”的app，点击这个app即可�
 
 其中，**servers ->** List[Dict[Str:Str]]
 
-servers是一个列表，列表的每个成员为包含ss(r)帐号关键信息的字典。字典所有的key和value都应当为字符串。
+servers是一个列表，列表的每个成员为包含ss(r)账号关键信息的字典。字典所有的key和value都应当为字符串。
 
 关于ss(r)关键信息的字典说明：
 
@@ -94,9 +94,9 @@ servers是一个列表，列表的每个成员为包含ss(r)帐号关键信息�
 
 来源网站信息**info ->** Dict[Str:Str]
 
-来源网站信息是为了使用户能够支持提供免费ss(r)帐号而提供的信息。其中包括三个key，均为必填：
+来源网站信息是为了使用户能够支持提供免费ss(r)账号而提供的信息。其中包括三个key，均为必填：
 
-- message：来源网站提供的少量信息，比如什么时候更新的帐号，法律或免责信息等
+- message：来源网站提供的少量信息，比如什么时候更新的账号，法律或免责信息等
 - name：来源网站名称
 - url：来源网站网址
 
@@ -110,7 +110,7 @@ servers是一个列表，列表的每个成员为包含ss(r)帐号关键信息�
 
 ## parse
 
-输入 `ssr://`、`ss://`链接，输出储存本条ss帐号关键信息的字典。
+输入 `ssr://`、`ss://`链接，输出储存本条ss账号关键信息的字典。
 
 ## scanNetQR
 

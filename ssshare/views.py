@@ -19,7 +19,7 @@ DOMAIN = 'http://ss.pythonic.life'
 DISQUS_IDENTIFIER = 'shadowsocksshare'
 
 
-servers = [{'data': [], 'info': {'message': '别着急，正在爬数据，十分钟后再回来吧：）', 'url': 'http://ss.pythonic.life', 'name': '免费 ShadowSocks 帐号分享'}}]
+servers = [{'data': [], 'info': {'message': '别着急，正在爬数据，十分钟后再回来吧：）', 'url': 'http://ss.pythonic.life', 'name': '免费 ShadowSocks 账号分享'}}]
 curtime = time.ctime()
 
 encoded = ''

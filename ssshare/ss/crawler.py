@@ -138,7 +138,7 @@ def crawl_sstool(url='https://www.ssrtool.com/', headers=fake_ua):
 
 def crawl_free_ss_site(url='https://free-ss.site/', headers=fake_ua):
     print('req free_ss_site/...')
-    info = {'message': '', 'name': '免费上网帐号', 'url': 'https://free-ss.site/'}
+    info = {'message': '', 'name': '免费上网账号', 'url': 'https://free-ss.site/'}
     try:
         fake_ua = headers
 

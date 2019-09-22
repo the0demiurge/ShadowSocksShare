@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}免费ShadowSocks帐号分享{% endblock %}
+{% block title %}免费ShadowSocks账号分享{% endblock %}
 
 {% block content %}
 
@@ -11,10 +11,10 @@
 <div id="announcement" style="color: #311315">
   <h2>免责声明</h2>
   <h3>
-    本网站仅进行技术展示，对所爬到的帐号不负任何责任。<br>
+    本网站仅进行技术展示，对所爬到的账号不负任何责任。<br>
     本项目仅面向海外华人用户，中华人民共和国境内居民禁止使用，并请立即关闭本网站！<br>
-    本网站所提供的帐号均来自网络，仅供科研、学习之用。<br>
-    请用本站分享的帐号进行学习、科研，切勿用于其他用途。<br>
+    本网站所提供的账号均来自网络，仅供科研、学习之用。<br>
+    请用本站分享的账号进行学习、科研，切勿用于其他用途。<br>
     请于24小时之内删掉与本站相关的一切内容，否则出现一切问题本站作者概不负责。
   </h3>
 </div>
@@ -22,9 +22,9 @@
 <div id="notice" style="background-color: #f5f5f6" target="_blank">
   <h2>最新通知</h2>
   <legend>通知发布日期：Mon Mar 4 14:23:45 CST 2019</legend>
-  由于 Google plus 将于2019年4月2日关闭，而之前爬到的可用帐号几乎都来源于 Google plus。<br>
+  由于 Google plus 将于2019年4月2日关闭，而之前爬到的可用账号几乎都来源于 Google plus。<br>
   所以如果大家是自己搭的网站，请时刻关注本项目更新动态，并使用最新源码重新部署。<br>
-  最后，如果有推荐的免费ss帐号分享网站，不妨在<a href="https://github.com/the0demiurge/ShadowSocksShare/issues/50">这里</a>提供一下，或者向作者发email:<a
+  最后，如果有推荐的免费ss账号分享网站，不妨在<a href="https://github.com/the0demiurge/ShadowSocksShare/issues/50">这里</a>提供一下，或者向作者发email:<a
     target="_blank" href="mailto:charl3s.xu@gmail.com?subject=feedback" "email me">charl3s.xu@gmail.com</a><br>
   作者将在学习工作之余抽空研究并爬一下试试。
   <h2>必读信息</h2>
@@ -48,7 +48,7 @@
   <legend><strong>ShadowSocks服务器信息</strong></legend>
   {% for server in servers %}
   <p>
-    请支持免费ss帐号的提供者：<a target="_blank" href="{{server['info']['url']}}">{{server['info']['name']}}</a><br>
+    请支持免费ss账号的提供者：<a target="_blank" href="{{server['info']['url']}}">{{server['info']['name']}}</a><br>
     <font style="color:#E13C19">服务器通知：<br>{{server['info']['message']}}</font>
     <br>
     <ol>
@@ -64,7 +64,7 @@
   </p>
   {% endfor %}
   <h3>其他信息:</h3>
-  爬到的所有帐号（包含大量失效帐号）在<a href="/full" target="_blank">这里<a><br>
+  爬到的所有账号（包含大量失效账号）在<a href="/full" target="_blank">这里<a><br>
       SSR订阅地址：<a target="_blank" href="/subscribe">右键点击本链接，选择复制连接地址</a><br>
       JSON格式的订阅地址（每次随机从库中抽取一条json返回）：<a target="_blank" href="/json">右键点击本链接，选择复制连接地址</a>
 </fieldset>
