@@ -8,7 +8,7 @@ import random
 
 def test_connection(
         url='http://cip.cc',
-        headers={'User-Agent': 'curl/7.21.3 (i686-pc-linux-gnu) ' 'libcurl/7.21.3 OpenSSL/0.9.8o zlib/1.2.3.4 libidn/1.18'},
+        headers={'User-Agent': 'ShadowSocksShare/web/crawler libcurl/7.21.3 OpenSSL/0.9.8o zlib/1.2.3.4 libidn/1.18'},
         proxies=None, port=1080, timeout=10):
     if not proxies:
         proxies = {'http': 'socks5://localhost:{}'.format(port), 'https': 'socks5://localhost:{}'.format(port)}

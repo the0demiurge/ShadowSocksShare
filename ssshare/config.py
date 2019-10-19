@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+import os
+
+MODE = os.environ.get('MODE', 'Not Set')
 url = [
     'https://fanqiang.network/',
     'https://fanqiang.network/free-shadowsocksr-accounts-page-2',

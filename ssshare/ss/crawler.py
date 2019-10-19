@@ -20,19 +20,30 @@
     "group": "ss.pythonic.life"
 }
 """
-from ast import literal_eval
 import json
 import logging
-import regex as re
-import requests
+import time
+from ast import literal_eval
+
 import cfscrape
 import js2py
+import regex as re
+import requests
 from bs4 import BeautifulSoup
-from ssshare.ss.parse import parse, scanNetQR, gen_uri, decode
+from ssshare.ss.parse import decode, gen_uri, parse, scanNetQR
 from ssshare.ss.ssr_check import validate
-import time
+from ssshare.utils import robots_get
+from ssshare.config import MODE
 
-fake_ua = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.87 Safari/537.36'}
+soft_user_agent = {'User-Agent': 'ShadowSocksShare/web/crawler'}
+brow_user_agent = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.87 Safari/537.36'}
+
+if MODE == 'strict':
+    user_agent = soft_user_agent
+    get_url = robots_get
+else:
+    user_agent = brow_user_agent
+    get_url = requests.get
 
 
 def request_url(url, headers=None, name=''):
@@ -41,7 +52,7 @@ def request_url(url, headers=None, name=''):
     data = set()
     servers = list()
     try:
-        response = requests.get(url, headers=headers, verify=False).text
+        response = get_url(url, headers=headers, verify=False).text
         data.update(map(lambda x: re.sub('\s', '', x), re.findall('ssr?://[a-zA-Z0-9_]+=*', response)))
         soup = BeautifulSoup(response, 'html.parser')
         title = soup.find('title')
@@ -64,9 +75,10 @@ def request_url(url, headers=None, name=''):
     return servers, info
 
 
-def request_subscription(url, headers=fake_ua, name='ssr 订阅源'):
+# def request_subscription(url, headers=user_agent, name='ssr 订阅源'):
+def request_subscription(url, headers=user_agent, name='ssr 订阅源'):
     print('req', url)
-    data = requests.get(url, headers=headers).text
+    data = get_url(url, headers=headers).text
     ssr_links = [i for i in decode(data).split('\n') if len(i) > 3]
     info = {
         'message': '来自订阅源 {}'.format(url),
@@ -83,7 +95,8 @@ def request_subscription(url, headers=fake_ua, name='ssr 订阅源'):
     return servers, info
 
 
-def crawl_sstool(url='https://www.ssrtool.com/', headers=fake_ua):
+# def crawl_sstool(url='https://www.ssrtool.com/', headers=user_agent):
+def crawl_sstool(url='https://www.ssrtool.com/', headers=user_agent):
     api_url = [url + i for i in [
         'tool/api/free_ssr?page=1&limit=10',
         'tool/api/free_ssr?page=2&limit=10',
@@ -117,7 +130,8 @@ def crawl_sstool(url='https://www.ssrtool.com/', headers=fake_ua):
     try:
         for url in api_url:
             time.sleep(2)
-            respond = requests.get(url, headers=fake_ua)
+            # respond = get_url(url, headers=user_agent)
+            respond = get_url(url, headers=user_agent)
             if respond.status_code == 200:
                 json_data = respond.json()
                 data.extend(json_data.get('data', []))
@@ -136,11 +150,13 @@ def crawl_sstool(url='https://www.ssrtool.com/', headers=fake_ua):
     return servers, info
 
 
-def crawl_free_ss_site(url='https://free-ss.site/', headers=fake_ua):
+# def crawl_free_ss_site(url='https://free-ss.site/', headers=user_agent):
+def crawl_free_ss_site(url='https://free-ss.site/', headers=user_agent):
     print('req free_ss_site/...')
     info = {'message': '', 'name': '免费上网账号', 'url': 'https://free-ss.site/'}
     try:
-        fake_ua = headers
+        # user_agent = headers
+        user_agent = headers
 
         sess = cfscrape.create_scraper()
 
@@ -148,9 +164,11 @@ def crawl_free_ss_site(url='https://free-ss.site/', headers=fake_ua):
         crypto_url = url + 'ajax/libs/crypto-js/3.1.9-1/crypto-js.min.js'
 
         headers = {'Referer': url, 'Origin': url}
-        headers.update(fake_ua)
+        # headers.update(user_agent)
+        headers.update(user_agent)
 
-        html = sess.get(url, headers=fake_ua).text
+        # html = sess.get(url, headers=user_agent).text
+        html = sess.get(url, headers=user_agent).text
         print('html')
         encc_js = sess.get(encc_url, headers=headers).text
         print('encc')
