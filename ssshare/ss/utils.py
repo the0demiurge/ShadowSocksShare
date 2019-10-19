@@ -1,6 +1,7 @@
 import requests
 from urllib.parse import urlparse
 from urllib.robotparser import RobotFileParser
+import time
 
 
 def robots_get(url, *args, **kwargs):
@@ -11,4 +12,7 @@ def robots_get(url, *args, **kwargs):
     ua = kwargs.get('headers', dict()).get('User-Agent', '*')
     if not robot.can_fetch(ua, url):
         return 'Not Allowed By robots.txt'
+    delay = robot.crawl_delay(ua)
+    if delay:
+        time.sleep(delay)
     return requests.get(url, *args, **kwargs)
