@@ -32,7 +32,7 @@ import requests
 from bs4 import BeautifulSoup
 from ssshare.ss.parse import decode, gen_uri, parse, scanNetQR
 from ssshare.ss.ssr_check import validate
-from ssshare.utils import robots_get
+from ssshare.ss.utils import robots_get
 from ssshare.config import MODE
 
 soft_user_agent = {'User-Agent': 'ShadowSocksShare/web/crawler'}
