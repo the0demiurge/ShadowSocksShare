@@ -39,6 +39,7 @@ soft_user_agent = {'User-Agent': 'ShadowSocksShare/web/crawler'}
 brow_user_agent = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.87 Safari/537.36'}
 
 if MODE == 'strict':
+    print('strict mode on')
     user_agent = soft_user_agent
     get_url = robots_get
 else:

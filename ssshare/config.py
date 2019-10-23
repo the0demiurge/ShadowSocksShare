@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 import os
 
-MODE = os.environ.get('MODE', 'Not Set')
+MODE = os.environ.get('MODE', 'strict')
 url = [
     'https://fanqiang.network/',
     'https://fanqiang.network/free-shadowsocksr-accounts-page-2',
