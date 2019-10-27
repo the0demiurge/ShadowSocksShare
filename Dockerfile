@@ -6,4 +6,4 @@ RUN cd /src; pip install -r requirements.txt
 # 暴露 5001 端口
 EXPOSE 5001
 #运行脚本
-python ./.travis-test.py
+ENTRYPOINT python ./.travis-test.py
