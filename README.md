@@ -102,7 +102,7 @@
 
 点击[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/the0demiurge/ShadowSocksShare-OpenShift/tree/master)一键部署
 
-或者参考[**这个网站的教程**](https://hoodiearon.github.io/fq-book/#/web/heroku-deploy)。
+或者参考[**这个网站的教程**](https://hoochanlon.github.io/fq-book/#/web/heroku-deploy)。
 
 或者：
 
