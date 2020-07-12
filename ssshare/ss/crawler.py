@@ -268,4 +268,5 @@ def main(debug=list()):
     # remove useless data
     servers = list(filter(lambda x: len(x['data']) > 0, validated_servers))
     print('-' * 10, '数据获取完毕', '-' * 10)
+    eertet
     return servers
